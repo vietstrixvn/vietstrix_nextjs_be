@@ -1,17 +1,44 @@
 import type { Metadata } from 'next';
 
 export const appInfo = {
-  logo: '/logo.svg', //web logo
-  title: 'App Name', //app name
+  logo: '/icons/og_logo.svg', //web logo
+  title: 'Vietstrix®', //app name
   description: 'app description', //app description
-  domain: 'app domain', //app domain
-  ogImage: '/og_logo.svg', //og image
+  domain: 'https://vietstrix.com',
+  ogImage: '/icons/og_logo.svg', //og image
   themeColor: '#ffffff',
   keywords: [
-    'keywords', //keywords
-    // ...
+    // Từ khóa tiếng Anh
+    'web development',
+    'website',
+    'web design',
+    'frontend development',
+    'backend development',
+    'full-stack development',
+    'web application',
+    'responsive design',
+    'e-commerce development',
+    'CMS development',
+    'SEO optimization',
+    'web solutions',
+
+    // Từ khóa tiếng Việt
+    'thiết kế website',
+    'phát triển web',
+    'dịch vụ web',
+    'thiết kế web chuyên nghiệp',
+    'xây dựng website',
+    'phát triển ứng dụng web',
+    'thiết kế web responsive',
+    'phát triển thương mại điện tử',
+    'tối ưu SEO',
+    'dịch vụ web toàn diện',
+    'lập trình website',
+    'giải pháp web',
   ],
 };
+
+export const siteBaseUrl = 'https://vietstrix.com';
 
 export const metadata: Metadata = {
   title: appInfo.title,
@@ -49,8 +76,8 @@ export const metadata: Metadata = {
     title: appInfo.title,
     description: appInfo.description,
     images: [`${appInfo.domain}${appInfo.ogImage}`],
-    creator: '@ugc_creator',
-    site: '@ugc_creator',
+    creator: '@vietstrix',
+    site: '@vietstrix',
   },
 
   viewport: {
@@ -84,9 +111,9 @@ export const metadata: Metadata = {
     yandex: 'verification_token',
   },
 
-  category: 'Marketing Agency',
-  creator: '@ugc_creator',
-  publisher: 'UGC Creator',
+  category: 'Website Development',
+  creator: '@vietstrix',
+  publisher: 'Vietstrix',
 };
 
 // Function to generate metadata for child pages
