@@ -1,23 +1,21 @@
 'use client';
 
-import { Container } from '@/components';
+import { AdminContainer } from '@/components/container/admin.contaier';
 import { Heading } from '@/components/design/Heading';
-import { AdminBreadCrumb } from '@/components/layout/AdminLayout/admin.breadcrumb';
 import BlogListData from '@/components/pages/admin/blog/BlogList';
 import React from 'react';
 
 const Page = () => {
   return (
-    <Container>
-      <AdminBreadCrumb title="Bài Viết" />
+    <AdminContainer>
       {/* Heading */}
       <Heading
-        name="Bài viết"
-        desc="Quản lý tất cả các bài viết có sẵn trên nền tảng. Bạn có thể tạo, cập nhật hoặc xóa các bài viết và đảm bảo rằng mỗi bài viết đều được mô tả rõ ràng và cập nhật cho người dùng."
+        name="Blog"
+        desc="Manage all the posts available on the platform. You can create, update or delete posts and make sure each post is clearly described and up to date for users."
       />
 
       <BlogListData />
-    </Container>
+    </AdminContainer>
   );
 };
 

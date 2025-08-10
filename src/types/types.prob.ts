@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { AdmimnFilter } from './types';
+import type { AdmimFilter, AdminUserFilter } from './types';
 
 export interface LoadingProps {
   size?: number;
@@ -91,11 +91,19 @@ export interface VisibilitySelectProps {
 }
 
 export type AdminFilterProps = {
-  filter: AdmimnFilter;
+  filter: AdmimFilter;
   onPageSizeChange?: (value: string) => void;
   handleRefresh?: () => void;
   onCategoryChange?: (value: string) => void;
   onStatusChange?: (value: string) => void;
+  onSearchChange?: (value: string) => void;
+};
+
+export type AdminUserFilterProps = {
+  filter: AdminUserFilter;
+  onPageSizeChange?: (value: string) => void;
+  onRoleChange?: (value: string) => void;
+  handleRefresh?: () => void;
   onSearchChange?: (value: string) => void;
 };
 

@@ -31,5 +31,7 @@ export * from './ui/dropdown-menu';
 // export * from './ui/drawer';
 // export * from './ui/checkbox';
 export * from './ui/alert-dialog';
-
 export * from './design/image.component';
+
+export * from './container/admin.contaier';
+export * from './container/container';

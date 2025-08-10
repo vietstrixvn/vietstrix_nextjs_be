@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import SectionHeader from '@/components/design/SectionHeader';
-import Container from '@/components/container/container';
+import { Container } from '@/components';
 import { AdvancedSplitText } from '@/components/animation/advance.text.animation';
 import { CustomImage } from '@/components/design/image.component';
 

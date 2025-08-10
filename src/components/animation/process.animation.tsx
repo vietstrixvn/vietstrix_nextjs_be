@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import Container from '../container/container';
+import { Container } from '../container/container';
 
 const steps = [
   {

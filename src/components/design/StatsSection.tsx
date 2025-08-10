@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Container from '../container/container';
+import { Container } from '../container/container';
 
 export function StatsSection() {
   const sectionRef = useRef<HTMLDivElement>(null);

@@ -8,6 +8,7 @@
 
 export * from './helpers/utils';
 export * from './helpers/query.helper';
+export * from './helpers/truncate_text.helper';
 
 /**
  * ==========================

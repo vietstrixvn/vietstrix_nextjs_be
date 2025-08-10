@@ -2,23 +2,21 @@ import { ComponentsIcons } from '@/assets/icons/icons';
 import { ROUTES } from './routes';
 
 export const Name = {
-  HOME: 'Trang Chủ ',
-  COMPANY: 'Về Chúng tôi',
-  SERVICE: 'Dịch Vụ & Công Nghiệp',
-  BLOG: 'Bài Viết',
-  PRODUCT: 'Sản Phẩm',
+  HOME: 'Home',
+  ABOUT: 'ABOUT',
+  SHOW_CASE: 'SHOW CASE',
+  WORK: 'HOW DO WE WORK',
 };
 
 export const navItems = [
-  { name: Name.HOME, href: ROUTES.HOME },
-  { name: Name.COMPANY, href: ROUTES.COMPANY },
-  { name: Name.SERVICE, href: ROUTES.SERVICE.ROOT },
-  { name: Name.BLOG, href: ROUTES.BLOG.ROOT },
-  { name: Name.PRODUCT, href: ROUTES.PRODUCT.ROOT },
+  // { name: Name.HOME, href: ROUTES.HOME },
+  { name: Name.ABOUT, href: ROUTES.COMPANY },
+  { name: Name.SHOW_CASE, href: ROUTES.PROJECT.ROOT },
+  { name: Name.WORK, href: ROUTES.WORK },
 ];
 
-// This is sample data.
 export const data = {
+  version: '1.0.0',
   navMain: [
     {
       title: 'Dashboard',
@@ -40,34 +38,29 @@ export const data = {
   ],
   navService: [
     {
-      title: 'Thể Loại',
+      title: 'Category',
       url: '/admin/category',
       icon: ComponentsIcons.ChartBarStacked,
     },
     {
-      title: 'Bài Viết',
+      title: 'Blog',
       url: '/admin/blog',
       icon: ComponentsIcons.List,
     },
     {
-      title: 'Sản Phẩm',
-      url: '/admin/product',
-      icon: ComponentsIcons.Package,
-    },
-    {
-      title: 'Dịch Vụ',
+      title: 'Service',
       url: '/admin/service',
       icon: ComponentsIcons.Package,
     },
     {
-      title: 'Dự Án',
+      title: 'Project',
       url: '/admin/project',
       icon: ComponentsIcons.SquareChartGantt,
     },
   ],
   navSupport: [
     {
-      title: 'Liên Hệ',
+      title: 'Contact',
       url: '/admin/contact',
       icon: ComponentsIcons.Contact,
     },

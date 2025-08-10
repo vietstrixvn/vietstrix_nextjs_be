@@ -1,6 +1,7 @@
 'use client';
 
 import { ComponentsIcons } from '@/assets/icons/icons';
+import { CustomImage } from '@/components/design/image.component';
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
@@ -44,7 +45,12 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-black"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <Image src="/Logo.svg" alt="vietsitrx" width={32} height={32} />
+                <CustomImage
+                  src="/icons/logo.svg"
+                  alt="vietsitrx"
+                  width={32}
+                  height={32}
+                />
                 {/* <AvatarFallback className="rounded-lg">CN</AvatarFallback> */}
               </Avatar>
               <div className="grid flex-1 text-left data-[state=open]:text-black text-sm leading-tight">

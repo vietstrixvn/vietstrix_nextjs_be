@@ -7,7 +7,7 @@ import { SEO } from '@/components/SEO';
 import Link from 'next/link';
 import SectionHeader from '@/components/design/SectionHeader';
 import ProcessTimeline from '@/components/container/ProcessTimeline';
-import Container from '@/components/container/container';
+import { Container } from '@/components';
 import { StatsSection } from '@/components/design/StatsSection';
 import IntroSection from '@/components/pages/public/introSection';
 import { ContactForm } from '@/components/form/ContactForm';

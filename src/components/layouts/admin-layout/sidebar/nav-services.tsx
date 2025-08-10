@@ -11,8 +11,9 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
-export function NavMain({
+export function NavService({
   items,
 }: {
   items: {
@@ -21,16 +22,26 @@ export function NavMain({
     icon?: LucideIcon;
   }[];
 }) {
+  const pathname = usePathname();
+
   return (
     <SidebarGroup>
-      <SidebarGroupLabel className="text-lg mb-2">Main</SidebarGroupLabel>
+      <SidebarGroupLabel className="text-lg mb-2">Service</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
           <Collapsible key={item.title} asChild className="group/collapsible">
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
                 <Link href={item.url}>
-                  <SidebarMenuButton tooltip={item.title}>
+                  <SidebarMenuButton
+                    tooltip={item.title}
+                    className={` ${
+                      pathname === item.url
+                        ? 'bg-sidebar-hover text-main-400 border-main-400 border hover:bg-sidebar-hover'
+                        : 'hover:bg-sidebar-hover hover:text-main-400 hover:border-main-400 border border-transparent'
+                    }
+                         `}
+                  >
                     {item.icon && <item.icon className="text-lg" />}
 
                     <span className="text-lg">{item.title}</span>

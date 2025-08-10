@@ -1,10 +1,9 @@
 'use client';
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail } from 'lucide-react';
 import SectionHeader from '@/components/design/SectionHeader';
 import LetterGlitch from '@/components/animation/LetterGlitch';
-import Container from '@/components/container/container';
+import { Container } from '@/components';
 import { AdvancedSplitText } from '@/components/animation/advance.text.animation';
 
 const WhySection = () => {

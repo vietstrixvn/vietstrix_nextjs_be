@@ -1,7 +1,7 @@
 'use client';
 
 import LoadingBanner from '@/components/animation/loading-banner';
-import ScrollToTopButton from '@/components/button/ScrollToTopButton';
+import ScrollToTopButton from '@/components/button/scroll.button';
 import DefaultLayout from '@/components/layouts/default-layout/default.layout';
 import ShuffleLoader from '@/components/loading/shuffle-loader';
 import React, { useState } from 'react';

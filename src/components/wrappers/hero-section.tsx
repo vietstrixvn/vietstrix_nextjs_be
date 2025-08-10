@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { Hero } from '@/types';
-import Container from '../container/container';
+import { Container } from '../container/container';
 
 export default function HeroSection({ title, heading, subheading }: Hero) {
   const [isVisible, setIsVisible] = useState(false);

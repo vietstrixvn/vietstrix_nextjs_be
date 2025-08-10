@@ -1,9 +1,8 @@
-import Container from '@/components/container/container';
+import { Container } from '@/components';
 import EnhancedHeroBanner from '@/components/container/enhanced-hero-banner';
-import SectionHeader from '@/components/design/SectionHeader';
 import BlogGrid from '@/components/pages/public/blog/blogList';
 
-import SEO from '@/components/SEO';
+import { SEO } from '@/components/SEO';
 
 const Page = () => {
   return (

@@ -61,35 +61,6 @@ export interface VerifyCode {
 
 /**
  * ==========================
- *  @MANAGE
- * ==========================
- */
-interface ManagerData {
-  _id: string;
-  username: string;
-  name: string;
-  email: string;
-  phone_number: string;
-  role: string;
-  createdAt: Date | string;
-  updatedAt: Date | string;
-}
-
-export interface FetchManagerListResponse {
-  pagination: Pagination;
-  results: ManagerData[];
-}
-
-export interface CreateManagerData {
-  username: string;
-  name: string;
-  email: string;
-  phone_number: string;
-  password: string;
-}
-
-/**
- * ==========================
  *  @PROJECT
  * ==========================
  */
@@ -306,13 +277,21 @@ export interface CreateBlogItem {
   link?: string | null;
 }
 
-export interface AdmimnFilter {
+export interface AdmimFilter {
   button: {
     href: string;
     title: string;
   };
   values: string;
   type: string;
+}
+
+export interface AdminUserFilter {
+  button: {
+    href: string;
+    title: string;
+  };
+  values: string;
 }
 
 export interface Hero {

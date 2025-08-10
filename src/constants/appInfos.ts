@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 export const appInfo = {
   logo: '/icons/og_logo.svg', //web logo
-  title: 'Vietstrix®', //app name
+  title: 'Vietstrix', //app name ®
   description: 'app description', //app description
   domain: 'https://vietstrix.com',
   ogImage: '/icons/og_logo.svg', //og image

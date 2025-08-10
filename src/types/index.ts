@@ -11,6 +11,7 @@ export * from './blog/blog.type';
 export * from './contact/contact.type';
 export * from './media/media.type';
 export * from './auth/auth.type';
+export * from './auth/user.type';
 
 export * from './types';
 

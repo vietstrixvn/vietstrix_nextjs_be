@@ -10,7 +10,7 @@ import { cn } from '@/utils';
 import Link from 'next/link';
 import React from 'react';
 
-const NavBlog: React.FC<NavBlogProps> = ({ setIsOpen }) => {
+export const NavBlog: React.FC<NavBlogProps> = ({ setIsOpen }) => {
   const { blogs, isLoading, isError } = BlogList(
     1,
     {
@@ -102,5 +102,3 @@ const NavBlog: React.FC<NavBlogProps> = ({ setIsOpen }) => {
     </div>
   );
 };
-
-export default NavBlog;

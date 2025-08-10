@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import Container from '@/components/container/container';
+import { Container } from '@/components';
 import SectionHeader from '@/components/design/SectionHeader';
 import { BlogCard } from '@/components/card/blog.card';
 import { BlogList } from '@/lib/responses/blogLib';

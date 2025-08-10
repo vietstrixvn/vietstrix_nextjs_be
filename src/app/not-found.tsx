@@ -2,12 +2,12 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { ROUTES } from '@/lib';
 import DefaultLayout from '@/components/layouts/default-layout/default.layout';
-import Container from '@/components/container/container';
+import { Container } from '@/components';
 
 export default function NotFound() {
   return (
     <DefaultLayout>
-      <Container className="mt-16 h-[800px] flex flex-col items-center justify-center px-4 text-center">
+      <Container className="mt-16 min-h-screen flex flex-col items-center justify-center px-4 text-center">
         <div className="max-w-md space-y-6">
           <h1
             className="text-[220px] font-bold leading-none tracking-tighter animate-fade-in-down"
@@ -37,7 +37,7 @@ export default function NotFound() {
           >
             <Link
               href="/"
-              className="inline-flex items-center justify-center gap-2  bg-main px-6 py-3 font-medium text-black transition-colors hover:bg-main/80 hover:scale-105 transform  md:transition-transform duration-300 animate-pulse-subtle"
+              className="inline-flex items-center justify-center gap-2  bg-main px-6 py-3 font-medium text-white transition-colors hover:bg-main/80 hover:scale-105 transform  md:transition-transform duration-300 animate-pulse-subtle"
             >
               Back to Home Page
               <ArrowRight className="h-4 w-4" />

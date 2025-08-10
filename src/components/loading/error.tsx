@@ -1,7 +1,7 @@
 // components/Error.tsx
 import type { LoadingProps } from '@/types';
 import { Icons } from '@/assets/icons/icons';
-import Container from '../container/container';
+import { Container } from '../container/container';
 
 export const ErrorLoading: React.FC<LoadingProps> = ({
   size = 32,

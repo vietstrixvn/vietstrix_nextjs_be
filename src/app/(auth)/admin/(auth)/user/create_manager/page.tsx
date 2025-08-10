@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { BackButton, Container, Input, Button, Label } from '@/components';
-import type { CreateManagerData } from '@/types/types';
+import { Input, Button, Label } from '@/components';
+import type { CreateManagerData } from '@/types';
 import { toast } from 'sonner';
 import { useCreateManager } from '@/hooks/auth/useManager';
 import { Heading } from '@/components/design/Heading';
+import { AdminContainer } from '@/components/container/admin.contaier';
 
 const Page = () => {
   const { mutate: createManager } = useCreateManager();
@@ -111,8 +112,8 @@ const Page = () => {
   };
 
   return (
-    <Container>
-      <BackButton href="/admin/user" />
+    <AdminContainer>
+      {/* <BackButton href="/admin/user" /> */}
       <div className="flex justify-between items-center">
         <Heading name="Tạo quản trị viên" desc="Tạo tài khoản quản lý mới" />
         <Button onClick={handleCreateManager} disabled={loading}>
@@ -164,7 +165,7 @@ const Page = () => {
           </div>
         ))}
       </form>
-    </Container>
+    </AdminContainer>
   );
 };
 

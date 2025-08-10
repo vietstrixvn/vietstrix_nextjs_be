@@ -6,12 +6,12 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import { ROUTES } from '@/lib';
 import { ChevronRight } from 'lucide-react';
 
 import { usePathname } from 'next/navigation';
+import { ROUTES } from '@/lib';
 
-export function AdminBreadCrumb({ title }: { title: string }) {
+export function AdminBreadCrumb() {
   const path = usePathname();
   const pathArray = path
     ?.replace('/admin', '')
@@ -19,53 +19,47 @@ export function AdminBreadCrumb({ title }: { title: string }) {
     .filter((segment) => segment);
 
   return (
-    <div className="w-full bg-[#FDEAD4] px-6 py-4">
-      <Breadcrumb>
-        <BreadcrumbList className="text-sm">
-          <BreadcrumbItem>{title}</BreadcrumbItem>
+    <Breadcrumb>
+      <BreadcrumbList className="text-sm">
+        <BreadcrumbItem>
+          <BreadcrumbLink
+            href={ROUTES.DASHBOARD}
+            className="text-white hover:text-gray-200 font-medium"
+          >
+            Home
+          </BreadcrumbLink>
+        </BreadcrumbItem>
 
-          <BreadcrumbSeparator>:</BreadcrumbSeparator>
+        {pathArray.map((segment, index) => {
+          const href = '/' + pathArray.slice(0, index + 1).join('/');
+          const isLast = index === pathArray.length - 1;
 
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              href={ROUTES.DASHBOARD}
-              className="text-gray-600 hover:text-gray-900 font-medium"
-            >
-              Home
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-
-          {pathArray.map((segment, index) => {
-            const href = '/' + pathArray.slice(0, index + 1).join('/');
-            const isLast = index === pathArray.length - 1;
-
-            return (
-              <div key={href} className="flex items-center gap-2">
-                <BreadcrumbSeparator>
-                  <ChevronRight className="h-4 w-4 text-gray-400" />
-                </BreadcrumbSeparator>
-                {isLast ? (
-                  <BreadcrumbItem>
-                    <BreadcrumbPage className="text-gray-900 font-medium capitalize">
-                      {' '}
-                      {segment}
-                    </BreadcrumbPage>
-                  </BreadcrumbItem>
-                ) : (
-                  <BreadcrumbItem>
-                    <BreadcrumbLink
-                      href={href}
-                      className="text-gray-600 hover:text-gray-900 font-medium capitalize"
-                    >
-                      {segment}
-                    </BreadcrumbLink>
-                  </BreadcrumbItem>
-                )}
-              </div>
-            );
-          })}
-        </BreadcrumbList>
-      </Breadcrumb>
-    </div>
+          return (
+            <div key={href} className="flex items-center gap-2">
+              <BreadcrumbSeparator>
+                <ChevronRight className="h-4 w-4 text-white" />
+              </BreadcrumbSeparator>
+              {isLast ? (
+                <BreadcrumbItem>
+                  <BreadcrumbPage className="text-gray-300 font-medium capitalize">
+                    {' '}
+                    {segment}
+                  </BreadcrumbPage>
+                </BreadcrumbItem>
+              ) : (
+                <BreadcrumbItem>
+                  <BreadcrumbLink
+                    href={href}
+                    className="text-gray-100 hover:text-gray-400 font-medium capitalize"
+                  >
+                    {segment}
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+              )}
+            </div>
+          );
+        })}
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 }

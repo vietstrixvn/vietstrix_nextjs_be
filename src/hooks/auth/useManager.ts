@@ -5,7 +5,7 @@ import type {
   FetchManagerListResponse,
   CreateManagerData,
   UserDataStatistic,
-} from '@/types/types';
+} from '@/types';
 import { toast } from 'sonner';
 import type { Filters } from '@/types';
 
@@ -40,7 +40,7 @@ const fetchUserList = async (
       `${endpoints.user}${queryString ? `?${queryString}` : ''}`,
       'GET'
     );
-    return response;
+    return response.data;
   } catch (error) {
     console.error('Error fetching employee list:', error);
     throw error;

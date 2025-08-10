@@ -1,6 +1,6 @@
 import EnhancedHeroBanner from '@/components/container/enhanced-hero-banner';
 import { ContactForm } from '@/components/form/ContactForm';
-import SEO from '@/components/SEO';
+import { SEO } from '@/components/SEO';
 
 export default function ContactPage() {
   return (

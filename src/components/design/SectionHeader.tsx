@@ -1,6 +1,6 @@
 import React from 'react';
 import { ArrowUpRight } from 'lucide-react';
-import { SectionHeaderProps } from '@/types/components.type';
+import { SectionHeaderProps } from '@/types';
 
 const SectionHeader: React.FC<SectionHeaderProps> = ({ title }) => {
   return (

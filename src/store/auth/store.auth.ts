@@ -1,3 +1,7 @@
+// ==============================================
+// 📁 store/auth/store.auth.ts - FIXED VERSION WITH PROPER REDIRECT
+// ==============================================
+
 import { AuthState } from '@/types/auth/auth.type';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { create } from 'zustand';
@@ -45,9 +49,7 @@ export const useAuthStore = create<AuthState>()(
       clearError: () => set({ error: null }),
 
       /**
-       * ==========================
-       * 📌 @HOOK useLoginAuthStore
-       * ==========================
+       * LOGIN - FIXED VERSION WITH REDIRECT
        */
       login: async (username: string, password: string): Promise<boolean> => {
         try {
@@ -56,9 +58,42 @@ export const useAuthStore = create<AuthState>()(
           const { response, data } = await AuthAPI.login(username, password);
 
           if (response.status === 200 && data?.data) {
-            // 🔥 NEW: Save access token to localStorage
+            // Save access token to localStorage
             if (data.data.token) {
-              TokenManager.set(data.data.token);
+              const token = data.data.token;
+
+              // Validate token format
+              const parts = token.split('.');
+              if (parts.length === 3) {
+                try {
+                  const payload = JSON.parse(atob(parts[1]));
+                  const currentTime = Math.floor(Date.now() / 1000);
+                  const isExpired = payload.exp < currentTime;
+
+                  console.log('🔍 Token Debug:', {
+                    currentTime,
+                    tokenExp: payload.exp,
+                    isExpired,
+                    timeUntilExpiryMinutes: Math.round(
+                      (payload.exp - currentTime) / 60
+                    ),
+                  });
+
+                  if (isExpired) {
+                    throw new Error('Server returned expired token');
+                  }
+
+                  TokenManager.set(token);
+                  console.log('✅ Valid token saved to localStorage');
+                } catch (decodeError) {
+                  console.error('❌ Failed to decode token:', decodeError);
+                  throw new Error('Invalid token format received from server');
+                }
+              } else {
+                throw new Error('Invalid token format received from server');
+              }
+            } else {
+              throw new Error('No token received from server');
             }
 
             // Set authentication cookie
@@ -67,19 +102,19 @@ export const useAuthStore = create<AuthState>()(
               sameSite: 'Lax',
             });
 
-            // 🔥 UPDATED: Extract user info from login response
+            // Extract and validate user info
             const userData = data.data.user;
             if (userData && userData.role) {
               const userRole = userData.role;
               const allowedRoles = ['admin', 'manager'];
 
               if (!allowedRoles.includes(userRole)) {
-                // Clean up tokens if role is not allowed
                 TokenManager.remove();
                 CookieManager.delete('isAuthenticated');
                 throw new Error('You do not have access');
               }
 
+              // ✅ FIX: Set auth state BEFORE redirect
               set({
                 isAuthenticated: true,
                 userInfo: userData,
@@ -87,7 +122,13 @@ export const useAuthStore = create<AuthState>()(
               });
 
               logDebug('Login successful with token and user info');
-              toast.success('Login successful! Redirecting to home page..');
+              toast.success('Login successful! Redirecting to dashboard...');
+
+              // ✅ FIX: Add redirect after successful login
+              setTimeout(() => {
+                window.location.href = '/admin';
+              }, 1000); // Small delay to show success message
+
               return true;
             } else {
               throw new Error('Invalid user data received from login response');
@@ -122,9 +163,7 @@ export const useAuthStore = create<AuthState>()(
       },
 
       /**
-       * ==========================
-       * 📌 @HOOK useFetchUserInfo
-       * ==========================
+       * FETCH USER INFO
        */
       fetchUserInfo: async () => {
         if (!get().isAuthenticated) return;
@@ -147,15 +186,13 @@ export const useAuthStore = create<AuthState>()(
       },
 
       /**
-       * ==========================
-       * 📌 @HOOK logout
-       * ==========================
+       * LOGOUT
        */
       logout: async () => {
         try {
           set({ loading: true });
 
-          // Try server logout but don't depend on it for local logout
+          // Try server logout but don't depend on it
           try {
             const { response } = await AuthAPI.logout();
             if (!response.ok) {
@@ -167,7 +204,7 @@ export const useAuthStore = create<AuthState>()(
             logWarn('Server logout error:', error);
           }
 
-          // Always perform local logout - clean up all auth data
+          // Always perform local logout
           TokenManager.remove();
           CookieManager.delete('isAuthenticated');
           localStorage.removeItem('auth-storage');
@@ -180,11 +217,11 @@ export const useAuthStore = create<AuthState>()(
           });
 
           toast.success('Log out successfully!');
-          window.location.href = '/login';
+          window.location.href = '/sign-in';
         } catch (error) {
           logError('Catastrophic error during logout:', error);
 
-          // Force logout anyway - clean up all auth data
+          // Force logout anyway
           TokenManager.remove();
           CookieManager.delete('isAuthenticated');
           localStorage.removeItem('auth-storage');
@@ -193,22 +230,37 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: false,
             userInfo: null,
             loading: false,
-            error: handleAuthError(error),
+            error: null,
           });
 
-          window.location.href = '/login';
+          window.location.href = '/sign-in';
         }
       },
 
       /**
-       * ==========================
-       * 📌 @HOOK useCheckAuthStore
-       * ==========================
+       * CHECK AUTH - OPTIMIZED VERSION
        */
       checkAuth: async (shouldRedirect: boolean = true) => {
+        // ✅ FIX: Don't run checkAuth if already authenticated and has valid data
+        const currentState = get();
+        if (currentState.isAuthenticated && currentState.userInfo) {
+          console.log(
+            '✅ Already authenticated with user info, skipping checkAuth'
+          );
+          return;
+        }
+
         // Check both cookie and token existence
         const hasAuthCookie = CookieManager.check('isAuthenticated');
         const hasToken = TokenManager.get();
+
+        console.log('🔍 checkAuth - Initial state:', {
+          hasAuthCookie,
+          hasToken: !!hasToken,
+          shouldRedirect,
+          currentAuth: currentState.isAuthenticated,
+          hasUserInfo: !!currentState.userInfo,
+        });
 
         if (!hasAuthCookie || !hasToken) {
           logDebug('Missing authentication cookie or token');
@@ -221,7 +273,8 @@ export const useAuthStore = create<AuthState>()(
           set({ isAuthenticated: false, userInfo: null, loading: false });
 
           if (shouldRedirect) {
-            window.location.href = '/login';
+            console.log('🔄 Redirecting to login - missing auth data');
+            window.location.href = '/sign-in';
           }
           return;
         }
@@ -235,11 +288,11 @@ export const useAuthStore = create<AuthState>()(
           if (response.status === 200 && data?.data) {
             const userRole = data.data.role?.slug || data.data.role;
             const allowedRoles = ['admin', 'manager'];
+
             console.log('✅ API response successful:', {
               userRole,
               allowedRoles,
             });
-            logDebug(`User role: ${userRole}`);
 
             if (!allowedRoles.includes(userRole)) {
               console.log('❌ Unauthorized role detected');
@@ -259,10 +312,7 @@ export const useAuthStore = create<AuthState>()(
               });
 
               if (shouldRedirect) {
-                console.log(
-                  '🔄 Redirecting to login due to unauthorized role...'
-                );
-                window.location.href = '/login';
+                window.location.href = '/sign-in';
               }
               return;
             }
@@ -303,7 +353,7 @@ export const useAuthStore = create<AuthState>()(
 
           if (shouldRedirect) {
             console.log('🔄 Redirecting to login due to API error...');
-            window.location.href = '/login';
+            window.location.href = '/sign-in';
           }
         }
       },
@@ -315,13 +365,10 @@ export const useAuthStore = create<AuthState>()(
         isAuthenticated: state.isAuthenticated,
         userInfo: state.userInfo,
       }),
-      // ✅ FIX: Prevent hydration mismatch
       skipHydration: false,
-      // ✅ FIX: Only rehydrate on client side
       onRehydrateStorage: () => (state) => {
         console.log('🔄 Zustand rehydrating state:', state);
         if (state && !isClient) {
-          // Don't rehydrate on server
           return;
         }
       },
@@ -329,5 +376,4 @@ export const useAuthStore = create<AuthState>()(
   )
 );
 
-// Export token manager for use in other parts of the app
 export { TokenManager };

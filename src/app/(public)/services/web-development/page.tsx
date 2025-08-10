@@ -1,7 +1,7 @@
 'use client';
 
 import WebDevelopmentProcess from '@/components/animation/process.animation';
-import Container from '@/components/container/container';
+import { Container } from '@/components';
 import ProcessTimeline from '@/components/container/ProcessTimeline';
 import { CustomImage } from '@/components/design/image.component';
 import SectionHeader from '@/components/design/SectionHeader';

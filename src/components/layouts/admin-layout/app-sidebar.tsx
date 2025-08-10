@@ -1,9 +1,13 @@
 'use client';
 
-import * as React from 'react';
-
-import { NavMain } from './nav-main';
-import { NavUser } from './nav-user';
+import {
+  NavUser,
+  NavMain,
+  NavService,
+  NavSupport,
+  NavAdmin,
+  VersionSwitcher,
+} from './sidebar';
 import {
   Sidebar,
   SidebarContent,
@@ -11,10 +15,7 @@ import {
   SidebarHeader,
   SidebarRail,
   SidebarSeparator,
-} from '@/components/ui/sidebar';
-import { NavService } from './nav-services';
-import { NavSupport } from './nav-support';
-import { NavAdmin } from './nav-admin';
+} from '@/components';
 import { useAuthStore } from '@/store';
 import { data } from '@/lib';
 
@@ -24,9 +25,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader />
-
-      <SidebarContent>
+      <SidebarHeader>
+        <VersionSwitcher versions={data.version} />
+      </SidebarHeader>
+      <SidebarContent className="flex-1 overflow-y-auto overflow-x-hidden">
         <NavMain items={data.navMain} />
         {userInfo?.role === 'admin' && <SidebarSeparator />}
         {userInfo?.role === 'admin' && <NavAdmin items={data.navAdmin} />}
@@ -35,6 +37,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarSeparator />
         <NavSupport items={data.navSupport} />
       </SidebarContent>
+
       <SidebarFooter>
         <NavUser logout={logout} user={userInfo ?? null} />
       </SidebarFooter>

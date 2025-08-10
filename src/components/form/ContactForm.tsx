@@ -13,7 +13,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import SectionHeader from '../design/SectionHeader';
 import { Facebook, Github, Linkedin, Mail } from 'lucide-react';
-import Container from '../container/container';
+import { Container } from '../container/container';
 import { Monitor } from '../design/item/monitor';
 import { useForm } from 'react-hook-form';
 import { contactSentFormSchema } from '@/utils';

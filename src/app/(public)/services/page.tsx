@@ -1,10 +1,10 @@
 'use client';
 
-import Container from '@/components/container/container';
+import { Container } from '@/components';
 import EnhancedHeroBanner from '@/components/container/enhanced-hero-banner';
 import ProcessTimeline from '@/components/container/ProcessTimeline';
 import ServiceList from '@/components/pages/public/services/servicesList';
-import SEO from '@/components/SEO';
+import { SEO } from '@/components/SEO';
 import { Separator } from '@radix-ui/react-separator';
 
 export default function Page() {

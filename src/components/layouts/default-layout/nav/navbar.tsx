@@ -4,13 +4,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import Image from 'next/image';
-import { cn } from '@/lib/utils';
+import { cn } from '@/lib';
 import GetStartedButton from '@/components/animata/container/AnimatedTrailProps';
-import { IntroduceCard } from '@/components/card/introduce.card';
 import NavService, { ServiceDropdownContent } from './service.nav';
-import NavBlog from './blog.nav';
+import { NavBlog } from './blog.nav';
 import { CustomImage } from '@/components/design/image.component';
+import { navItems } from '@/lib';
 
 const NavBar = () => {
   const pathname = usePathname();
@@ -18,21 +17,6 @@ const NavBar = () => {
   const [isScrolling, setIsScrolling] = useState(false);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [isServiceOpen, setIsServiceOpen] = useState(false);
-
-  const navItems = [
-    {
-      name: 'ABOUT',
-      path: '/our-team',
-    },
-    {
-      name: 'SHOW CASE',
-      path: '/projects',
-    },
-    {
-      name: 'HOW DO WE WORK',
-      path: '/work',
-    },
-  ];
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -70,7 +54,7 @@ const NavBar = () => {
               {/* Left section - Logo */}
               <Link href="/" className="flex items-center gap-2 pl-4">
                 <div className="w-8 h-8 flex items-center justify-center">
-                  <Image
+                  <CustomImage
                     src="/icons/logo.svg"
                     alt="Logo"
                     width={30}
@@ -79,7 +63,8 @@ const NavBar = () => {
                 </div>
                 <div className="flex flex-col font-semibold text-main">
                   <span className="text-xl leading-none font-semibold uppercase">
-                    VIETSTRIX®
+                    VIETSTRIX
+                    {/* ® */}
                   </span>
                   <span className="text-xl leading-none font-semibold uppercase">
                     TEAM
@@ -93,11 +78,11 @@ const NavBar = () => {
                 {navItems.map((item) => (
                   <Link
                     key={item.name}
-                    href={item.path}
+                    href={item.href}
                     className={`
                       px-3 py-1 text-sm font-medium transition-all duration-300 ease-in-out text-main
                       ${
-                        pathname === item.path
+                        pathname === item.href
                           ? 'bg-main text-white font-semibold scale-105 shadow-sm'
                           : 'hover:bg-main/50 hover:scale-105'
                       }
@@ -263,11 +248,11 @@ const NavBar = () => {
             {navItems.map((item) => (
               <Link
                 key={item.name}
-                href={item.path}
+                href={item.href}
                 className={`
                   py-2 px-4 text-sm font-medium w-full text-center
                   ${
-                    pathname === item.path
+                    pathname === item.href
                       ? 'bg-main text-white'
                       : 'hover:bg-gray-200'
                   }

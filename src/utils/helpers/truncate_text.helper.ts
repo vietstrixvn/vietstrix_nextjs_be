@@ -8,3 +8,14 @@ export function truncateText(text: string, maxLength: number): string {
   if (text.length <= maxLength) return text;
   return text.slice(0, maxLength).trimEnd() + '...';
 }
+
+export function truncateHtmlToText(html: string, maxLength: number): string {
+  const div = document.createElement('div');
+  div.innerHTML = html;
+
+  const text = div.textContent || div.innerText || '';
+
+  return text.length > maxLength
+    ? text.slice(0, maxLength).trim() + '...'
+    : text;
+}

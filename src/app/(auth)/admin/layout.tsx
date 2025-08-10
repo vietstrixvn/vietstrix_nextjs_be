@@ -1,85 +1,68 @@
 'use client';
 
-import { AdminLayout } from '@/components/layouts/admin-layout/AdminLayout';
-import ShuffleLoader from '@/components/loading/shuffle-loader';
 import { useAuthStore } from '@/store';
+import { useEffect } from 'react';
+import { CookieManager } from '@/store/auth/cookie.auth';
+import { TokenManager } from '@/store/auth/store.auth';
+import { AuthProtectedLayoutProps } from '@/types/auth/auth.prob';
+import { AdminLayout } from '@/components/layouts/admin-layout/AdminLayout';
 import { logDebug } from '@/utils';
+import ShuffleLoader from '@/components/loading/shuffle-loader';
 import Head from 'next/head';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
 
 export default function AuthProtectedLayout({
   children,
-}: {
-  children: React.ReactNode;
-}) {
-  const { isAuthenticated, loading, checkAuth } = useAuthStore();
-  const router = useRouter();
-  const [authChecked, setAuthChecked] = useState(false);
+}: AuthProtectedLayoutProps) {
+  const { isAuthenticated, userInfo, loading, checkAuth } = useAuthStore();
 
   useEffect(() => {
-    let isMounted = true;
+    logDebug('🔍 AuthProtectedLayout - Starting auth check...');
+    logDebug('🔍 Current auth state:', {
+      isAuthenticated,
+      loading,
+      hasUserInfo: !!userInfo,
+    });
 
-    const verifyAuth = async () => {
-      try {
-        console.log('🔍 AuthProtectedLayout - Starting auth check...');
-        console.log('🔍 Current auth state:', { isAuthenticated, loading });
+    const hasAuthCookie = CookieManager.check('isAuthenticated');
+    const hasToken = TokenManager.get();
 
-        // ✅ CRITICAL FIX: Không redirect trong layout vì middleware đã handle
-        await (checkAuth as any)(false); // shouldRedirect = false
+    logDebug('🔍 Auth data check:', {
+      hasAuthCookie,
+      hasToken: !!hasToken,
+      isAuthenticated,
+      hasUserInfo: !!userInfo,
+    });
 
-        if (isMounted) {
-          setAuthChecked(true);
-          console.log('✅ Auth check completed in layout');
-        }
-      } catch (error) {
-        console.error('❌ Authentication check failed:', error);
-        if (isMounted) {
-          setAuthChecked(true);
-        }
-      }
-    };
+    const needsAuthCheck =
+      !isAuthenticated ||
+      !userInfo ||
+      (hasAuthCookie && hasToken && !isAuthenticated);
 
-    // Chỉ check auth nếu chưa authenticated
-    if (!isAuthenticated) {
-      verifyAuth();
+    if (needsAuthCheck) {
+      logDebug('🔄 Running checkAuth - missing auth data');
+      checkAuth(true);
     } else {
-      console.log('✅ Already authenticated, skipping check');
-      setAuthChecked(true);
+      logDebug('✅ Auth state complete, skipping checkAuth');
     }
 
-    return () => {
-      isMounted = false;
-    };
-  }, [checkAuth, isAuthenticated]);
+    logDebug('✅ Auth check completed in layout');
+  }, []);
 
-  if (loading || !authChecked) {
-    console.log('🔄 Showing loader...', { loading, authChecked });
-    return (
-      <div>
-        <ShuffleLoader />
-      </div>
-    );
+  if (loading && !isAuthenticated) {
+    return <ShuffleLoader />;
   }
 
-  if (!isAuthenticated) {
-    logDebug('❌ Not authenticated, letting middleware handle redirect');
-    return (
-      <div>
-        <ShuffleLoader />
-      </div>
-    );
+  // ✅ FIX: Only render children if fully authenticated
+  if (!isAuthenticated || !userInfo) {
+    return <ShuffleLoader />;
   }
 
-  console.log('✅ Rendering authenticated layout');
   return (
     <>
       <Head>
         <meta name="robots" content="noindex, nofollow" />
       </Head>
-      <main className="bg-[#FDEAD4]">
-        <AdminLayout>{children}</AdminLayout>
-      </main>
+      <AdminLayout>{children}</AdminLayout>;
     </>
   );
 }
