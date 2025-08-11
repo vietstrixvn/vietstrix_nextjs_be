@@ -74,23 +74,12 @@ const useUserList = (
  */
 
 const createManager = async (managerData: CreateManagerData) => {
-  const formData = new FormData();
-
-  for (const key in managerData) {
-    if (Object.prototype.hasOwnProperty.call(managerData, key)) {
-      const value = managerData[key as keyof CreateManagerData];
-
-      if (Array.isArray(value)) {
-        // If the value is an array, append each element
-        value.forEach((v) => formData.append(key, v));
-      } else if (typeof value === 'string') {
-        // If the value is a string, append to FormData
-        formData.append(key, value);
-      }
-    }
-  }
   try {
-    const response = await handleAPI(`${endpoints.managers}`, 'POST', formData);
+    const response = await handleAPI(
+      `${endpoints.managers}`,
+      'POST',
+      managerData
+    );
 
     return response.data;
   } catch (error: any) {

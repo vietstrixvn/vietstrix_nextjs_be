@@ -4,14 +4,14 @@
  * ==========================
  */
 
-import type { Pagination } from '../base/base.type';
+import type { BaseModel, Pagination } from '../base/base.type';
 
 export interface ContactService {
   id: string;
   title: string;
 }
 
-export interface ContactList {
+export interface ContactList extends BaseModel {
   id: string;
   name: string;
   email: string;
@@ -20,8 +20,6 @@ export interface ContactList {
   link?: string;
   status: string;
   service?: ContactService;
-  createdAt: Date | string;
-  updatedAt: Date | string;
 }
 
 export interface FetchContactListResponse {

@@ -40,7 +40,7 @@ type RouteMap = {
   readonly DASHBOARD: string;
   readonly ADMIN_CATEGORY: string;
   readonly ADMIN_CONTACT: string;
-  readonly ADMIN_SEO: string;
+  readonly ADMIN_WEBSITE: string;
 };
 
 export const ROUTES: Readonly<RouteMap> = deepFreeze({
@@ -75,5 +75,5 @@ export const ROUTES: Readonly<RouteMap> = deepFreeze({
   DASHBOARD: '/admin',
   ADMIN_CATEGORY: '/admin/category',
   ADMIN_CONTACT: '',
-  ADMIN_SEO: '',
+  ADMIN_WEBSITE: '/website',
 } as const);

@@ -4,20 +4,17 @@
  * ==========================
  */
 
-import type { Pagination } from '../base/base.type';
+import type { BaseModel, Pagination } from '../base/base.type';
 import type { UserDataComponents } from '../types';
 
 /*
   Category Attribute Declaration
 */
-export interface Category {
+export interface Category extends BaseModel {
   id: string;
   name: string;
   slug: string;
-  type: string;
   user?: UserDataComponents;
-  createdAt: Date | string;
-  updatedAt: Date | string;
 }
 
 export interface FetchCategoryListResponse {

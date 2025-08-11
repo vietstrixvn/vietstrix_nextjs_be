@@ -16,15 +16,13 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  Card,
-  CardContent,
   CardFooter,
-  CardHeader,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  AdminContainer,
 } from '@/components';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -117,111 +115,113 @@ export default function NewBlogPost() {
   };
 
   return (
-    <div className="container mx-auto py-10">
-      <Card>
-        <CardHeader>
-          <Heading name="Create Blog" />
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form
-              onSubmit={(e) => {
-                return handleSubmit(onSubmit)(e);
-              }}
-              className="space-y-6"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-6 ">
-                  <FormField
-                    control={form.control}
-                    name="title"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Title</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="Enter blog post title"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+    <AdminContainer>
+      <div className="flex justify-between">
+        <Heading
+          name="Create Blog"
+          desc="Fill in the blog details below to create and publish a new post."
+        />
+        <div className="flex gap-2 mt-6 mb-6">
+          {/* Nút Cancel: xám nhạt */}
+          <Button
+            type="button"
+            variant="outline"
+            className="border-gray-300 text-gray-600 hover:bg-gray-100"
+            onClick={() => router.back()}
+          >
+            Cancel
+          </Button>
 
-                  <FormField
-                    control={form.control}
-                    name="category"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Thể Loại</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          disabled={isLoading}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue
-                                placeholder={
-                                  isLoading
-                                    ? 'Loading categories...'
-                                    : 'Select a category'
-                                }
-                              />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {isLoading ? (
-                              <SelectItem value="loading" disabled>
-                                Loading categories...
-                              </SelectItem>
-                            ) : isError ? (
-                              <SelectItem value="error" disabled>
-                                Error loading categories
-                              </SelectItem>
-                            ) : categories && categories.length > 0 ? (
-                              categories.map((category) => (
-                                <SelectItem
-                                  key={category.id.toString()}
-                                  value={category.id}
-                                >
-                                  {category.name}
-                                </SelectItem>
-                              ))
-                            ) : (
-                              <SelectItem value="no-categories" disabled>
-                                No categories available
-                              </SelectItem>
-                            )}
-                          </SelectContent>
-                        </Select>
-                        {isError && (
-                          <p className="text-sm text-red-500 mt-1">
-                            Failed to load categories
-                          </p>
-                        )}
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+          <Button
+            type="button"
+            className="bg-main text-white hover:bg-main-700"
+            onClick={() => {
+              const values = form.getValues();
+              onSubmit(values);
+            }}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Đang Tạo...' : 'Create Blog'}
+          </Button>
+        </div>
+      </div>
+
+      <Form {...form}>
+        <form
+          onSubmit={(e) => {
+            return handleSubmit(onSubmit)(e);
+          }}
+          className="space-y-6"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-6">
+              <div className="flex gap-2">
                 <FormField
                   control={form.control}
-                  name="content"
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Title</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter blog post title" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="category"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Nội dung ngắn </FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="Enter a short content or summary"
-                          className="min-h-[100px]"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        This will appear as a preview of your blog post
-                      </FormDescription>
+                      <FormLabel>Category</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        disabled={isLoading}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue
+                              placeholder={
+                                isLoading
+                                  ? 'Loading categories...'
+                                  : 'Select a category'
+                              }
+                            />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {isLoading ? (
+                            <SelectItem value="loading" disabled>
+                              Loading categories...
+                            </SelectItem>
+                          ) : isError ? (
+                            <SelectItem value="error" disabled>
+                              Error loading categories
+                            </SelectItem>
+                          ) : categories && categories.length > 0 ? (
+                            categories.map((category) => (
+                              <SelectItem
+                                key={category.id.toString()}
+                                value={category.id}
+                              >
+                                {category.name}
+                              </SelectItem>
+                            ))
+                          ) : (
+                            <SelectItem value="no-categories" disabled>
+                              No categories available
+                            </SelectItem>
+                          )}
+                        </SelectContent>
+                      </Select>
+                      {isError && (
+                        <p className="text-sm text-red-500 mt-1">
+                          Failed to load categories
+                        </p>
+                      )}
                       <FormMessage />
                     </FormItem>
                   )}
@@ -230,77 +230,75 @@ export default function NewBlogPost() {
 
               <FormField
                 control={form.control}
-                name="file"
-                render={() => (
+                name="content"
+                render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Thumbnail Image</FormLabel>
+                    <FormLabel>Short content </FormLabel>
                     <FormControl>
-                      <div>
-                        <ImageUploadPreview
-                          key={uploaFileKey}
-                          type="banner"
-                          onImageUploaded={handleImageUploaded}
-                        />
-                        {errors.file && (
-                          <p className="text-red-500 text-sm">
-                            {errors.file.message}
-                          </p>
-                        )}
-                      </div>
+                      <Textarea
+                        placeholder="Enter a short content or summary"
+                        className="min-h-[100px]"
+                        {...field}
+                      />
                     </FormControl>
-
                     <FormDescription>
-                      Upload an image (max 20MB). Supported formats: JPG, PNG,
-                      WebP
+                      This will appear as a preview of your blog post
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Mô tả chi tiết</FormLabel>
-                    <FormControl>
-                      <RichTextEditor
-                        initialContent={field.value}
-                        onChange={(val) => field.onChange(val.html)}
-                        className="w-full rounded-none cursor-text"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            </div>
 
-              <CardFooter className="flex justify-between gap-4 px-0">
-                <Button
-                  variant="outline"
-                  type="button"
-                  onClick={() => router.back()}
-                >
-                  Cancel
-                </Button>
-                <div className="flex gap-4">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => {
-                      const values = form.getValues();
-                      onSubmit(values);
-                    }}
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? 'Đang Tạo...' : 'Tạo Bài Viết'}
-                  </Button>
-                </div>
-              </CardFooter>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
-    </div>
+            <FormField
+              control={form.control}
+              name="file"
+              render={() => (
+                <FormItem>
+                  <FormLabel>Thumbnail Image</FormLabel>
+                  <FormControl>
+                    <div>
+                      <ImageUploadPreview
+                        key={uploaFileKey}
+                        type="banner"
+                        onImageUploaded={handleImageUploaded}
+                      />
+                      {errors.file && (
+                        <p className="text-red-500 text-sm">
+                          {errors.file.message}
+                        </p>
+                      )}
+                    </div>
+                  </FormControl>
+
+                  <FormDescription>
+                    Upload an image (max 20MB). Supported formats: JPG, PNG,
+                    WebP
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Detailed description</FormLabel>
+                <FormControl>
+                  <RichTextEditor
+                    initialContent={field.value}
+                    onChange={(val) => field.onChange(val.html)}
+                    className="w-full rounded-none cursor-text"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </form>
+      </Form>
+    </AdminContainer>
   );
 }

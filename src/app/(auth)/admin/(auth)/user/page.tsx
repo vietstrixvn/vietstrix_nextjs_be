@@ -15,7 +15,7 @@ import {
 } from '@/components';
 import { CustomPagination } from '@/components/design/pagination';
 import { useDeleteManager } from '@/hooks/auth/useManager';
-// import { ConfirmDialog } from '@/components/design/Dialog';
+import { ConfirmDialog } from '@/components/design/Dialog';
 import { Badge } from '@/components/ui/badge';
 import { AdminContainer } from '@/components/container/admin.contaier';
 import { UserList } from '@/lib/responses/userLib';
@@ -24,6 +24,9 @@ import { LoadingSpin } from '@/components/loading/loading';
 import { AdminUserFilter } from '@/components/fliters/auth.filter';
 import { ErrorLoading } from '@/components/loading/error';
 import { NoResultsFound } from '@/components/design/NoResultsFound';
+import { UserColumns } from '@/types';
+import { truncateText } from '@/utils';
+import Header from '@/components/design/Header';
 
 const Page = () => {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -79,12 +82,12 @@ const Page = () => {
     setRefreshKey((prev) => prev + 1);
   };
 
-  const getRoleColor = (role: any) => {
+  const getRoleColor = (role: string) => {
     switch (role?.toLowerCase()) {
       case 'admin':
-        return 'bg-purple-100 text-purple-800';
+        return 'bg-red-200 text-red-800';
       case 'manager':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-green-200 text-green-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -145,6 +148,7 @@ const Page = () => {
         </div>
 
         {/* User Management Section */}
+        <Header title="User Table" />
 
         <AdminUserFilter
           filter={filter}
@@ -158,11 +162,11 @@ const Page = () => {
           <Table>
             <TableHeader>
               <TableRow className="bg-gray-50">
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Tel</TableHead>
-                <TableHead>ID</TableHead>
+                {UserColumns.map((col) => (
+                  <TableHead key={col.key} className={col.className}>
+                    {col.label}
+                  </TableHead>
+                ))}
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -188,6 +192,11 @@ const Page = () => {
                   return (
                     <TableRow key={employee.id} className="hover:bg-gray-50">
                       <TableCell>
+                        <span className="text-sm text-gray-500 font-mono">
+                          {truncateText(employee.id, 8)}
+                        </span>
+                      </TableCell>
+                      <TableCell>
                         <div className="flex items-center gap-3">
                           <div className="h-9 w-9  bg-gray-200 flex items-center justify-center text-gray-600 font-medium">
                             {employee.name?.substring(0, 2) ||
@@ -211,11 +220,7 @@ const Page = () => {
                         </Badge>
                       </TableCell>
                       <TableCell>{employee.phone_number}</TableCell>
-                      <TableCell>
-                        <span className="text-sm text-gray-500 font-mono">
-                          {employee.id?.substring(0, 8)}...
-                        </span>
-                      </TableCell>
+
                       <TableCell className="text-right">
                         <div className="flex justify-end gap-2">
                           {/* <Button variant="ghost" size="sm">
@@ -264,13 +269,13 @@ const Page = () => {
         </div>
       </AdminContainer>
 
-      {/* <ConfirmDialog
+      <ConfirmDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
         question="Bạn có chắc không?"
         description="Không thể hoàn tác hành động này. Thao tác này sẽ xóa vĩnh viễn người quản lý."
         onConfirm={handleDeleteConfirm}
-      /> */}
+      />
     </>
   );
 };

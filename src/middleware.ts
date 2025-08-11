@@ -1,58 +1,46 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { logDebug, logError } from './utils';
+import { logDebug } from './utils';
+import { validateUserRole } from './store/auth/utils.auth';
 
 export function middleware(request: NextRequest) {
-  const isAuthenticatedCookie = request.cookies.get('isAuthenticated')?.value;
-  const userRoleCookie = request.cookies.get('userRole')?.value; // Thêm dòng này
-  const isAuthenticated = isAuthenticatedCookie === 'true';
   const path = request.nextUrl.pathname;
+  const isAuthenticated =
+    request.cookies.get('isAuthenticated')?.value === 'true';
 
-  logDebug('🔍 Middleware check:', {
+  logDebug(
+    'Path:',
     path,
-    isAuthenticated,
-    userRole: userRoleCookie, // Thêm vào log
-    cookie: isAuthenticatedCookie,
-  });
+    'Role:',
+    request.cookies.get('userRole')?.value,
+    'isAuth:',
+    isAuthenticated
+  );
 
   const isLoginPage = path === '/sign-in';
-  const isProtectedPage = path.startsWith('/admin');
-  const isUserPage = path.startsWith('/user'); // Thêm dòng này
-  const isSeoPage = path === '/seo'; // Thêm dòng này
+  const isUnauthorizedPage = path === '/admin/unauthorized';
   const isApiRoute = path.startsWith('/api');
   const isStaticFile = path.startsWith('/_next') || path === '/favicon.ico';
 
-  // Skip middleware for API routes and static files
-  if (isApiRoute || isStaticFile) {
+  if (isApiRoute || isStaticFile || isLoginPage || isUnauthorizedPage) {
     return NextResponse.next();
   }
 
-  // Redirect authenticated users away from login page
-  if (isAuthenticated && isLoginPage) {
-    logDebug('✅ Authenticated user on login page, redirecting to home');
-    return NextResponse.redirect(new URL('/', request.url));
-  }
-
-  // Redirect unauthenticated users from protected pages
-  if (!isAuthenticated && (isProtectedPage || isUserPage || isSeoPage)) {
-    // Update điều kiện này
-    logError('❌ Unauthenticated user on protected page, redirecting to login');
-    return NextResponse.redirect(
-      new URL(`/sign-in?from=${encodeURIComponent(path)}`, request.url)
-    );
-  }
-
-  // Block manager role from accessing user pages and SEO page - Thêm block này
+  // Auth check && Route Auth
   if (
-    isAuthenticated &&
-    userRoleCookie === 'manager' &&
-    (isUserPage || isSeoPage)
+    (path === '/admin/user' || path.startsWith('/admin/user/')) &&
+    !validateUserRole(request, ['admin']) // chỉ admin mới vào được
   ) {
-    logError('🚫 Manager role blocked from accessing:', path);
-    return NextResponse.redirect(new URL('/unauthorized', request.url)); // Hoặc redirect về trang chính
+    return NextResponse.redirect(new URL('/admin/unauthorized', request.url));
   }
 
-  logDebug('✅ Middleware passed, continuing...');
+  if (
+    (path === '/admin/website' || path.startsWith('/admin/website/')) &&
+    !validateUserRole(request, ['admin']) // chỉ admin mới vào được
+  ) {
+    return NextResponse.redirect(new URL('/admin/unauthorized', request.url));
+  }
+
   return NextResponse.next();
 }
 

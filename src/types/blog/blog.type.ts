@@ -4,10 +4,10 @@
  * ==========================
  */
 
-import type { Pagination } from '../base/base.type';
+import type { BaseModel, Pagination } from '../base/base.type';
 import type { ChildCategory, UserDataComponents } from '../types';
 
-export interface BlogList {
+export interface BlogList extends BaseModel {
   id: string;
   title: string;
   content: string;
@@ -18,8 +18,6 @@ export interface BlogList {
   user?: UserDataComponents;
   category: ChildCategory;
   status: string;
-  createdAt: string | Date;
-  updatedAt: string | Date;
 }
 
 export interface FetchBlogListResponse {

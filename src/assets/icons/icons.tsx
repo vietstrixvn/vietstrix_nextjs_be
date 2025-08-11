@@ -59,6 +59,7 @@ import {
   X,
   Menu,
   Phone,
+  Globe,
 } from 'lucide-react';
 import { Box, ShoppingBag, ClipboardList } from 'lucide-react';
 
@@ -88,7 +89,7 @@ export const Icons = {
 
 export const ComponentsIcons = {
   Search,
-
+  Globe,
   CircleUserRound,
   BadgeCheck,
   Bell,

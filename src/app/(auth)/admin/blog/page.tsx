@@ -8,7 +8,6 @@ import React from 'react';
 const Page = () => {
   return (
     <AdminContainer>
-      {/* Heading */}
       <Heading
         name="Blog"
         desc="Manage all the posts available on the platform. You can create, update or delete posts and make sure each post is clearly described and up to date for users."

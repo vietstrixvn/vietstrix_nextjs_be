@@ -2,7 +2,9 @@
 // 📁 store/auth/utils.auth.ts - OPTIMIZED VERSION WITH TOKEN SUPPORT
 // ==============================================
 
+import { getAccessToken } from '@/utils';
 import { useAuthStore } from './store.auth';
+import { NextRequest } from 'next/server';
 
 export const handleAuthError = (error: unknown): string => {
   if (error instanceof Error) {
@@ -27,16 +29,6 @@ export const handleAuthError = (error: unknown): string => {
   }
 
   return 'An unexpected error occurred. Please try again.';
-};
-
-/**
- * Get access token from localStorage
- */
-export const getAccessToken = (): string | null => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('access_token');
-  }
-  return null;
 };
 
 /**
@@ -78,9 +70,12 @@ export const fetchWithAuth = async (
 };
 
 // Helper function to validate user role
-export const validateUserRole = (userRole: string): boolean => {
-  const allowedRoles = ['admin', 'manager'];
-  return allowedRoles.includes(userRole.toLowerCase());
+export const validateUserRole = (
+  request: NextRequest,
+  allowedRoles: string[] = ['admin', 'manager'] // default
+): boolean => {
+  const role = request.cookies.get('userRole')?.value || '';
+  return allowedRoles.includes(role.toLowerCase());
 };
 
 // Helper function to handle API responses

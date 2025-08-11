@@ -9,6 +9,7 @@
 export * from './helpers/utils';
 export * from './helpers/query.helper';
 export * from './helpers/truncate_text.helper';
+export * from './helpers/auth.helper';
 
 /**
  * ==========================
@@ -43,3 +44,4 @@ export * from './validators/form.validator';
  */
 
 export * from './logger';
+export * from './token.utils';

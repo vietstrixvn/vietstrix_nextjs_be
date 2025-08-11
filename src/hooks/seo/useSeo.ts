@@ -17,7 +17,7 @@ const fetchSeoData = async (): Promise<SeoData> => {
     // Call API
     const response = await handleAPI(`${endpoints.seo}`, 'GET', null);
 
-    return response;
+    return response.data;
   } catch (error) {
     console.error('Error fetching seo data:', error);
     throw error;

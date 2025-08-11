@@ -17,6 +17,7 @@ const endpoints = {
   //auth
   logout: process.env.NEXT_PUBLIC_LOGOUT,
   login: process.env.NEXT_PUBLIC_LOGIN,
+  refresh: process.env.NEXT_PUBLIC_REFRESH,
   changePassword: process.env.NEXT_PUBLIC_UPDATE_PASSWORD,
   verifyCode: process.env.NEXT_PUBLIC_VERIFY_CODE,
 

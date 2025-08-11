@@ -28,12 +28,12 @@ export const data = {
     {
       title: 'User',
       url: '/admin/user',
-      icon: ComponentsIcons.LayoutDashboard,
+      icon: ComponentsIcons.Users,
     },
     {
-      title: 'SEO',
-      url: '/admin/seo',
-      icon: ComponentsIcons.Search,
+      title: 'Website',
+      url: '/admin/website',
+      icon: ComponentsIcons.Globe,
     },
   ],
   navService: [

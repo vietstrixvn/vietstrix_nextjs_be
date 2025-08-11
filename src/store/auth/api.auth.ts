@@ -4,22 +4,12 @@
 
 import { baseURL, endpoints } from '@/api';
 import { AuthResponse } from '@/types';
-import { logDebug, logError } from '@/utils';
+import { logDebug, logError, TokenService } from '@/utils';
 
 // 🔧 FIX: Convert class to object with methods for better compatibility
 export const AuthAPI = {
   /**
    * Get access token from localStorage
-   */
-  getToken(): string | null {
-    if (typeof window !== 'undefined') {
-      return localStorage.getItem('access_token');
-    }
-    return null;
-  },
-
-  /**
-   * Get common headers for API requests
    */
   getHeaders(includeAuth: boolean = false): Headers {
     const headers = new Headers();
@@ -27,9 +17,9 @@ export const AuthAPI = {
 
     // Add Authorization header if token exists and requested
     if (includeAuth) {
-      const token = this.getToken();
+      const token = TokenService.getToken();
       if (token) {
-        headers.append('Authorization', token);
+        headers.append('Authorization', `Bearer ${token}`);
         logDebug('Added Authorization header to request');
       }
     }
@@ -71,6 +61,35 @@ export const AuthAPI = {
     }
   },
 
+  /**
+   * Refreshes the user's access token using the refresh token.
+   * @returns {Promise<AuthResponse>} Response object and new token data.
+   */
+  async refreshLogin(): Promise<AuthResponse> {
+    try {
+      logDebug('Attempting to refresh login token');
+
+      const response = await fetch(`${baseURL}${endpoints.refresh}`, {
+        method: 'POST',
+        headers: this.getHeaders(true),
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+
+      logDebug('Refresh Login response status:', response.status);
+      logDebug('Refresh Login response data structure:', {
+        hasData: !!data.data,
+        hasToken: !!data.data?.token,
+        hasExpired: !!data.data?.expired,
+      });
+
+      return { response, data };
+    } catch (error) {
+      logError('Refresh login API error:', error);
+      throw new Error('Network error during token refresh');
+    }
+  },
   /**
    * Logs the user out by clearing their session.
    * @returns {Promise<AuthResponse>} Response object and API response data.
@@ -137,7 +156,7 @@ export const AuthAPI = {
     options: RequestInit = {}
   ): Promise<AuthResponse> {
     try {
-      const response = await fetch(`${baseURL}${endpoint}`, {
+      let response = await fetch(`${baseURL}${endpoint}`, {
         ...options,
         headers: {
           ...Object.fromEntries(this.getHeaders(true).entries()),
@@ -145,6 +164,28 @@ export const AuthAPI = {
         },
         credentials: 'include',
       });
+
+      if (response.status === 401) {
+        logDebug('Token expired, attempting to refresh...');
+
+        const refreshResult = await this.refreshLogin();
+        if (refreshResult.data?.token) {
+          localStorage.setItem('access_token', refreshResult.data.token);
+          logDebug('Token refreshed, retrying request...');
+
+          response = await fetch(`${baseURL}${endpoint}`, {
+            ...options,
+            headers: {
+              ...Object.fromEntries(this.getHeaders(true).entries()),
+              ...Object.fromEntries(new Headers(options.headers).entries()),
+            },
+            credentials: 'include',
+          });
+        } else {
+          logError('Token refresh failed - forcing logout');
+          throw new Error('Unauthorized: token refresh failed');
+        }
+      }
 
       const data = await response.json();
       return { response, data };

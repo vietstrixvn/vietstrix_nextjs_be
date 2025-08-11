@@ -1,15 +1,21 @@
 // ==============================================
 // 📁 store/auth/store.auth.ts - FIXED VERSION WITH PROPER REDIRECT
 // ==============================================
-
-import { AuthState } from '@/types/auth/auth.type';
-import { persist, createJSONStorage } from 'zustand/middleware';
 import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { toast } from 'sonner';
+
+import { AuthState } from '@/types';
 import { AuthAPI } from './api.auth';
 import { CookieManager } from './cookie.auth';
-import { logDebug, logError, logWarn } from '@/utils/logger';
 import { handleAuthError } from './utils.auth';
-import { toast } from 'sonner';
+import {
+  clearAuthStorage,
+  isTokenExpired,
+  refreshWithMutex,
+  logDebug,
+  logWarn,
+} from '@/utils';
 
 const isProd = process.env.NODE_ENV === 'production';
 const isClient = typeof window !== 'undefined';
@@ -45,123 +51,54 @@ export const useAuthStore = create<AuthState>()(
       loading: false,
       error: null,
       userInfo: null,
-
       clearError: () => set({ error: null }),
 
       /**
        * LOGIN - FIXED VERSION WITH REDIRECT
        */
-      login: async (username: string, password: string): Promise<boolean> => {
+      login: async (username, password) => {
+        set({ loading: true, error: null });
         try {
-          set({ loading: true, error: null });
-
           const { response, data } = await AuthAPI.login(username, password);
+          if (response.status !== 200 || !data?.data?.token)
+            throw new Error('Login failed');
 
-          if (response.status === 200 && data?.data) {
-            // Save access token to localStorage
-            if (data.data.token) {
-              const token = data.data.token;
+          const token = data.data.token;
+          if (isTokenExpired(token)) throw new Error('Expired token');
 
-              // Validate token format
-              const parts = token.split('.');
-              if (parts.length === 3) {
-                try {
-                  const payload = JSON.parse(atob(parts[1]));
-                  const currentTime = Math.floor(Date.now() / 1000);
-                  const isExpired = payload.exp < currentTime;
+          TokenManager.set(token);
 
-                  console.log('🔍 Token Debug:', {
-                    currentTime,
-                    tokenExp: payload.exp,
-                    isExpired,
-                    timeUntilExpiryMinutes: Math.round(
-                      (payload.exp - currentTime) / 60
-                    ),
-                  });
+          const userData = data.data.user;
+          if (!['admin', 'manager'].includes(userData?.role))
+            throw new Error('No access');
 
-                  if (isExpired) {
-                    throw new Error('Server returned expired token');
-                  }
+          CookieManager.set('isAuthenticated', 'true', {
+            expires: 7,
+            sameSite: 'Lax',
+          });
+          CookieManager.set('userRole', userData.role, {
+            expires: 7,
+            sameSite: 'Lax',
+          });
 
-                  TokenManager.set(token);
-                  console.log('✅ Valid token saved to localStorage');
-                } catch (decodeError) {
-                  console.error('❌ Failed to decode token:', decodeError);
-                  throw new Error('Invalid token format received from server');
-                }
-              } else {
-                throw new Error('Invalid token format received from server');
-              }
-            } else {
-              throw new Error('No token received from server');
-            }
-
-            // Set authentication cookie
-            CookieManager.set('isAuthenticated', 'true', {
-              expires: 7,
-              sameSite: 'Lax',
-            });
-
-            // Extract and validate user info
-            const userData = data.data.user;
-            if (userData && userData.role) {
-              const userRole = userData.role;
-              const allowedRoles = ['admin', 'manager'];
-
-              if (!allowedRoles.includes(userRole)) {
-                TokenManager.remove();
-                CookieManager.delete('isAuthenticated');
-                throw new Error('You do not have access');
-              }
-
-              // ✅ FIX: Set auth state BEFORE redirect
-              set({
-                isAuthenticated: true,
-                userInfo: userData,
-                loading: false,
-              });
-
-              logDebug('Login successful with token and user info');
-              toast.success('Login successful! Redirecting to dashboard...');
-
-              // ✅ FIX: Add redirect after successful login
-              setTimeout(() => {
-                window.location.href = '/admin';
-              }, 1000); // Small delay to show success message
-
-              return true;
-            } else {
-              throw new Error('Invalid user data received from login response');
-            }
-          }
-
-          if (response.status === 401 || response.status === 400) {
-            throw new Error(
-              'Incorrect login information, please check your account and password'
-            );
-          }
-
-          throw new Error(data?.message || 'Login failed');
-        } catch (error) {
-          const errorMessage = handleAuthError(error);
-
-          // Clean up all auth data on error
-          TokenManager.remove();
-          CookieManager.delete('isAuthenticated');
-          localStorage.removeItem('auth-storage');
-
+          set({ isAuthenticated: true, userInfo: userData, loading: false });
+          toast.success('Login successful!');
+          window.location.href = '/admin';
+          return true;
+        } catch (err) {
+          clearAuthStorage();
           set({
             isAuthenticated: false,
             userInfo: null,
             loading: false,
-            error: errorMessage,
+            error: null,
           });
-
-          toast.error(errorMessage);
+          const msg = handleAuthError(err);
+          set({ error: msg });
+          toast.error(msg);
           return false;
         }
       },
-
       /**
        * FETCH USER INFO
        */
@@ -192,40 +129,18 @@ export const useAuthStore = create<AuthState>()(
         try {
           set({ loading: true });
 
-          // Try server logout but don't depend on it
+          // 🔹 Gọi server logout (không bắt buộc thành công)
           try {
             const { response } = await AuthAPI.logout();
             if (!response.ok) {
-              console.warn(
-                'Server logout failed, continuing with local logout'
-              );
+              logWarn('Server logout failed, continuing with local logout');
             }
           } catch (error) {
             logWarn('Server logout error:', error);
           }
-
-          // Always perform local logout
-          TokenManager.remove();
-          CookieManager.delete('isAuthenticated');
-          localStorage.removeItem('auth-storage');
-
-          set({
-            isAuthenticated: false,
-            userInfo: null,
-            loading: false,
-            error: null,
-          });
-
-          toast.success('Log out successfully!');
-          window.location.href = '/sign-in';
-        } catch (error) {
-          logError('Catastrophic error during logout:', error);
-
-          // Force logout anyway
-          TokenManager.remove();
-          CookieManager.delete('isAuthenticated');
-          localStorage.removeItem('auth-storage');
-
+        } finally {
+          // 🔹 Luôn clear local auth
+          clearAuthStorage();
           set({
             isAuthenticated: false,
             userInfo: null,
@@ -240,121 +155,74 @@ export const useAuthStore = create<AuthState>()(
       /**
        * CHECK AUTH - OPTIMIZED VERSION
        */
-      checkAuth: async (shouldRedirect: boolean = true) => {
-        // ✅ FIX: Don't run checkAuth if already authenticated and has valid data
-        const currentState = get();
-        if (currentState.isAuthenticated && currentState.userInfo) {
-          console.log(
-            '✅ Already authenticated with user info, skipping checkAuth'
-          );
-          return;
-        }
-
-        // Check both cookie and token existence
-        const hasAuthCookie = CookieManager.check('isAuthenticated');
-        const hasToken = TokenManager.get();
-
-        console.log('🔍 checkAuth - Initial state:', {
-          hasAuthCookie,
-          hasToken: !!hasToken,
-          shouldRedirect,
-          currentAuth: currentState.isAuthenticated,
-          hasUserInfo: !!currentState.userInfo,
-        });
-
-        if (!hasAuthCookie || !hasToken) {
-          logDebug('Missing authentication cookie or token');
-
-          // Clean up all auth data
+      checkAuth: async (shouldRedirect = true, maxRetry = 1) => {
+        const clearAuth = () => {
           TokenManager.remove();
           CookieManager.delete('isAuthenticated');
-          localStorage.removeItem('auth-storage');
-
           set({ isAuthenticated: false, userInfo: null, loading: false });
+        };
 
-          if (shouldRedirect) {
-            console.log('🔄 Redirecting to login - missing auth data');
-            window.location.href = '/sign-in';
-          }
+        const hasAuthCookie = CookieManager.exists('isAuthenticated');
+        let token = TokenManager.get();
+
+        if (!hasAuthCookie && !token) {
+          clearAuth();
+          if (shouldRedirect) window.location.href = '/sign-in';
           return;
         }
 
         try {
-          set((state) => ({ ...state, loading: true }));
-          console.log('🌐 Making getCurrentUser API call...');
+          set({ loading: true });
+
+          if (token && isTokenExpired(token)) {
+            const ref = await refreshWithMutex();
+            if (ref?.token) token = ref.token;
+            else {
+              clearAuth();
+              if (shouldRedirect) window.location.href = '/sign-in';
+              return;
+            }
+          }
 
           const { response, data } = await AuthAPI.getCurrentUser();
 
           if (response.status === 200 && data?.data) {
-            const userRole = data.data.role?.slug || data.data.role;
-            const allowedRoles = ['admin', 'manager'];
-
-            console.log('✅ API response successful:', {
-              userRole,
-              allowedRoles,
-            });
-
-            if (!allowedRoles.includes(userRole)) {
-              console.log('❌ Unauthorized role detected');
-              logWarn(`Unauthorized role: ${userRole}. Logging out...`);
-              toast.error('You do not have access. Logging out...');
-
-              // Clean up all auth data
-              TokenManager.remove();
-              CookieManager.delete('isAuthenticated');
-              localStorage.removeItem('auth-storage');
-
-              set({
-                isAuthenticated: false,
-                userInfo: null,
-                loading: false,
-                error: null,
-              });
-
-              if (shouldRedirect) {
-                window.location.href = '/sign-in';
-              }
+            const role = data.data.role?.slug || data.data.role;
+            if (!['admin', 'manager'].includes(role)) {
+              clearAuth();
+              if (shouldRedirect) window.location.href = '/sign-in';
               return;
             }
 
-            // Refresh auth cookie
             CookieManager.set('isAuthenticated', 'true', {
               expires: 7,
               secure: isProd,
               sameSite: 'Lax',
             });
-
-            set({
-              isAuthenticated: true,
-              userInfo: data.data,
-              loading: false,
+            CookieManager.set('userRole', role, {
+              expires: 7,
+              secure: isProd,
+              sameSite: 'Lax',
             });
-
-            console.log('✅ checkAuth successful - user authenticated');
-          } else {
-            console.log('❌ Invalid API response');
-            throw new Error('Invalid user data received');
+            set({ isAuthenticated: true, userInfo: data.data, loading: false });
+            return;
           }
-        } catch (error) {
-          console.log('❌ checkAuth API error:', error);
-          logError('checkAuth error:', error);
 
-          // Clean up all auth data on error
-          TokenManager.remove();
-          CookieManager.delete('isAuthenticated');
-          localStorage.removeItem('auth-storage');
-
-          set({
-            isAuthenticated: false,
-            userInfo: null,
-            loading: false,
-            error: null,
-          });
-
-          if (shouldRedirect) {
-            console.log('🔄 Redirecting to login due to API error...');
-            window.location.href = '/sign-in';
+          if (
+            (response.status === 401 || response.status === 403) &&
+            maxRetry > 0
+          ) {
+            const ref = await refreshWithMutex();
+            if (ref?.token) {
+              TokenManager.set(ref.token);
+              return get().checkAuth(shouldRedirect, maxRetry - 1);
+            }
           }
+
+          throw new Error(data?.message || 'Invalid user data received');
+        } catch {
+          clearAuth();
+          if (shouldRedirect) window.location.href = '/sign-in';
         }
       },
     }),
@@ -367,7 +235,6 @@ export const useAuthStore = create<AuthState>()(
       }),
       skipHydration: false,
       onRehydrateStorage: () => (state) => {
-        console.log('🔄 Zustand rehydrating state:', state);
         if (state && !isClient) {
           return;
         }

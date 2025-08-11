@@ -1,16 +1,12 @@
 'use client';
 
 import { useState, useRef } from 'react';
-
 import type { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Label, Input, Textarea } from '@/components';
+import { Card, CardContent, CardHeader } from '@/components';
 import SectionHeader from '../design/SectionHeader';
 import { Facebook, Github, Linkedin, Mail } from 'lucide-react';
 import { Container } from '../container/container';

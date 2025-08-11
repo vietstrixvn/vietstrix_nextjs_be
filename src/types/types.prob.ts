@@ -107,6 +107,21 @@ export type AdminUserFilterProps = {
   onSearchChange?: (value: string) => void;
 };
 
+export type AdminCategoryFilterProps = {
+  onPageSizeChange?: (value: string) => void;
+  onTypeChange?: (value: string) => void;
+  handleRefresh?: () => void;
+  onSearchChange?: (value: string) => void;
+};
+
+export type AdminContactFilterProps = {
+  onPageSizeChange?: (value: string) => void;
+  handleRefresh?: () => void;
+  onServiceChange?: (value: string) => void;
+  onStatusChange?: (value: string) => void;
+  onSearchChange?: (value: string) => void;
+};
+
 export interface CopyLinkButtonProps {
   url?: string;
 }
@@ -191,4 +206,11 @@ export type ScrollSectionProps = {
 
 export interface PremiumLoaderProps {
   onLoadingComplete?: () => void;
+}
+
+export interface IGetStartedButtonProps {
+  text: string;
+  className?: string;
+  url: string;
+  isScrolling?: boolean;
 }

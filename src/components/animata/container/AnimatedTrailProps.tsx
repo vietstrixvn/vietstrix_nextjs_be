@@ -2,13 +2,8 @@ import { ArrowRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { IGetStartedButtonProps } from '@/types';
 
-interface IGetStartedButtonProps {
-  text: string;
-  className?: string;
-  url: string;
-  isScrolling?: boolean;
-}
 export default function GetStartedButton({
   text = 'Get started',
   className,

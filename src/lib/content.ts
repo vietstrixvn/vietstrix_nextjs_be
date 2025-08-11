@@ -1,3 +1,3 @@
 export const content = `
-  <p><em>Nhập nội dung vào đây... Ví dụ: thông báo, bài đăng trên blog, v.v.</em></p>
+  <p><em>Enter content here... Example: announcement, blog post, v.v.</em></p>
 `;

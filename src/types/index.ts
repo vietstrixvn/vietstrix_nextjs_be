@@ -24,6 +24,7 @@ export * from './types';
  */
 export * from './category/category.colum';
 export * from './contact/contact.colum';
+export * from './auth/user.colum';
 
 /**
  * ==========================

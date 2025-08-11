@@ -106,7 +106,7 @@ export function AdminFilter({
             }}
           >
             <SelectTrigger className="w-full bg-white border-gray-200">
-              <SelectValue placeholder="Chọn thể loại" />
+              <SelectValue placeholder="Select category" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All</SelectItem>
@@ -117,7 +117,7 @@ export function AdminFilter({
               )}
               {isError && (
                 <SelectItem value="error" disabled>
-                  Lỗi tải thể loại
+                  Error
                 </SelectItem>
               )}
               {!isLoading &&
@@ -166,11 +166,11 @@ export function AdminFilter({
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tất cả</SelectItem>
-              <SelectItem value="show">Hiện</SelectItem>
-              <SelectItem value="hide">Ẩn</SelectItem>
-              <SelectItem value="draft">Nháp</SelectItem>
-              <SelectItem value="popular">Phổ Biến</SelectItem>
+              <SelectItem value="all">All</SelectItem>
+              <SelectItem value="show">Show</SelectItem>
+              <SelectItem value="hide">Hide</SelectItem>
+              <SelectItem value="draft">Draft</SelectItem>
+              <SelectItem value="popular">Popular</SelectItem>
             </SelectContent>
           </Select>
         </div>

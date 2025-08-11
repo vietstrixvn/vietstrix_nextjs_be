@@ -1,7 +1,7 @@
 // components/Loading.tsx
 import type { LoadingProps } from '@/types';
 import { Icons } from '@/assets/icons/icons';
-import Container from '../container/container';
+import { Container } from '../container/container';
 
 export const LoadingSpin: React.FC<LoadingProps> = ({
   size = 32,

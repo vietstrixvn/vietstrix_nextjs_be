@@ -20,7 +20,7 @@ import { BlogColumns } from '@/types/blog/blog.colum';
 // import { SelectStatus } from '../design/status.change';
 import { toast } from 'sonner';
 import type { VisibilityCategoryOption } from '@/types';
-import { truncateText, truncateHtmlToText } from '@/utils';
+import { truncateText, truncateHtmlToText, formatSmartDate } from '@/utils';
 import { useAuthStore } from '@/store';
 import { LoadingSpin } from '../loading/loading';
 import { ErrorLoading } from '../loading/error';
@@ -107,9 +107,6 @@ export const BlogTable: React.FC<BlogTableProps> = ({
                     <TableRow key={item.id} className="border-b">
                       <TableCell className="font-medium">{index + 1}</TableCell>
 
-                      <TableCell className="font-medium">
-                        {item.title}
-                      </TableCell>
                       <TableCell>
                         {/* {userInfo?.role === 'admin' ? (
                           <SelectStatus
@@ -130,6 +127,9 @@ export const BlogTable: React.FC<BlogTableProps> = ({
                         </Badge>
                         {/* )} */}
                       </TableCell>
+                      <TableCell className="font-medium">
+                        {item.title}
+                      </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
                           <span>{item.category.name}</span>
@@ -143,7 +143,7 @@ export const BlogTable: React.FC<BlogTableProps> = ({
                           onClick={() => handleViewDetail(item.slug)}
                         >
                           <Icons.Eye className="w-4 h-4" />
-                          Chi tiết
+                          Detail
                         </Button>
                       </TableCell>
 
@@ -165,7 +165,7 @@ export const BlogTable: React.FC<BlogTableProps> = ({
                         <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 py-2">
                           <div>
                             <div className="font-medium text-gray-500 mb-1">
-                              Mô tả ngắn
+                              Short Content
                             </div>
                             <div className="flex items-start gap-1">
                               <div className="w-2 h-2 mt-1 bg-gray-400 rounded-full"></div>
@@ -178,7 +178,7 @@ export const BlogTable: React.FC<BlogTableProps> = ({
 
                           <div>
                             <div className="font-medium text-gray-500 mb-1">
-                              Mô tả chi tiết
+                              Detailed description
                             </div>{' '}
                             <div
                               className="rich-text-content mt-4"
@@ -189,24 +189,16 @@ export const BlogTable: React.FC<BlogTableProps> = ({
                           </div>
                           <div>
                             <div className="font-medium text-gray-500 mb-1">
-                              Ngày tạo
+                              Date created
                             </div>
-                            <div>
-                              {item.createdAt instanceof Date
-                                ? item.createdAt.toLocaleString()
-                                : item.createdAt}
-                            </div>
+                            <div>{formatSmartDate(item.created_at)}</div>
                           </div>
 
                           <div>
                             <div className="font-medium text-gray-500 mb-1">
-                              Ngày sửa
+                              Date modified
                             </div>
-                            <div>
-                              {item.updatedAt instanceof Date
-                                ? item.updatedAt.toLocaleString()
-                                : item.updatedAt}
-                            </div>
+                            <div>{formatSmartDate(item.updated_at)}</div>
                           </div>
                         </div>
                       </TableCell>

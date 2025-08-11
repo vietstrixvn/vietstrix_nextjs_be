@@ -17,11 +17,16 @@ export interface UploadMedia {
  * ==========================
  */
 
-export interface SeoData {
+export interface SeoData extends BaseModel {
+  id: string;
   site_title: string;
   site_description: string;
   keywords: string[];
   domain: string;
+  google_analytics_id: string;
+  gtm_id: string;
+  facebook_pixel_id: string;
+  search_console_verification: string;
 }
 
 export interface UpdateSeo {
@@ -36,6 +41,7 @@ export interface UpdateSeo {
 }
 
 export interface UserDataComponents {
+  id: string;
   username: string;
   role: string;
 }

@@ -1,18 +1,17 @@
 'use client';
 
-import { Heading, Container } from '@/components';
+import { AdminContainer, Heading } from '@/components';
 import ProjectListDataAdmin from '@/components/pages/admin/project/ProjectList';
-import React from 'react';
 
 const Page = () => {
   return (
-    <Container>
+    <AdminContainer>
       {/* Heading */}
       <div className="flex items-center justify-between mb-4">
-        <Heading name="Trang Dự Án" desc="Manage your projects here" />
+        <Heading name="Project Management" desc="Manage your projects here" />
       </div>
       <ProjectListDataAdmin />
-    </Container>
+    </AdminContainer>
   );
 };
 

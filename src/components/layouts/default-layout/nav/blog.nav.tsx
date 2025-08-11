@@ -4,6 +4,7 @@ import { IntroduceCard } from '@/components/card/introduce.card';
 import { NoResultsFound } from '@/components/design/NoResultsFound';
 import { ErrorLoading } from '@/components/loading/error';
 import { LoadingSpin } from '@/components/loading/loading';
+import { ROUTES } from '@/lib';
 import { BlogList } from '@/lib/responses/blogLib';
 import { NavBlogProps } from '@/types';
 import { cn } from '@/utils';
@@ -27,9 +28,12 @@ export const NavBlog: React.FC<NavBlogProps> = ({ setIsOpen }) => {
     <div className="flex h-full w-full">
       {/* Left Section - Navigation Links (Services and Blogs) */}
       <div className="w-1/3 flex flex-col justify-start px-10 py-16">
-        <div className="text-gray-400 text-sm font-medium mb-6 uppercase tracking-wider">
+        <Link
+          href={ROUTES.BLOG.ROOT}
+          className="text-gray-400 text-sm font-medium mb-6 uppercase tracking-wider hover:font-bold hover:text-black"
+        >
           Blogs
-        </div>
+        </Link>
         {isLoading && <LoadingSpin />}
         {isError && <ErrorLoading />}
 

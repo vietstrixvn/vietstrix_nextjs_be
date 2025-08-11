@@ -1,110 +1,9 @@
 // ==============================================
-// 📁 hooks/useToken.ts - TOKEN MANAGEMENT HOOK
-// ==============================================
-
-import { useState, useEffect, useCallback } from 'react';
-import { useAuthStore } from '@/store/auth/store.auth';
-import { logDebug, logWarn } from '@/utils/logger';
-
-/**
- * Custom hook for token management
- * Provides token value, validation, and utilities
- */
-export const useToken = () => {
-  const [token, setToken] = useState<string | null>(null);
-  const [isTokenValid, setIsTokenValid] = useState<boolean>(false);
-  const { isAuthenticated } = useAuthStore();
-
-  /**
-   * Get token from localStorage
-   */
-  const getToken = useCallback((): string | null => {
-    if (typeof window !== 'undefined') {
-      const storedToken = localStorage.getItem('access_token');
-      setToken(storedToken);
-      return storedToken;
-    }
-    return null;
-  }, []);
-
-  /**
-   * Refresh token state
-   */
-  const refreshToken = useCallback(() => {
-    const currentToken = getToken();
-    if (currentToken) {
-      const isValid = !isTokenExpired(currentToken) && isAuthenticated;
-      setIsTokenValid(isValid);
-      logDebug('Token refreshed:', { hasToken: !!currentToken, isValid });
-    } else {
-      setIsTokenValid(false);
-    }
-  }, [getToken, isAuthenticated]);
-
-  /**
-   * Check if token exists and is valid
-   */
-  const validateToken = useCallback((): boolean => {
-    const currentToken = getToken();
-    if (!currentToken || !isAuthenticated) {
-      setIsTokenValid(false);
-      return false;
-    }
-
-    const isValid = !isTokenExpired(currentToken);
-    setIsTokenValid(isValid);
-
-    if (!isValid) {
-      logWarn('Token is expired or invalid');
-    }
-
-    return isValid;
-  }, [getToken, isAuthenticated]);
-
-  /**
-   * Get Authorization header value
-   */
-  const getAuthHeader = useCallback((): string | null => {
-    const currentToken = getToken();
-    return currentToken || null;
-  }, [getToken]);
-
-  /**
-   * Initialize token on mount and listen to auth changes
-   */
-  useEffect(() => {
-    refreshToken();
-  }, [refreshToken, isAuthenticated]);
-
-  /**
-   * Listen to localStorage changes (for cross-tab sync)
-   */
-  useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'access_token') {
-        logDebug('Token changed in localStorage, refreshing...');
-        refreshToken();
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, [refreshToken]);
-
-  return {
-    token,
-    isTokenValid,
-    getToken,
-    refreshToken,
-    validateToken,
-    getAuthHeader,
-    hasToken: !!token,
-  };
-};
-
-// ==============================================
 // 📁 utils/token.utils.ts - TOKEN UTILITIES
 // ==============================================
+
+import { isTokenExpired } from './helpers/auth.helper';
+import { logDebug } from './logger';
 
 /**
  * Static token utilities (không cần React hooks)
@@ -241,15 +140,4 @@ export const decodeTokenPayload = (token: string): any | null => {
     console.warn('Failed to decode token payload:', error);
     return null;
   }
-};
-
-/**
- * Check if token is expired (client-side check)
- */
-export const isTokenExpired = (token: string): boolean => {
-  const payload = decodeTokenPayload(token);
-  if (!payload?.exp) return true;
-
-  const currentTime = Math.floor(Date.now() / 1000);
-  return payload.exp < currentTime;
 };

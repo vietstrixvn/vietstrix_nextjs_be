@@ -15,7 +15,7 @@ const Page = () => {
     name: '',
     email: '',
     password: '',
-    phone_number: '',
+    phoneNumber: '',
   });
 
   const [errors, setErrors] = useState<
@@ -58,8 +58,8 @@ const Page = () => {
     }
 
     // Validate phone number
-    if (!managerData.phone_number.trim()) {
-      newErrors.phone_number = 'Số điện thoại là bắt buộc';
+    if (!managerData.phoneNumber.trim()) {
+      newErrors.phoneNumber = 'Số điện thoại là bắt buộc';
       isValid = false;
     }
 
@@ -83,7 +83,7 @@ const Page = () => {
         name: '',
         email: '',
         password: '',
-        phone_number: '',
+        phoneNumber: '',
       });
       // Optionally navigate to another page
       // router.push('/managers');
@@ -132,7 +132,7 @@ const Page = () => {
           { label: 'Tên', name: 'name' },
           { label: 'Email', name: 'email', type: 'email' },
           { label: 'Password', name: 'password', type: 'password' },
-          { label: 'Số điện thoại', name: 'phone_number' },
+          { label: 'Số điện thoại', name: 'phoneNumber' },
         ].map(({ label, name, type = 'text' }) => (
           <div
             key={name}

@@ -28,6 +28,7 @@ import {
   FormLabel,
   FormMessage,
   LoadingSpin,
+  AdminContainer,
 } from '@/components';
 //Data
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -36,19 +37,16 @@ import type * as z from 'zod';
 import { CategoryList } from '@/lib';
 import { useCreateCategory, useDeleteCategory } from '@/hooks';
 import { ConfirmDialog } from '@/components/design/Dialog';
-import { CategoryTable } from '@/components/table/category.table';
+import { CategoryTable } from '@/components/tables/category.table';
 import type { CreateCategoryItem } from '@/types';
-import { Form } from '@/components/ui/form';
-import { useAuthStore } from '@/store/authStore';
-import SelectCategoryFilter from '@/components/pages/admin/categoryFilter';
+// import { Form } from '@/components/ui/form';
+// import SelectCategoryFilter from '@/components/pages/admin/categoryFilter';
 import { Heading } from '@/components/design/Heading';
-import { Icons } from '@/assets/icons';
-import { AdminBreadCrumb } from '@/components/layout/AdminLayout/admin.breadcrumb';
-import { AdminContainer } from '@/components/wrappers/admin.wrapper';
+import { Icons } from '@/assets/icons/icons';
 import { categoryFormSchema } from '@/utils';
+import { AdminCategoryFilter } from '@/components/fliters/category.filter';
 
 export default function CategoryManager() {
-  const userInfo = useAuthStore((state) => state.userInfo);
   const [refreshKey, setRefreshKey] = useState(0); // State to refresh data
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -163,53 +161,10 @@ export default function CategoryManager() {
   return (
     <>
       <AdminContainer>
-        <AdminBreadCrumb title="Thể Loại" />
         <Heading name="Categories Page" desc="Manage your categories here" />
 
         <div className="md:flex col flex-col-2 md:flex-row justify-between items-center mb-6">
-          <div className="flex items-center gap-4">
-            <RefreshButton onClick={handleRefresh} />
-            <div className="flex items-center gap-4">
-              <span className="text-16 font-semibold">Show:</span>
-              <Select
-                onValueChange={handlePageSizeChange}
-                defaultValue={String(pageSize)}
-              >
-                <SelectTrigger className="w-[80px]">
-                  <SelectValue placeholder={pageSize} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="5">5</SelectItem>
-                  <SelectItem value="10">10</SelectItem>
-                  <SelectItem value="20">20</SelectItem>
-                  <SelectItem value="50">50</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-16 font-semibold">Loại :</span>
-              <Select onValueChange={handleTypeChange}>
-                <SelectTrigger className="w-[120px]">
-                  <SelectValue placeholder={pageSize} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Tất cả</SelectItem>
-                  <SelectItem value="blogs">Bài Viết</SelectItem>
-                  <SelectItem value="services">Dịch Vụ</SelectItem>
-                  <SelectItem value="products">Sản Phẩm</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-16 font-semibold">Trạng Thái:</span>
-
-              <SelectCategoryFilter
-                selectedStatus={selectedStatus}
-                onStatusChange={(value) => setSelectedStatus(value)}
-              />
-            </div>
-          </div>
-          <div className=" col flex-col-2 md:flex gap-2">
+          {/* <div className=" col flex-col-2 md:flex gap-2">
             <Dialog
               open={isCreateDialogOpen}
               onOpenChange={setIsCreateDialogOpen}
@@ -282,27 +237,27 @@ export default function CategoryManager() {
                           variant="outline"
                           onClick={() => {
                             const values = form.getValues();
-                            handleCreateCategory(values, 'draft'); // Set status to 'draft'
+                            handleCreateCategory(values); // Set status to 'draft'
                           }}
                           disabled={isSubmitting}
                         >
-                          {isSubmitting ? 'Saving...' : 'Lưu Nháp'}
+                          {isSubmitting ? 'Saving...' : 'Create'}
                         </Button>
-                        {userInfo?.role === 'admin' && (
-                          <Button type="submit" disabled={isSubmitting}>
-                            {isSubmitting && <LoadingSpin />}
-                            {isSubmitting ? 'Creating...' : 'Tạo Mới'}
-                          </Button>
-                        )}
+                       
                       </div>
                     </DialogFooter>
                   </form>
                 </Form>
               </DialogContent>
             </Dialog>
-          </div>
+          </div> */}
         </div>
         <div className="rounded-md min-w-0">
+          <AdminCategoryFilter
+            handleRefresh={handleRefresh}
+            onPageSizeChange={handlePageSizeChange}
+            onTypeChange={handleTypeChange}
+          />
           <CategoryTable
             categories={categories}
             isLoading={isLoading}
@@ -316,14 +271,6 @@ export default function CategoryManager() {
           onPageChange={handlePageChange}
         />
       </AdminContainer>
-      {/* Edit role */}
-      {/* <ConfirmDialog
-        open={deleteDialogOpen}
-        onOpenChange={setDeleteDialogOpen}
-        question="Are you sure"
-        description="This action cannot be undone. This will permanently delete the selected category."
-        onConfirm={handleDeleteConfirm}
-      /> */}
       <ConfirmDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}

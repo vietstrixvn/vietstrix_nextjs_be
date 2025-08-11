@@ -1,28 +1,20 @@
 'use client';
 
 import type React from 'react';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { ContactList } from '@/lib';
 import { useDeleteContact } from '@/hooks';
 
 //Components
-import {
-  Select,
-  SelectTrigger,
-  SelectContent,
-  SelectItem,
-  SelectValue,
-  Container,
-  RefreshButton,
-  CustomPagination,
-  Heading,
-} from '@/components';
+import { AdminContainer } from '@/components';
 
 import { ConfirmDialog } from '@/components/design/Dialog';
-import { ContactTable } from '@/components/table/contact.table';
-import SelectStatus from '@/components/pages/admin/contact/selectStatus';
-import { AdminBreadCrumb } from '@/components/layout/AdminLayout/admin.breadcrumb';
+// import SelectStatus from '@/components/pages/admin/contact/selectStatus';
+import { CustomPagination } from '@/components/design/pagination';
+import { Heading } from '@/components/design/Heading';
+import { ContactTable } from '@/components/tables/contact.table';
+import { ContactFilter } from '@/components/fliters/contact.filter';
 
 export default function ProductManager() {
   const [selectedStatus, setSelectedStatus] = useState<string>();
@@ -31,6 +23,7 @@ export default function ProductManager() {
   const [pageSize, setPageSize] = useState(10);
   const [selectedContact, setSelectedContact] = useState<string>();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState<string | null>(null);
 
   const { mutate: deleteContact } = useDeleteContact();
 
@@ -51,6 +44,7 @@ export default function ProductManager() {
   const params = {
     ...(selectedStatus !== 'all' && { status: selectedStatus }),
     limit: pageSize,
+    ...(selectedService !== 'all' && { service_id: selectedStatus }),
   };
 
   const { contacts, isLoading, isError, pagination } = ContactList(
@@ -67,6 +61,11 @@ export default function ProductManager() {
     setCurrentPage(1); // Reset về trang đầu tiên khi đổi số lượng
   };
 
+  const handleStatusChange = useCallback((value: string) => {
+    setSelectedStatus(value);
+    setCurrentPage(1);
+  }, []);
+
   const handlePageChange = (page: number) => {
     if (page > 0 && page <= pagination.total_page) {
       setCurrentPage(page);
@@ -77,62 +76,39 @@ export default function ProductManager() {
     setRefreshKey((prev) => prev + 1);
   };
 
+  const handleServiceChange = useCallback((value: string) => {
+    setSelectedService(value === 'all' ? null : value);
+    setCurrentPage(1);
+  }, []);
+
   return (
     <>
-      <Container>
-        <AdminBreadCrumb title="Liên Hệ" />
-
+      <AdminContainer>
         <Heading
-          name="Quản lý liên hệ"
-          desc="Quản lý danh sách những người liên hệ của bạn ở đây"
+          name="Contact Management"
+          desc="Manage your contact list here"
         />
 
-        <div className="md:flex col flex-col-2 md:flex-row justify-between items-center mb-6">
-          <div className="flex items-center gap-4">
-            <RefreshButton onClick={handleRefresh} />
-            <div className="flex items-center gap-4">
-              <span className="text-16 font-semibold">Số Lượng:</span>
-              <Select
-                onValueChange={handlePageSizeChange}
-                defaultValue={String(pageSize)}
-              >
-                <SelectTrigger className="w-[80px]">
-                  <SelectValue placeholder={pageSize} />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="5">5</SelectItem>
-                  <SelectItem value="10">10</SelectItem>
-                  <SelectItem value="20">20</SelectItem>
-                  <SelectItem value="50">50</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="flex items-center gap-4">
-              <span className="text-16 font-semibold">Trạng Thái:</span>
-
-              <SelectStatus
-                selectedStatus={selectedStatus}
-                onStatusChange={(value) => setSelectedStatus(value)}
-              />
-            </div>
-          </div>
-        </div>
-
         {/* Table */}
-        <div>
-          <ContactTable
-            contacts={contacts}
-            isLoading={isLoading}
-            isError={isError}
-            onDelete={handleDeleteClick}
-          />
-        </div>
+        <ContactFilter
+          handleRefresh={handleRefresh}
+          onPageSizeChange={handlePageSizeChange}
+          onStatusChange={handleStatusChange}
+          onServiceChange={handleServiceChange}
+        />
+        <ContactTable
+          contacts={contacts}
+          isLoading={isLoading}
+          isError={isError}
+          onDelete={handleDeleteClick}
+        />
+
         <CustomPagination
           currentPage={currentPage}
           totalPage={pagination.total_page}
           onPageChange={handlePageChange}
         />
-      </Container>
+      </AdminContainer>
       <ConfirmDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}

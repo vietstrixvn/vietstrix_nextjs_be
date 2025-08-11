@@ -31,7 +31,7 @@ export function AdminBreadCrumb() {
         </BreadcrumbItem>
 
         {pathArray.map((segment, index) => {
-          const href = '/' + pathArray.slice(0, index + 1).join('/');
+          const href = '/admin/' + pathArray.slice(0, index + 1).join('/');
           const isLast = index === pathArray.length - 1;
 
           return (

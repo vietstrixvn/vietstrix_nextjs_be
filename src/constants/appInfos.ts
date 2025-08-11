@@ -1,14 +1,13 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 export const appInfo = {
-  logo: '/icons/og_logo.svg', //web logo
-  title: 'Vietstrix', //app name ®
-  description: 'app description', //app description
+  logo: '/icons/og_logo.svg',
+  title: 'Vietstrix',
+  description: 'app description',
   domain: 'https://vietstrix.com',
-  ogImage: '/icons/og_logo.svg', //og image
+  ogImage: '/icons/og_logo.svg',
   themeColor: '#ffffff',
   keywords: [
-    // Từ khóa tiếng Anh
     'web development',
     'website',
     'web design',
@@ -21,8 +20,6 @@ export const appInfo = {
     'CMS development',
     'SEO optimization',
     'web solutions',
-
-    // Từ khóa tiếng Việt
     'thiết kế website',
     'phát triển web',
     'dịch vụ web',
@@ -40,20 +37,27 @@ export const appInfo = {
 
 export const siteBaseUrl = 'https://vietstrix.com';
 
+// ✅ Tách viewport ra export riêng
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  themeColor: appInfo.themeColor, // themeColor chuyển qua đây
+};
+
+// ✅ Metadata giờ không chứa themeColor & viewport
 export const metadata: Metadata = {
   title: appInfo.title,
   description: appInfo.description,
   keywords: appInfo.keywords,
   applicationName: appInfo.title,
   generator: 'Next.js',
-
   icons: {
     icon: appInfo.logo,
     apple: appInfo.logo,
     shortcut: appInfo.logo,
   },
-  themeColor: appInfo.themeColor,
-
   openGraph: {
     type: 'website',
     title: appInfo.title,
@@ -70,7 +74,6 @@ export const metadata: Metadata = {
     ],
     locale: 'vi_VN',
   },
-
   twitter: {
     card: 'summary_large_image',
     title: appInfo.title,
@@ -79,14 +82,6 @@ export const metadata: Metadata = {
     creator: '@vietstrix',
     site: '@vietstrix',
   },
-
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
-
   alternates: {
     canonical: appInfo.domain,
     languages: {
@@ -94,7 +89,6 @@ export const metadata: Metadata = {
       'vi-VN': `${appInfo.domain}`,
     },
   },
-
   robots: {
     index: true,
     follow: true,
@@ -105,18 +99,16 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-
   verification: {
     google: 'verification_token',
     yandex: 'verification_token',
   },
-
   category: 'Website Development',
   creator: '@vietstrix',
   publisher: 'Vietstrix',
 };
 
-// Function to generate metadata for child pages
+// Function để tạo metadata cho từng page
 export function PageMetadata(
   pageTitle: string,
   pageDescription?: string

@@ -6,6 +6,8 @@ import { AdminContainer } from '@/components/container/admin.contaier';
 import SectionHeader from '@/components/design/SectionHeader';
 import { AnalyticsComponent } from '@/components/card/analytics.card';
 import AdminHero from '@/components/layouts/admin-layout/admin.hero';
+import { RecentInvoices } from '@/components/tables/recent-invoices.table';
+import { Heading } from '@/components';
 
 const Page = () => {
   return (
@@ -22,7 +24,9 @@ const Page = () => {
 
       <Card className="mb-4">
         <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>Contact</CardTitle>
+          <CardTitle>
+            <Heading name="New Contact" />
+          </CardTitle>
           <CardTitle>
             <a
               href="/admin/contact"
@@ -32,7 +36,9 @@ const Page = () => {
             </a>
           </CardTitle>
         </CardHeader>
-        <CardContent>{/* <RecentInvoices /> */}</CardContent>
+        <CardContent>
+          <RecentInvoices />
+        </CardContent>
       </Card>
     </AdminContainer>
   );

@@ -11,19 +11,13 @@ export interface AuthState {
   login: (username: string, password: string) => Promise<boolean>;
   logout: () => Promise<void>;
   fetchUserInfo: () => Promise<void>;
-  checkAuth: (shouldRedirect?: boolean) => Promise<void>; // ✅ FIXED: Added optional parameter
+  checkAuth: (shouldRedirect?: boolean, maxRetry?: number) => Promise<void>;
 }
 /**
  * ==========================
  *  @COOKIES
  * ==========================
  */
-
-export interface CookieOptions {
-  expires?: number;
-  secure?: boolean;
-  sameSite?: 'Lax' | 'Strict' | 'None';
-}
 
 export interface AuthResponse<T = any> {
   response: Response;
