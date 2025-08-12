@@ -9,6 +9,7 @@ import {
   TableRow,
   Badge,
   Button,
+  CustomImage,
 } from '@/components';
 import { useRouter } from 'next/navigation';
 import { Icons } from '@/assets/icons/icons';
@@ -17,7 +18,6 @@ import { useDeleteBlog, useUpdateBlogStatus } from '@/hooks';
 // import { ConfirmDialog } from '../design/Dialog';
 import type { BlogTableProps } from '@/types/blog/blog.prob';
 import { BlogColumns } from '@/types/blog/blog.colum';
-// import { SelectStatus } from '../design/status.change';
 import { toast } from 'sonner';
 import type { VisibilityCategoryOption } from '@/types';
 import { truncateText, truncateHtmlToText, formatSmartDate } from '@/utils';
@@ -25,13 +25,7 @@ import { useAuthStore } from '@/store';
 import { LoadingSpin } from '../loading/loading';
 import { ErrorLoading } from '../loading/error';
 import { NoResultsFound } from '../design/NoResultsFound';
-
-export const statusColorMap: Record<string, string> = {
-  show: 'bg-green-100 text-green-800 hover:bg-green-100',
-  hide: 'bg-gray-100 text-gray-800 hover:bg-gray-100',
-  popular: 'bg-blue-100 text-blue-800 hover:bg-blue-100',
-  draft: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-100',
-};
+import { SelectStatus, statusColorMap } from '../design/status.change';
 
 export const BlogTable: React.FC<BlogTableProps> = ({
   blogs,
@@ -85,7 +79,7 @@ export const BlogTable: React.FC<BlogTableProps> = ({
                     {col.label}
                   </TableHead>
                 ))}
-                <TableHead>Action</TableHead>
+                <TableHead className="w-[100px]">Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -106,26 +100,36 @@ export const BlogTable: React.FC<BlogTableProps> = ({
                   <React.Fragment key={item.id}>
                     <TableRow key={item.id} className="border-b">
                       <TableCell className="font-medium">{index + 1}</TableCell>
+                      <TableCell className="p-0">
+                        <div className="relative w-full h-full min-h-[120px]">
+                          <CustomImage
+                            src={item.file}
+                            alt="Blog Image"
+                            className="object-cover"
+                            fill
+                          />
+                        </div>
+                      </TableCell>
 
                       <TableCell>
-                        {/* {userInfo?.role === 'admin' ? (
+                        {userInfo?.role === 'admin' ? (
                           <SelectStatus
                             value={item.status as VisibilityCategoryOption}
                             onChange={(newStatus) =>
                               handleStatusChange(item.id, newStatus)
                             }
                           />
-                        ) : ( */}
-                        <Badge
-                          variant="secondary"
-                          className={
-                            statusColorMap[item.status] ||
-                            'bg-gray-100 text-gray-800'
-                          }
-                        >
-                          {item.status}
-                        </Badge>
-                        {/* )} */}
+                        ) : (
+                          <Badge
+                            variant="secondary"
+                            className={
+                              statusColorMap[item.status] ||
+                              'bg-gray-100 text-gray-800'
+                            }
+                          >
+                            {item.status}
+                          </Badge>
+                        )}
                       </TableCell>
                       <TableCell className="font-medium">
                         {item.title}

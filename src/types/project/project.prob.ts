@@ -11,7 +11,7 @@ export type CaseStudy = {
   title: string;
   client: string;
   link?: string;
-  description: string;
+  content: string;
   brand_name: string;
   testimonial: string;
 };

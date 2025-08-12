@@ -4,7 +4,7 @@ import type {
   FetchServiceListResponse,
   CreateServiceItem,
   ServiceDetail,
-} from '@/types/types';
+} from '@/types';
 import type { UpdateStatus, Filters } from '@/types';
 import { toast } from 'sonner';
 import { buildQueryParams } from '@/utils';
@@ -146,11 +146,11 @@ const useDeleteService = () => {
 
 const EditStatus = async (updateStatus: UpdateStatus, postId: string) => {
   try {
-    if (!endpoints.serviceStatus) {
+    if (!endpoints.service) {
       throw null;
     }
 
-    const url = endpoints.serviceStatus.replace(':id', postId);
+    const url = endpoints.service.replace(':id', postId);
 
     const response = await handleAPI(url, 'PATCH', updateStatus);
     return response.data;

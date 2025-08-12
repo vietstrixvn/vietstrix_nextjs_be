@@ -8,13 +8,6 @@ import { ProjectList } from '@/lib/responses/projectLib';
 import { ProjectTable } from '@/components/tables/project.table';
 import { ProjectFilter } from '@/components/fliters/project.filter';
 
-export enum ServiceStatus {
-  Show = 'show',
-  Hide = 'hide',
-  Popular = 'popular',
-  Draft = 'draft',
-}
-
 export default function ProjectListDataAdmin() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 

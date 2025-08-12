@@ -26,9 +26,10 @@ import {
   SelectTrigger,
   SelectValue,
   Textarea,
+  AdminContainer,
 } from '@/components';
 import { useCreateService } from '@/hooks/service/useService';
-import type { CreateServiceItem } from '@/types/types';
+import type { CreateServiceItem } from '@/types';
 import { useRouter } from 'next/navigation';
 import { Heading } from '@/components/design/Heading';
 import { CategoryList } from '@/lib';
@@ -127,11 +128,10 @@ export default function NewServiceForm() {
     };
 
     setDisplayPrice(formatVND(form.getValues('price')));
-  }, [form.watch('price')]); // watch để cập nhật khi price thay đổi
+  }, [form.watch('price')]);
 
-  // Hàm xử lý khi user nhập giá trị
   function handlePriceChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const rawValue = e.target.value.replace(/[^\d]/g, ''); // giữ số thôi
+    const rawValue = e.target.value.replace(/[^\d]/g, '');
     const numberValue = Number(rawValue);
     setDisplayPrice(rawValue ? numberValue.toLocaleString('vi-VN') + ' ₫' : '');
     form.setValue('price', rawValue || '0');
@@ -146,224 +146,208 @@ export default function NewServiceForm() {
   };
 
   return (
-    <Card className="w-full max-w-7xl mx-auto">
-      <CardHeader>
+    <AdminContainer>
+      <div className="flex justify-between">
         <Heading
-          name="Tạo dịch vụ mới"
-          desc="Điền thông tin bên dưới để đăng dịch vụ mới."
+          name="Create new service"
+          desc="Fill in the information below to post a new service."
         />
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form
-            onSubmit={(e) => {
-              return handleSubmit(onSubmit)(e);
-            }}
-            className="space-y-8"
+        <div className="flex gap-2 mt-8 mb-8">
+          <Button
+            type="button"
+            variant="outline"
+            className="border-gray-300 text-gray-600 hover:bg-gray-100"
+            onClick={() => router.back()}
           >
+            Cancel
+          </Button>
+
+          <Button
+            type="button"
+            className="bg-main text-white hover:bg-main-700"
+            onClick={() => {
+              const values = form.getValues();
+              onSubmit(values);
+            }}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Creating...' : 'Create Service'}
+          </Button>
+        </div>
+      </div>
+      <Form {...form}>
+        <form
+          onSubmit={(e) => {
+            return handleSubmit(onSubmit)(e);
+          }}
+          className="space-y-8"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-6 ">
-                  <FormField
-                    control={form.control}
-                    name="title"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Tiêu đề</FormLabel>
-                        <FormDescription>
-                          Nhập tiêu đề cho dịch vụ{' '}
-                        </FormDescription>
-                        <FormControl>
-                          <Input
-                            placeholder="Enter blog post title"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="price"
-                    render={() => (
-                      <FormItem>
-                        <FormLabel>Giá (VND)</FormLabel>
-                        <FormDescription>
-                          Đặt giá cho dịch vụ này (0 để liên hệ)
-                        </FormDescription>
-                        <FormControl>
-                          <Input
-                            type="text"
-                            inputMode="numeric"
-                            placeholder="0"
-                            value={displayPrice}
-                            onChange={handlePriceChange}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <div className="space-y-6 ">
-                  <FormField
-                    control={form.control}
-                    name="content"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Nội dung ngắn</FormLabel>
-                        <FormDescription>
-                          Nhập nội dung bài đăng dịch vụ
-                        </FormDescription>
-                        <FormControl>
-                          <Textarea
-                            placeholder="Enter blog post content"
-                            rows={4}
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="category"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Thể Loại</FormLabel>
-                        <Select
-                          onValueChange={field.onChange}
-                          defaultValue={field.value}
-                          disabled={isLoading}
-                        >
-                          <FormControl>
-                            <SelectTrigger>
-                              <SelectValue
-                                placeholder={
-                                  isLoading
-                                    ? 'Loading categories...'
-                                    : 'Select a category'
-                                }
-                              />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {isLoading ? (
-                              <SelectItem value="loading" disabled>
-                                Loading categories...
-                              </SelectItem>
-                            ) : isError ? (
-                              <SelectItem value="error" disabled>
-                                Error loading categories
-                              </SelectItem>
-                            ) : categories && categories.length > 0 ? (
-                              categories.map((category) => (
-                                <SelectItem
-                                  key={category.id}
-                                  value={category.id}
-                                >
-                                  {category.name}
-                                </SelectItem>
-                              ))
-                            ) : (
-                              <SelectItem value="no-categories" disabled>
-                                No categories available
-                              </SelectItem>
-                            )}
-                          </SelectContent>
-                        </Select>
-                        {isError && (
-                          <p className="text-sm text-red-500 mt-1">
-                            Failed to load categories
-                          </p>
-                        )}
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-
-              <div>
-                <div className="mt-4">
-                  <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Mô tả chi tiết</FormLabel>
-                        <FormControl>
-                          <RichTextEditor
-                            initialContent={field.value}
-                            onChange={(val) => field.onChange(val.html)}
-                            className="w-full rounded-none cursor-text"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </div>
-
               <FormField
                 control={form.control}
-                name="file"
-                render={() => (
-                  <FormItem>
-                    <FormLabel>Thumbnail Image</FormLabel>
-                    <FormControl>
-                      <div>
-                        <ImageUploadPreview
-                          key={uploaFileKey}
-                          type="banner"
-                          onImageUploaded={handleImageUploaded}
-                        />
-                        {errors.file && (
-                          <p className="text-red-500 text-sm">
-                            {errors.file.message}
-                          </p>
-                        )}
-                      </div>
-                    </FormControl>
-
+                name="title"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>Title</FormLabel>
                     <FormDescription>
-                      Upload an image (max 20MB). Supported formats: JPG, PNG,
-                      WebP
+                      Enter a title for the service{' '}
                     </FormDescription>
+                    <FormControl>
+                      <Input placeholder="Enter blog post title" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex gap-2">
+                <FormField
+                  control={form.control}
+                  name="category"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Category</FormLabel>
+                      <FormDescription>Select a category </FormDescription>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        disabled={isLoading}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue
+                              placeholder={
+                                isLoading
+                                  ? 'Loading categories...'
+                                  : 'Select a category'
+                              }
+                            />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {isLoading ? (
+                            <SelectItem value="loading" disabled>
+                              Loading categories...
+                            </SelectItem>
+                          ) : isError ? (
+                            <SelectItem value="error" disabled>
+                              Error loading categories
+                            </SelectItem>
+                          ) : categories && categories.length > 0 ? (
+                            categories.map((category) => (
+                              <SelectItem key={category.id} value={category.id}>
+                                {category.name}
+                              </SelectItem>
+                            ))
+                          ) : (
+                            <SelectItem value="no-categories" disabled>
+                              No categories available
+                            </SelectItem>
+                          )}
+                        </SelectContent>
+                      </Select>
+                      {isError && (
+                        <p className="text-sm text-red-500 mt-1">
+                          Failed to load categories
+                        </p>
+                      )}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="price"
+                  render={() => (
+                    <FormItem>
+                      <FormLabel>Price (VND)</FormLabel>
+                      <FormDescription>
+                        Set price for this service (0 to contact)
+                      </FormDescription>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          inputMode="numeric"
+                          placeholder="0"
+                          value={displayPrice}
+                          onChange={handlePriceChange}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <FormField
+                control={form.control}
+                name="content"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Short content</FormLabel>
+                    <FormDescription>
+                      Enter service post content{' '}
+                    </FormDescription>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Enter blog post content"
+                        rows={4}
+                        {...field}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
+            <FormField
+              control={form.control}
+              name="file"
+              render={() => (
+                <FormItem>
+                  <FormLabel>Thumbnail Image</FormLabel>
+                  <FormDescription>
+                    Upload an image (max 20MB). Supported formats: JPG, PNG,
+                    WebP
+                  </FormDescription>
+                  <FormControl>
+                    <div>
+                      <ImageUploadPreview
+                        key={uploaFileKey}
+                        type="banner"
+                        onImageUploaded={handleImageUploaded}
+                      />
+                      {errors.file && (
+                        <p className="text-red-500 text-sm">
+                          {errors.file.message}
+                        </p>
+                      )}
+                    </div>
+                  </FormControl>
 
-            <CardFooter className="flex justify-between gap-4 px-0">
-              <Button
-                variant="outline"
-                type="button"
-                onClick={() => router.back()}
-              >
-                Hủy
-              </Button>
-              <div className="flex gap-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => {
-                    const values = form.getValues();
-                    onSubmit(values); // Set status to 'draft'
-                  }}
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Đang Tạo...' : 'Tạo Dịch Vụ'}
-                </Button>
-              </div>
-            </CardFooter>
-          </form>
-        </Form>
-      </CardContent>
-    </Card>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Detailed description</FormLabel>
+                <FormControl>
+                  <RichTextEditor
+                    initialContent={field.value}
+                    onChange={(val) => field.onChange(val.html)}
+                    className="w-full rounded-none cursor-text"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </form>
+      </Form>
+    </AdminContainer>
   );
 }

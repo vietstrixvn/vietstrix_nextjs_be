@@ -13,7 +13,6 @@ const Page = () => {
         desc="Manage all services available on the platform. You can create, update or delete services and ensure that each service is clearly described and up to date for users."
       />
       <ServiceListDataAdmin />
-      vc
     </AdminContainer>
   );
 };

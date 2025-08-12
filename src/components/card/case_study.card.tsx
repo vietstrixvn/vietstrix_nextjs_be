@@ -33,7 +33,7 @@ export function CaseStudyCard({ study, index }: CaseStudyCardProps) {
     >
       <div
         ref={imageRef}
-        className="overflow-hidden rounded-lg group relative"
+        className="overflow-hidden  group relative"
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
@@ -41,7 +41,7 @@ export function CaseStudyCard({ study, index }: CaseStudyCardProps) {
         <div className="aspect-[4/3] relative">
           <CustomImage
             src={study.file || '/icons/logo.svg'}
-            alt={study.title}
+            alt="VIETSTRIX Casestudy"
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
@@ -80,7 +80,7 @@ export function CaseStudyCard({ study, index }: CaseStudyCardProps) {
             <span className="absolute left-0 top-0 text-3xl text-gray-300">
               "
             </span>
-            <p>{study.description}</p>
+            <p>{study.content}</p>
           </div>
 
           <div className="mt-4 text-sm">

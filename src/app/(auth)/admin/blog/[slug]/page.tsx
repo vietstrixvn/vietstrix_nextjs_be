@@ -3,10 +3,9 @@
 import { BlogDetailData } from '@/lib/responses/blogLib';
 import { useParams } from 'next/navigation';
 import { NoResultsFound } from '@/components/design/NoResultsFound';
-import { formatSmartDate } from '@/utils/formatTimeAgo';
-import { BackButton, CustomImage, LoadingSpin } from '@/components';
-import { AdminContainer } from '@/components/wrappers/admin.wrapper';
-import { AdminBreadCrumb } from '@/components/layout/AdminLayout/admin.breadcrumb';
+import { AdminContainer, CustomImage, LoadingSpin } from '@/components';
+import { formatSmartDate } from '@/utils';
+import { BackButton } from '@/components/button';
 
 export default function Page() {
   const routerParams = useParams();
@@ -23,7 +22,6 @@ export default function Page() {
   }
 
   const { data: blog, isLoading, isError } = BlogDetailData(slug, 0);
-
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -40,19 +38,16 @@ export default function Page() {
     );
   }
 
-  if (!blog?.title || !blog?.content) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <LoadingSpin />
-      </div>
-    );
-  }
+  // if (!blog?.title || !blog?.content) {
+  //   return (
+  //     <div className="flex justify-center items-center min-h-screen">
+  //       <LoadingSpin />
+  //     </div>
+  //   );
+  // }
 
   return (
     <AdminContainer>
-      <div className="mb-8">
-        <AdminBreadCrumb title="Bài Viết" />
-      </div>
       <BackButton href="/admin/blog" />
 
       <div className="mx-auto">
@@ -67,8 +62,8 @@ export default function Page() {
               <span>Unien</span>
               <span>-</span>
               <span>
-                {blog?.createdAt
-                  ? formatSmartDate(blog.createdAt)
+                {blog?.created_at
+                  ? formatSmartDate(blog.created_at)
                   : 'No date available'}
               </span>
               <span>-</span>
@@ -90,7 +85,7 @@ export default function Page() {
         <div
           className="rich-text-content mt-4"
           dangerouslySetInnerHTML={{
-            __html: blog.content ?? '',
+            __html: blog?.content ?? '',
           }}
         />
       </div>

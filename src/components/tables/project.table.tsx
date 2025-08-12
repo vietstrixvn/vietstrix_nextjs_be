@@ -20,12 +20,11 @@ import { useDeleteService, useUpdateProjectStatus } from '@/hooks';
 import { ConfirmDialog } from '../design/Dialog';
 import { ProjectColumns } from '@/types/project/project.colum';
 import type { ProjectTableProps } from '@/types/project/project.prob';
-import { statusColorMap } from './blog.table';
-// import { SelectStatus } from '../design/status.change';
 import { toast } from 'sonner';
-import type { VisibilityCategoryOption } from '@/types';
-import { truncateText } from '@/utils';
+import { formatSmartDate, truncateText } from '@/utils';
 import { useAuthStore } from '@/store';
+import { SelectStatus, statusColorMap } from '../design/status.change';
+import { VisibilityCategoryOption } from '@/types';
 
 export const ProjectTable: React.FC<ProjectTableProps> = ({
   projects,
@@ -106,30 +105,30 @@ export const ProjectTable: React.FC<ProjectTableProps> = ({
                         {item.title}
                       </TableCell>
                       <TableCell>
-                        {/* {userInfo?.role === 'admin' ? (
+                        {userInfo?.role === 'admin' ? (
                           <SelectStatus
                             value={item.status as VisibilityCategoryOption}
                             onChange={(newStatus) =>
-                              handleStatusChange(item._id, newStatus)
+                              handleStatusChange(item.id, newStatus)
                             }
                           />
-                        ) : ( */}
-                        <Badge
-                          variant="secondary"
-                          className={
-                            statusColorMap[item.status] ||
-                            'bg-gray-100 text-gray-800'
-                          }
-                        >
-                          {item.status}
-                        </Badge>
-                        {/* )} */}
+                        ) : (
+                          <Badge
+                            variant="secondary"
+                            className={
+                              statusColorMap[item.status] ||
+                              'bg-gray-100 text-gray-800'
+                            }
+                          >
+                            {item.status}
+                          </Badge>
+                        )}
                       </TableCell>
                       <TableCell>{item.client}</TableCell>
 
                       <TableCell>
                         <div className="flex flex-wrap items-center gap-2">
-                          {item.service.map((srv) => (
+                          {item.services.map((srv) => (
                             <span
                               key={srv.id}
                               className="px-2 py-1 bg-gray-100 rounded-md text-sm"
@@ -193,22 +192,14 @@ export const ProjectTable: React.FC<ProjectTableProps> = ({
                             <div className="font-medium text-gray-500 mb-1">
                               Ngày tạo
                             </div>
-                            <div>
-                              {item.createdAt instanceof Date
-                                ? item.createdAt.toLocaleString()
-                                : item.createdAt}
-                            </div>
+                            <div>{formatSmartDate(item.created_at)}</div>
                           </div>
 
                           <div>
                             <div className="font-medium text-gray-500 mb-1">
                               Ngày sửa
                             </div>
-                            <div>
-                              {item.updatedAt instanceof Date
-                                ? item.updatedAt.toLocaleString()
-                                : item.updatedAt}
-                            </div>
+                            <div>{formatSmartDate(item.updated_at)}</div>
                           </div>
                         </div>
                       </TableCell>

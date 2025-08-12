@@ -1,6 +1,5 @@
 'use client';
 
-import type { Filter } from 'lucide-react';
 import { Search } from 'lucide-react';
 import {
   Select,
@@ -9,13 +8,12 @@ import {
   SelectTrigger,
   SelectValue,
   Input,
-  PushButton,
-  RefreshButton,
   LoadingSpin,
 } from '@/components';
 import { ServiceList } from '@/lib';
 import { useState, useCallback, useRef } from 'react';
 import { AdminFilterProps } from '@/types';
+import { PushButton, RefreshButton } from '../button';
 
 export function ProjectFilter({
   filter,
@@ -108,7 +106,7 @@ export function ProjectFilter({
             </SelectTrigger>
 
             <SelectContent>
-              <SelectItem value="all">Tất cả</SelectItem>
+              <SelectItem value="all">All</SelectItem>
 
               {/* Loading state */}
               {isLoading && (

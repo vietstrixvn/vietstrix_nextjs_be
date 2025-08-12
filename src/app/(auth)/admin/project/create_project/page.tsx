@@ -41,16 +41,12 @@ export default function CreateProjectPage() {
   const { mutate: createProject } = useCreateProject();
   const [uploaFileKey, setUploadFileKey] = useState(0);
 
-  const { services, isLoading, isError } = ServiceList(
-    1,
-    { limit: 10, status: ['show', 'popular'].join(',') },
-    0
-  );
+  const { services, isLoading, isError } = ServiceList(1, { limit: 10 }, 0);
 
   const serviceOptions =
     services?.map((service: any) => ({
-      value: service._id, // Confirm this is a UUID
-      label: service.title,
+      value: service.id, // Confirm this is a UUID
+      title: service.title,
     })) || [];
 
   const form = useForm<z.infer<typeof projectFormSchema>>({
@@ -85,7 +81,7 @@ export default function CreateProjectPage() {
         title: values.title,
         content: values.content,
         description: values.description,
-        service: values.services.map((_id) => _id), // Explicitly map to ensure array format
+        services: values.services.map((_id) => _id), // Explicitly map to ensure array format
         file: values.thumbnail,
         brand_name: values.brandName,
         client: values.client,

@@ -5,7 +5,7 @@ import React from 'react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Separator } from '@radix-ui/react-separator';
 import { AdminBreadCrumb } from './admin.breadcrumb';
-import { CtaGithub } from '@/components/button/cta-github.button';
+import { CtaGithub } from '@/components/button';
 import { UserNav } from './user-nav';
 import { useAuthStore } from '@/store';
 

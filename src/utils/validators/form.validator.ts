@@ -112,7 +112,6 @@ export const verificationSchema = z.object({
 export const categoryFormSchema = z.object({
   name: zodIsNotEmptyString('name is required'),
   type: zodIsNotEmptyString('type is required'),
-  status: z.string().optional(),
 });
 
 export const projectFormSchema = z.object({

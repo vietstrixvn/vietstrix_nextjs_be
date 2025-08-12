@@ -30,3 +30,23 @@ export interface BlogCard {
   title: string;
   file: string;
 }
+
+/**
+ * ==========================
+ *  @BLOG_DETAIL
+ * ==========================
+ */
+
+export interface BlogDetail extends BaseModel {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  file: string;
+  category: ChildCategory;
+  user?: UserDataComponents;
+  status: string;
+  description: string;
+  views: number;
+  link?: string | null;
+}

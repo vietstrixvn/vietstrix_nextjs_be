@@ -15,7 +15,6 @@ export default function AuthProtectedLayout({
   const userInfo = useAuthStore((state) => state.userInfo);
   const loading = useAuthStore((state) => state.loading);
   const isAuthenticated = !!userInfo;
-  const router = useRouter();
   const [authChecked, setAuthChecked] = useState(false);
 
   useEffect(() => {
@@ -36,15 +35,6 @@ export default function AuthProtectedLayout({
       isMounted = false;
     };
   }, []);
-
-  useEffect(() => {
-    if (authChecked) {
-      if (!isAuthenticated || userInfo?.role !== 'admin') {
-        toast.error('You do not have permission to access this page!');
-        router.replace('/admin');
-      }
-    }
-  }, [authChecked, isAuthenticated, userInfo, router]);
 
   if (!authChecked || loading) {
     return (

@@ -25,7 +25,6 @@ export interface FetchCategoryListResponse {
 export interface CreateCategoryItem {
   name: string;
   type: string;
-  status?: string;
 }
 
 /*

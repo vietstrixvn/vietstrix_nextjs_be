@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Avatar } from '@radix-ui/react-avatar';
 import { useRouter } from 'next/navigation';
 
 export function UserNav({
@@ -32,12 +33,14 @@ export function UserNav({
             variant="ghost"
             className="relative h-8 w-8 bg-white rounded-full"
           >
-            <CustomImage
-              src="/icons/logo.svg"
-              alt="vietsitrx"
-              width={32}
-              height={32}
-            />
+            <Avatar className="h-8 w-8 rounded-lg">
+              <CustomImage
+                src="/icons/logo.svg"
+                alt="vietsitrx"
+                width={32}
+                height={32}
+              />
+            </Avatar>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
@@ -56,12 +59,10 @@ export function UserNav({
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => router.push('/dashboard/profile')}>
+            <DropdownMenuItem onClick={() => router.push('/admin/profile')}>
               Profile
             </DropdownMenuItem>
-            <DropdownMenuItem>Billing</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>New Team</DropdownMenuItem>
+            <DropdownMenuItem>Change Password</DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={logout}>

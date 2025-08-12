@@ -1,7 +1,5 @@
 import { AdminContainer } from '@/components';
 import { Heading } from '@/components/design/Heading';
-// import { BackButton } from '@/components/button/back.button';
-// import { Heading } from '@/components/design/Heading';
 // import { SeoSettingsForm } from '@/components/pages/admin/seo/updateSeoForm';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +8,8 @@ import { Download } from 'lucide-react';
 import { SeoCard } from '@/components/card/seo.card';
 import WebsiteCard from '@/components/card/website.card';
 import Header from '@/components/design/Header';
+import VisitedCard from '@/components/card/topVisite.card';
+import TotalActiveUsers from '@/components/card/totalActive.card';
 
 const Page = () => {
   return (
@@ -32,42 +32,8 @@ const Page = () => {
         <div className="space-y-6">
           {/* Filters */}
           <Header title="TRACKING DATA" />
-
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-lg font-semibold text-gray-900">
-                Filters
-              </CardTitle>
-              <Button
-                variant="outline"
-                size="sm"
-                className="text-blue-600 border-blue-600 bg-transparent"
-              >
-                DOWNLOAD ALL
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {[
-                  'Chanel link Research.pdf',
-                  'Chanel link Research.pdf',
-                  'Manifest Prescriptions.pdf',
-                  'Chanel link Research.pdf',
-                ].map((filename, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between p-2 hover:bg-gray-50 rounded"
-                  >
-                    <span className="text-sm text-gray-700">{filename}</span>
-                    <Button variant="ghost" size="sm">
-                      <Download className="h-4 w-4 text-gray-500" />
-                    </Button>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
+          <TotalActiveUsers />
+          <VisitedCard />
           {/* Notices */}
           <Card>
             <CardHeader className="flex flex-row items-center justify-between">

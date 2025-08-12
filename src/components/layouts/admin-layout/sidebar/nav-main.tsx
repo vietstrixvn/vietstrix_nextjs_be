@@ -37,7 +37,7 @@ export function NavMain({
                     tooltip={item.title}
                     className={` ${
                       pathname === item.url
-                        ? 'bg-sidebar-hover text-main-400 border-main-400 border hover:bg-sidebar-hover'
+                        ? 'bg-white text-main border-main border'
                         : 'hover:bg-sidebar-hover hover:text-main-400 hover:border-main-400 border border-transparent'
                     }
                          `}

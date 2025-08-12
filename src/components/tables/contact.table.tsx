@@ -178,7 +178,7 @@ export const ContactTable: React.FC<ContactTableProps> = ({
                       <div className="p-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
-                            <h4 className="text-sm font-medium mb-2">
+                            <h4 className="text-sm font-bold underline text-main-700 mb-2">
                               Contact Details
                             </h4>
                             <div className="space-y-2 text-sm">
@@ -205,10 +205,10 @@ export const ContactTable: React.FC<ContactTableProps> = ({
                             </div>
                           </div>
                           <div>
-                            <h4 className="text-sm font-medium mb-2">
-                              Lời Nhắn
+                            <h4 className="text-sm underline text-main-700 font-bold mb-2">
+                              Message
                             </h4>
-                            <div className="p-3 bg-muted rounded-md text-sm">
+                            <div className="p-3 bg-main-100 text-sm">
                               {contact.message || (
                                 <span className="text-muted-foreground italic">
                                   No message provided

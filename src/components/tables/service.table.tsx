@@ -12,25 +12,27 @@ import {
   NoResultsFound,
   LoadingSpin,
   ErrorLoading,
+  CustomImage,
 } from '@/components';
-import type { ServiceTableProps } from '@/types';
+import type { ServiceTableProps, VisibilityCategoryOption } from '@/types';
 import { ServiceColumns } from '@/types/service/service.colum';
 import { useRouter } from 'next/navigation';
 import { Icons } from '@/assets/icons/icons';
 import React, { useState } from 'react';
 import { useDeleteService, useUpdateServiceStatus } from '@/hooks';
 import { ConfirmDialog } from '../design/Dialog';
-// import { SelectStatus } from '../design/status.change';
 import { toast } from 'sonner';
-import type { VisibilityCategoryOption } from '@/types';
-import { statusColorMap } from './blog.table';
-import { truncateText, truncateHtmlToText } from '@/utils';
+import { truncateText, truncateHtmlToText, formatSmartDate } from '@/utils';
+import { SelectStatus, statusColorMap } from '../design/status.change';
+import { useAuthStore } from '@/store';
 
 export const ServiceTable: React.FC<ServiceTableProps> = ({
   services,
   isLoading,
   isError,
 }) => {
+  const userInfo = useAuthStore((state) => state.userInfo);
+
   const router = useRouter();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<string>();
@@ -96,33 +98,45 @@ export const ServiceTable: React.FC<ServiceTableProps> = ({
                 <React.Fragment key={item.id}>
                   <TableRow key={item.id} className="border-b">
                     <TableCell className="font-medium">{index + 1}</TableCell>
-
-                    <TableCell className="font-medium">{item.title}</TableCell>
+                    <TableCell className="p-0">
+                      <div className="relative w-full h-full min-h-[120px]">
+                        <CustomImage
+                          src={item.file}
+                          alt="Blog Image"
+                          className="object-cover"
+                          fill
+                        />
+                      </div>
+                    </TableCell>
                     <TableCell>
-                      {/* {userInfo?.role === 'admin' ? (
+                      {userInfo?.role === 'admin' ? (
                         <SelectStatus
                           value={item.status as VisibilityCategoryOption}
                           onChange={(newStatus) =>
                             handleStatusChange(item.id, newStatus)
                           }
                         />
-                      ) : ( */}
-                      <Badge
-                        variant="secondary"
-                        className={
-                          statusColorMap[item.status] ||
-                          'bg-gray-100 text-gray-800'
-                        }
-                      >
-                        {item.status}
-                      </Badge>
-                      {/* )} */}
+                      ) : (
+                        <Badge
+                          variant="secondary"
+                          className={
+                            statusColorMap[item.status] ||
+                            'bg-gray-100 text-gray-800'
+                          }
+                        >
+                          {item.status}
+                        </Badge>
+                      )}
                     </TableCell>
+                    <TableCell className="font-medium">{item.title}</TableCell>
+
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <span>{item.category.name}</span>
                       </div>
                     </TableCell>
+                    <TableCell>{item.price}</TableCell>
+
                     <TableCell>
                       <Button
                         size="sm"
@@ -131,10 +145,9 @@ export const ServiceTable: React.FC<ServiceTableProps> = ({
                         onClick={() => handleViewDetail(item.slug)}
                       >
                         <Icons.Eye className="w-4 h-4" />
-                        Chi tiết
+                        Detail
                       </Button>
                     </TableCell>
-                    <TableCell>{item.price}</TableCell>
 
                     <TableCell>
                       <Button
@@ -171,23 +184,15 @@ export const ServiceTable: React.FC<ServiceTableProps> = ({
                         </div>
                         <div>
                           <div className="font-medium text-gray-500 mb-1">
-                            Ngày tạo
+                            Date created
                           </div>
-                          <div>
-                            {item.createdAt instanceof Date
-                              ? item.createdAt.toLocaleString()
-                              : item.createdAt}
-                          </div>
+                          <div>{formatSmartDate(item.created_at)}</div>
                         </div>
                         <div>
                           <div className="font-medium text-gray-500 mb-1">
-                            Ngày sửa
+                            Date modified
                           </div>
-                          <div>
-                            {item.updatedAt instanceof Date
-                              ? item.updatedAt.toLocaleString()
-                              : item.updatedAt}
-                          </div>
+                          <div>{formatSmartDate(item.updated_at)}</div>
                         </div>
                       </div>
                     </TableCell>

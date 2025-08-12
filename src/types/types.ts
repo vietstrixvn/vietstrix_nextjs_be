@@ -76,22 +76,20 @@ export interface ProjectService {
   title: string;
 }
 
-export interface ProjectListData {
+export interface ProjectListData extends BaseModel {
   id: string;
   title: string;
   slug: string;
   file: string;
   content: string;
   description: string;
-  service: ProjectService[];
+  services: ProjectService[];
   testimonial: string;
   brand_name: string;
   user: UserDataComponents;
   client: string;
   link?: string;
   status: string;
-  createdAt: Date | string;
-  updatedAt: Date | string;
 }
 
 export interface FetchProjectListResponse {
@@ -138,7 +136,7 @@ export interface CreateProjectItem {
   title: string;
   content: string;
   file: string;
-  service: string[];
+  services: string[];
   description: string;
   brand_name: string;
   status: string;
@@ -149,122 +147,12 @@ export interface CreateProjectItem {
 
 /**
  * ==========================
- *  @SERVICE
- * ==========================
- */
-
-export interface ServiceList {
-  id: string;
-  title: string;
-  content: string;
-  description: string;
-  file: string;
-  slug: string;
-  user?: UserDataComponents;
-  price: number;
-  status: string;
-  category: ChildCategory;
-  createdAt: Date | string;
-  updatedAt: Date | string;
-}
-
-export interface FetchServiceListResponse {
-  pagination: Pagination;
-  results: ServiceList[];
-}
-
-/**
- * ==========================
- *  @SERVICE_DETAIL
- * ==========================
- */
-
-export interface ServiceDetail {
-  id: string;
-  title: string;
-  slug: string;
-  file: string;
-  content: string;
-  price: number;
-  status: string;
-  description: string;
-  views: number;
-  category: ChildCategory;
-  createdAt: Date | string;
-  updatedAt: Date | string;
-}
-
-export interface ServiceDetailResponse {
-  status: string;
-  result: ServiceDetail;
-}
-
-/**
- * ==========================
- *  @SERVICE_DETAIL
- * ==========================
- */
-
-export interface ServiceDetailResponse {
-  id: string;
-  title: string;
-  slug: string;
-  file: string;
-  content: string;
-  price: number;
-  category: ChildCategory;
-  status: string;
-  description: string;
-  createdAt: Date | string;
-  updatedAt: Date | string;
-}
-
-/**
- * ==========================
- *  @SERVICE_Create
- * ==========================
- */
-
-export interface CreateServiceItem {
-  title: string;
-  file: string;
-  content: string;
-  price: number;
-  category: string;
-  status?: string;
-  description: string;
-}
-
-/**
- * ==========================
  *  @BLOG_CATEGORY
  * ==========================
  */
 export interface ChildCategory {
   id: string;
   name: string;
-}
-
-/**
- * ==========================
- *  @BLOG_DETAIL
- * ==========================
- */
-
-export interface BlogDetail {
-  id: string;
-  title: string;
-  slug: string;
-  content: string;
-  file: string;
-  category: ChildCategory;
-  user?: UserDataComponents;
-  status: string;
-  description: string;
-  views: number;
-  link?: string | null;
-  createdAt: Date | string;
-  updatedAt: Date | string;
 }
 
 /**

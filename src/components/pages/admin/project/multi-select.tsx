@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { X } from 'lucide-react';
+import { X, Check, ChevronDown } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import {
@@ -18,7 +18,7 @@ import {
 import { cn } from '@/utils';
 
 type Option = {
-  label: string;
+  title: string;
   value: string;
 };
 
@@ -44,10 +44,20 @@ export function MultiSelect({
   };
 
   const handleSelect = (value: string) => {
+    console.log('🟢 handleSelect called with:', value);
+    console.log('🟢 Current selected:', selected);
+    console.log('🟢 Value type:', typeof value);
+    console.log('🟢 Is value truthy?', !!value);
+    console.log('🟢 Is value in selected?', selected.includes(value));
+
     if (selected.includes(value)) {
-      onChange(selected.filter((item) => item !== value));
+      const newSelected = selected.filter((item) => item !== value);
+      console.log('🟢 Removing - new array:', newSelected);
+      onChange(newSelected);
     } else {
-      onChange([...selected, value]);
+      const newSelected = [...selected, value];
+      console.log('🟢 Adding - new array:', newSelected);
+      onChange(newSelected);
     }
   };
 
@@ -58,25 +68,28 @@ export function MultiSelect({
           role="combobox"
           aria-expanded={open}
           className={cn(
-            'flex min-h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2',
+            'flex min-h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 cursor-pointer',
             className
           )}
           onClick={() => setOpen(!open)}
         >
-          <div className="flex flex-wrap gap-1">
+          <div className="flex flex-wrap gap-1 flex-1">
             {selected.length === 0 && (
               <span className="text-muted-foreground">{placeholder}</span>
             )}
             {selected.map((value) => {
               const option = options.find((opt) => opt.value === value);
+              if (!option) return null;
+
               return (
                 <Badge
-                  key={value}
+                  key={value} // FIX: Sử dụng value làm key
                   variant="secondary"
                   className="flex items-center gap-1"
                 >
-                  {option?.label}
+                  {option.title}
                   <button
+                    type="button"
                     className="ml-1 rounded-full outline-none ring-offset-background focus:ring-2 focus:ring-ring focus:ring-offset-2"
                     onKeyDown={(e) => {
                       if (e.key === 'Enter') {
@@ -99,6 +112,8 @@ export function MultiSelect({
               );
             })}
           </div>
+          {/* FIX: Thêm ChevronDown icon */}
+          <ChevronDown className="h-4 w-4 opacity-50" />
         </div>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0" align="start">
@@ -111,9 +126,10 @@ export function MultiSelect({
                 const isSelected = selected.includes(option.value);
                 return (
                   <CommandItem
-                    key={option.value}
+                    key={option.value} // FIX: Sử dụng option.value làm key thay vì template string
                     value={option.value}
                     onSelect={() => handleSelect(option.value)}
+                    className="cursor-pointer"
                   >
                     <div
                       className={cn(
@@ -123,20 +139,10 @@ export function MultiSelect({
                           : 'opacity-50 [&_svg]:invisible'
                       )}
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className="h-3 w-3"
-                      >
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
+                      {/* FIX: Sử dụng Check icon từ lucide-react thay vì inline SVG */}
+                      <Check className="h-3 w-3" />
                     </div>
-                    <span>{option.label}</span>
+                    <span>{option.title}</span>
                   </CommandItem>
                 );
               })}

@@ -45,7 +45,7 @@ type RouteMap = {
 
 export const ROUTES: Readonly<RouteMap> = deepFreeze({
   HOME: '/',
-  COMPANY: '/company',
+  COMPANY: '/our-team',
   CONTACT: '/contact',
 
   WORK: '/work',
@@ -65,7 +65,7 @@ export const ROUTES: Readonly<RouteMap> = deepFreeze({
     ID: '123',
   },
   PROJECT: {
-    ROOT: '/company',
+    ROOT: '/projects',
     DETAIL: (slug: string) => `/company/project/${slug}`,
     ID: '123',
   },

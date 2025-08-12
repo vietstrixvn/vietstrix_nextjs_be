@@ -40,10 +40,4 @@ export * from './loading/loading';
 export * from './loading/error';
 export * from './design/NoResultsFound';
 
-export * from './button/cta-github.button';
-export * from './button/more.button';
-export * from './button/push.button';
-export * from './button/refresh.button';
-export * from './button/scroll.button';
-
 export * from './design/Heading';

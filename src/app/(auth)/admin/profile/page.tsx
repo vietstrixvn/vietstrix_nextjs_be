@@ -1,16 +1,16 @@
 'use client';
 
 import {
-  BackButton,
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   Badge,
+  AdminContainer,
 } from '@/components';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
-import { useAuthStore } from '@/store/authStore';
+import { useAuthStore } from '@/store';
 import { User, Phone, Mail, Shield } from 'lucide-react';
 
 const ProfilePage = () => {
@@ -26,9 +26,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <main className="mx-auto py-8 px-4">
-      <BackButton href="/admin" />
-
+    <AdminContainer className="mx-auto py-8 px-4">
       <div className="container mx-auto py-8 px-4">
         <div className="mx-auto">
           <div className="flex flex-col md:flex-row gap-8">
@@ -104,7 +102,9 @@ const ProfilePage = () => {
                         <Phone className="h-5 w-5 text-muted-foreground" />
                         <div>
                           <p className="text-sm text-muted-foreground">Phone</p>
-                          <p className="font-medium">{userInfo?.phoneNumber}</p>
+                          <p className="font-medium">
+                            {userInfo?.phone_number}
+                          </p>
                         </div>
                       </div>
                     </div>
@@ -115,7 +115,7 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
-    </main>
+    </AdminContainer>
   );
 };
 

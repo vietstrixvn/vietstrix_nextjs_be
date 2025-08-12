@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { CreateBlogItem, BlogDetail } from '@/types/types';
+import type { CreateBlogItem, BlogDetail } from '@/types';
 import type { Filters, UpdateStatus, FetchBlogListResponse } from '@/types';
 import { handleAPI, endpoints } from '@/api';
 import { toast } from 'sonner';
@@ -154,28 +154,14 @@ const useDeleteBlog = () => {
 };
 
 const EditStatus = async (updateStatus: UpdateStatus, postId: string) => {
-  const formData = new FormData();
-
-  for (const key in updateStatus) {
-    if (Object.prototype.hasOwnProperty.call(updateStatus, key)) {
-      const value = updateStatus[key as keyof UpdateStatus];
-
-      if (Array.isArray(value)) {
-        value.forEach((v) => formData.append(key, v));
-      } else if (typeof value === 'string') {
-        formData.append(key, value);
-      }
-    }
-  }
-
   try {
-    if (!endpoints.blogStatus) {
+    if (!endpoints.blog) {
       throw null;
     }
 
-    const url = endpoints.blogStatus.replace(':id', postId);
+    const url = endpoints.blog.replace(':id', postId);
 
-    const response = await handleAPI(url, 'PATCH', formData);
+    const response = await handleAPI(url, 'PATCH', updateStatus);
     return response.data;
   } catch (error: any) {
     throw new Error(
@@ -223,7 +209,7 @@ const useCreateBlog = () => {
       return CreateBlog(newBlog);
     },
     onSuccess: () => {
-      toast.success('Tạo bài viết thành công!');
+      toast.success('Created article successfully!');
       queryClient.invalidateQueries({ queryKey: ['blogList'] });
     },
     onError: (error: any) => {

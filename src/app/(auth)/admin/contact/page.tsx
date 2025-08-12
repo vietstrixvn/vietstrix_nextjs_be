@@ -15,6 +15,7 @@ import { CustomPagination } from '@/components/design/pagination';
 import { Heading } from '@/components/design/Heading';
 import { ContactTable } from '@/components/tables/contact.table';
 import { ContactFilter } from '@/components/fliters/contact.filter';
+import Header from '@/components/design/Header';
 
 export default function ProductManager() {
   const [selectedStatus, setSelectedStatus] = useState<string>();
@@ -88,7 +89,7 @@ export default function ProductManager() {
           name="Contact Management"
           desc="Manage your contact list here"
         />
-
+        <Header title="Contact Table" />
         {/* Table */}
         <ContactFilter
           handleRefresh={handleRefresh}

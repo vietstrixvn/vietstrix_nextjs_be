@@ -42,10 +42,10 @@ const endpoints = {
   blogs: process.env.NEXT_PUBLIC_BLOGS,
   blogDetail: process.env.NEXT_PUBLIC_BLOG_DETAIL,
   blog: process.env.NEXT_PUBLIC_BLOG,
-  blogStatus: process.env.NEXT_PUBLIC_BLOG_STATUS,
 
   //   Seo
   seo: process.env.NEXT_PUBLIC_SEO,
+  website: process.env.NEXT_PUBLIC_WEBSITE,
 
   //   faq
   faqs: process.env.NEXT_PUBLIC_FAQS,
