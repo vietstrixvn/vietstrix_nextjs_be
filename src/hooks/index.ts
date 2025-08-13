@@ -13,7 +13,11 @@ export * from './blog/useBlog';
 // Service
 export * from './service/useService';
 
-// Product
+// Website
+export * from './website/useWebsite';
+
+// Seo
+export * from './seo/useSeo';
 
 // Project
 export * from './project/useProject';

@@ -45,7 +45,7 @@ export const CreateCategoryDialog: React.FC<CreateCategoryDialogProps> = ({
   const form = useForm<z.infer<typeof categoryFormSchema>>({
     resolver: zodResolver(categoryFormSchema),
     defaultValues: {
-      name: '',
+      title: '',
       type: '',
     },
   });
@@ -57,7 +57,7 @@ export const CreateCategoryDialog: React.FC<CreateCategoryDialogProps> = ({
 
     try {
       const categoryData: CreateCategoryItem = {
-        name: values.name,
+        title: values.title,
         type: values.type,
       };
 
@@ -125,7 +125,7 @@ export const CreateCategoryDialog: React.FC<CreateCategoryDialogProps> = ({
           >
             <FormField
               control={form.control}
-              name="name"
+              name="title"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Name</FormLabel>

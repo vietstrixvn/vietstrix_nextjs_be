@@ -31,7 +31,6 @@ export interface AuthResponse<T = any> {
  */
 
 export interface UserData extends BaseModel {
-  id: string;
   username: string;
   name: string;
   email: string;
@@ -40,7 +39,6 @@ export interface UserData extends BaseModel {
 }
 
 export interface PersistedUserInfo extends BaseModel {
-  id: string;
   username: string;
   name: string;
   email: string;

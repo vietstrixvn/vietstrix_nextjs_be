@@ -22,6 +22,8 @@ import type { CategoryTableProps } from '@/types';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import { NoResultsFound } from '@/components/design/NoResultsFound';
+import UpdateCategoryDialog from '../form/category_update.form';
+import { useState } from 'react';
 
 export const CategoryTable: React.FC<CategoryTableProps> = ({
   categories,
@@ -29,6 +31,11 @@ export const CategoryTable: React.FC<CategoryTableProps> = ({
   isError,
   onDelete,
 }) => {
+  const [isUpdateDialogOpen, setIsUpdateDialogOpen] = useState(false);
+  const [editingCategory, setEditingCAtegory] = useState<
+    (typeof categories)[0] | null
+  >(null);
+  console.log(categories);
   return (
     <>
       <div className="border">
@@ -70,15 +77,22 @@ export const CategoryTable: React.FC<CategoryTableProps> = ({
                 <TableRow key={category.id}>
                   {CategoryColumns.map((col) => (
                     <TableCell key={col.key} className={col.className}>
-                      {col.key === '_id'
+                      {col.key === 'id'
                         ? category.id.substring(0, 8) + '...'
                         : ''}
-                      {col.key === 'name' ? category.name : ''}
+                      {col.key === 'title' ? category.title : ''}
                       {col.key === 'slug' ? category.slug : ''}
 
                       {col.key === 'actions' ? (
                         <div className="flex justify-end gap-2">
-                          <Button variant="outline" size="icon">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => {
+                              setEditingCAtegory(category);
+                              setIsUpdateDialogOpen(true);
+                            }}
+                          >
                             <Pencil className="h-4 w-4" />
                           </Button>
                           <Button
@@ -105,6 +119,21 @@ export const CategoryTable: React.FC<CategoryTableProps> = ({
           </TableBody>
         </Table>
       </div>
+
+      {editingCategory && (
+        <UpdateCategoryDialog
+          category={editingCategory}
+          open={isUpdateDialogOpen}
+          setOpen={(open) => {
+            setIsUpdateDialogOpen(open);
+            if (!open) setEditingCAtegory(null);
+          }}
+          onSuccess={() => {
+            setIsUpdateDialogOpen(false);
+            setEditingCAtegory(null);
+          }}
+        />
+      )}
     </>
   );
 };

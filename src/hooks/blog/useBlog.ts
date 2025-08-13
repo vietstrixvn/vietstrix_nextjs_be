@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { CreateBlogItem, BlogDetail } from '@/types';
+import type { CreateBlogItem, BlogDetail, UpdateBlogItem } from '@/types';
 import type { Filters, UpdateStatus, FetchBlogListResponse } from '@/types';
 import { handleAPI, endpoints } from '@/api';
 import { toast } from 'sonner';
@@ -153,7 +153,7 @@ const useDeleteBlog = () => {
   });
 };
 
-const EditStatus = async (updateStatus: UpdateStatus, postId: string) => {
+const EditStatus = async (updateBlog: UpdateBlogItem, postId: string) => {
   try {
     if (!endpoints.blog) {
       throw null;
@@ -161,7 +161,7 @@ const EditStatus = async (updateStatus: UpdateStatus, postId: string) => {
 
     const url = endpoints.blog.replace(':id', postId);
 
-    const response = await handleAPI(url, 'PATCH', updateStatus);
+    const response = await handleAPI(url, 'PATCH', updateBlog);
     return response.data;
   } catch (error: any) {
     throw new Error(
@@ -170,18 +170,18 @@ const EditStatus = async (updateStatus: UpdateStatus, postId: string) => {
   }
 };
 
-const useUpdateBlogStatus = () => {
+const useUpdateBlog = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
-      updateStatus,
+      updateBlog,
       postId,
     }: {
-      updateStatus: UpdateStatus;
+      updateBlog: UpdateBlogItem;
       postId: string;
     }) => {
-      return EditStatus(updateStatus, postId);
+      return EditStatus(updateBlog, postId);
     },
     onSuccess: () => {
       toast.success('Update status successfully!');
@@ -223,6 +223,6 @@ export {
   useBlogList,
   useBlogDetail,
   useDeleteBlog,
-  useUpdateBlogStatus,
+  useUpdateBlog,
   useCreateBlog,
 };

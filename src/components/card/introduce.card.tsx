@@ -50,7 +50,7 @@ export function IntroduceCard({
           initial={{ opacity: 0, y: 20 }}
           animate={isHovered ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.3 }}
-          className="text-sm opacity-90"
+          className="text-sm text-white opacity-90"
         >
           {description}
         </motion.div>

@@ -3,7 +3,7 @@ import type {
   FetchProjectListResponse,
   CreateProjectItem,
   ProjectDetail,
-} from '@/types/types';
+} from '@/types';
 import { endpoints, handleAPI } from '@/api';
 import { toast } from 'sonner';
 import type { UpdateStatus, Filters } from '@/types';

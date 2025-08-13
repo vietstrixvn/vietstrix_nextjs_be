@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { SeoData, UpdateSeo } from '@/types/types';
+import type { SeoData, UpdateSeo } from '@/types';
 import { endpoints, handleAPI } from '@/api';
 import { toast } from 'sonner';
 
@@ -40,24 +40,8 @@ const useSeoData = (refreshKey: number) => {
  */
 
 const UpdateSeoData = async (updateSeo: UpdateSeo) => {
-  const formData = new FormData();
-
-  for (const key in updateSeo) {
-    if (Object.prototype.hasOwnProperty.call(updateSeo, key)) {
-      const value = updateSeo[key as keyof UpdateSeo];
-
-      if (Array.isArray(value)) {
-        // If the value is an array, append each element
-        value.forEach((v) => formData.append(key, v));
-      } else if (typeof value === 'string') {
-        // If the value is a string, append to FormData
-        formData.append(key, value);
-      }
-    }
-  }
-
   try {
-    const response = await handleAPI(`${endpoints.seo}`, 'PATCH', formData);
+    const response = await handleAPI(`${endpoints.seo}`, 'PATCH', updateSeo);
     return response.data;
   } catch (error: any) {
     throw new Error(

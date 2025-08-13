@@ -1,4 +1,3 @@
-'use client';
 import { useCategoryList } from '@/hooks/category/useCategory';
 import type { Filters } from '@/types';
 

@@ -13,6 +13,9 @@ export * from './media/media.type';
 export * from './auth/auth.type';
 export * from './auth/user.type';
 export * from './service/service.type';
+export * from './project/project.type';
+export * from './seo/seo.type';
+export * from './seo/website.type';
 
 export * from './types';
 

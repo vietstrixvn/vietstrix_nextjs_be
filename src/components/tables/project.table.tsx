@@ -21,7 +21,7 @@ import { ConfirmDialog } from '../design/Dialog';
 import { ProjectColumns } from '@/types/project/project.colum';
 import type { ProjectTableProps } from '@/types/project/project.prob';
 import { toast } from 'sonner';
-import { formatSmartDate, truncateText } from '@/utils';
+import { formatSmartDate, truncateHtmlToText, truncateText } from '@/utils';
 import { useAuthStore } from '@/store';
 import { SelectStatus, statusColorMap } from '../design/status.change';
 import { VisibilityCategoryOption } from '@/types';
@@ -128,12 +128,12 @@ export const ProjectTable: React.FC<ProjectTableProps> = ({
 
                       <TableCell>
                         <div className="flex flex-wrap items-center gap-2">
-                          {item.services.map((srv) => (
+                          {item.services.map((srv: any) => (
                             <span
                               key={srv.id}
                               className="px-2 py-1 bg-gray-100 rounded-md text-sm"
                             >
-                              {srv.title}
+                              {srv.name}
                             </span>
                           ))}
                         </div>
@@ -147,7 +147,7 @@ export const ProjectTable: React.FC<ProjectTableProps> = ({
                           onClick={() => handleViewDetail(item.slug)}
                         >
                           <Icons.Eye className="w-4 h-4" />
-                          Chi tiết
+                          Detail
                         </Button>
                       </TableCell>
 
@@ -169,7 +169,7 @@ export const ProjectTable: React.FC<ProjectTableProps> = ({
                         <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 py-2">
                           <div>
                             <div className="font-medium text-gray-500 mb-1">
-                              Mô tả ngắn
+                              Short description
                             </div>
                             <div className="flex items-start gap-1">
                               <div className="w-2 h-2 mt-1 bg-gray-400 rounded-full"></div>
@@ -182,22 +182,27 @@ export const ProjectTable: React.FC<ProjectTableProps> = ({
 
                           <div>
                             <div className="font-medium text-gray-500 mb-1">
-                              Mô tả chi tiết
+                              Detailed description
                             </div>
                             <div className="line-clamp-3">
-                              {truncateText(item.description, 100)}
+                              <div
+                                className="rich-text-content mt-4"
+                                dangerouslySetInnerHTML={{
+                                  __html: truncateHtmlToText(item.content, 80),
+                                }}
+                              />
                             </div>
                           </div>
                           <div>
                             <div className="font-medium text-gray-500 mb-1">
-                              Ngày tạo
+                              Date created
                             </div>
                             <div>{formatSmartDate(item.created_at)}</div>
                           </div>
 
                           <div>
                             <div className="font-medium text-gray-500 mb-1">
-                              Ngày sửa
+                              Date modified
                             </div>
                             <div>{formatSmartDate(item.updated_at)}</div>
                           </div>

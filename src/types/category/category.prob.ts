@@ -18,3 +18,10 @@ export interface CategoryTableProps {
   isError: boolean;
   onDelete: (id: string) => void;
 }
+
+export interface UpdateCategoryDialogProps {
+  category: Category;
+  open: boolean;
+  setOpen: (val: boolean) => void;
+  onSuccess?: () => void;
+}

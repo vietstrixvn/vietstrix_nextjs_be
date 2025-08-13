@@ -32,6 +32,7 @@ export interface UpdateStatus {
 }
 
 export interface BaseModel {
+  id: string;
   created_at: string | Date;
   updated_at: string | Date;
 }

@@ -99,11 +99,10 @@ const useUpdateStatus = () => {
       return EditStatus(updateStatus, contactId);
     },
     onSuccess: () => {
-      toast.success('Cập nhật trạng thái thành công!');
+      toast.success('Status update successful!');
       queryClient.invalidateQueries({ queryKey: ['contactList'] });
     },
     onError: (error: any) => {
-      toast.error('Đã có lỗi khi cập nhật trạng thái!');
       console.error(error.message || 'Failed to create  contact.');
     },
   });
@@ -144,7 +143,7 @@ const useCreateContact = () => {
       return CreateContact(newContact);
     },
     onSuccess: () => {
-      toast.success('Đã gửi liên hệ, chúng tôi sẽ liên hệ sớm nhất!');
+      toast.success('Contact sent, we will contact you soon!');
       queryClient.invalidateQueries({ queryKey: ['contactList'] });
     },
     onError: (error: any) => {

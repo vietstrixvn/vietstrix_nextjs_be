@@ -59,6 +59,7 @@ import {
   X,
   Menu,
   Phone,
+  Pencil,
   Globe,
 } from 'lucide-react';
 import { Box, ShoppingBag, ClipboardList } from 'lucide-react';
@@ -85,6 +86,7 @@ export const Icons = {
   X,
   Menu,
   Phone,
+  Pencil,
 };
 
 export const ComponentsIcons = {

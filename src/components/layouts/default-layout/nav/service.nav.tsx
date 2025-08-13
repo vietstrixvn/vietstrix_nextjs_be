@@ -95,14 +95,14 @@ export const ServiceDropdownContent = ({ setIsOpen }: NavBlogProps) => {
 
       {/* Featured Project */}
       <div className="w-1/3 flex items-start bg-cover bg-center overflow-hidden">
-        <div className="w-full h-96 relative">
+        <Link href="/services" className="w-full h-96 relative">
           <IntroduceCard
-            title="About Us"
+            title="All Service"
             description="A serene architectural masterpiece blending natural elements with modern design principles."
             imageSrc="/imgs/introduce.jpg"
             delay={0}
           />
-        </div>
+        </Link>
       </div>
     </div>
   );

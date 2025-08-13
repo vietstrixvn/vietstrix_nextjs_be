@@ -12,7 +12,6 @@ export interface ContactService {
 }
 
 export interface ContactList extends BaseModel {
-  id: string;
   name: string;
   email: string;
   phone_number: string;

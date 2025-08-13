@@ -1,5 +1,3 @@
-'use client';
-
 import type { Filters } from '@/types';
 import { useContactList } from '@/hooks/contact/useContact';
 

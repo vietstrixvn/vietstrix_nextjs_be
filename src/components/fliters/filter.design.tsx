@@ -124,7 +124,7 @@ export function AdminFilter({
                 !isError &&
                 categories?.map((category) => (
                   <SelectItem key={category.id} value={category.id}>
-                    {category.name}
+                    {category.title}
                   </SelectItem>
                 ))}
             </SelectContent>

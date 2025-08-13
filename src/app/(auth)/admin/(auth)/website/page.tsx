@@ -1,6 +1,5 @@
 import { AdminContainer } from '@/components';
 import { Heading } from '@/components/design/Heading';
-// import { SeoSettingsForm } from '@/components/pages/admin/seo/updateSeoForm';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';

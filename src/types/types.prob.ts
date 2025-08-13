@@ -1,6 +1,22 @@
 import type { ReactNode } from 'react';
 import type { AdmimFilter, AdminUserFilter } from './types';
 
+/**
+ * ==========================
+ * @BUTTON
+ * ==========================
+ */
+
+export interface PushButtonProps {
+  href: string;
+  label: string;
+}
+
+export interface RefreshButtonProps {
+  onClick: () => void;
+  className?: string;
+}
+
 export interface LoadingProps {
   size?: number;
   message?: string;
@@ -62,21 +78,6 @@ export interface ConfirmDialogProps {
   question: string;
   description: string;
   onConfirm: () => void;
-}
-
-/**
- * ==========================
- * @PushButtonProps
- * ==========================
- */
-export interface PushButtonProps {
-  href: string;
-  label: string;
-}
-
-export interface RefreshButtonProps {
-  onClick: () => void;
-  className?: string;
 }
 
 export interface DefaultLayoutProps {

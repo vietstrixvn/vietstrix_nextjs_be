@@ -2,6 +2,7 @@
 
 import { Container, Heading } from '@/components';
 import { CategoryRecent } from '@/components/card/category.card';
+import { PostRecent } from '@/components/card/post_recent.card';
 import EnhancedHeroBanner from '@/components/container/enhanced-hero-banner';
 import BlogGrid from '@/components/pages/public/blog/blogList';
 import { SEO } from '@/components/SEO';
@@ -50,9 +51,9 @@ const Page = () => {
 
             <div className="pt-10">
               <div className="mb-4">
-                <Heading name="Bài Viết Mới Nhất" />
+                <Heading name="Latest Posts" />
               </div>
-              {/* <PostRecent /> */}
+              <PostRecent />
             </div>
           </div>
           <div className="col-span-12 lg:col-span-8">

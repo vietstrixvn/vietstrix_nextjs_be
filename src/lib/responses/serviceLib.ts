@@ -1,5 +1,3 @@
-'use client';
-
 import { useServiceDetail, useServiceList } from '@/hooks';
 import type { Filters } from '@/types';
 

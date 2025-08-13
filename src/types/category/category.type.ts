@@ -11,8 +11,7 @@ import type { UserDataComponents } from '../types';
   Category Attribute Declaration
 */
 export interface Category extends BaseModel {
-  id: string;
-  name: string;
+  title: string;
   slug: string;
   user?: UserDataComponents;
 }
@@ -23,25 +22,31 @@ export interface FetchCategoryListResponse {
 }
 
 export interface CreateCategoryItem {
-  name: string;
+  title: string;
   type: string;
 }
 
 /*
     Category Detail Attribute Declaration
   */
-interface CategoryDetail {
-  id: string;
+interface CategoryDetail extends BaseModel {
   title: string;
   slug: string;
   type: string;
-  created_at: string;
-  updated_at: string;
+}
+
+export interface UpdateCaterory {
+  title: string;
 }
 
 export interface FetchCategoryDetailResponse {
   status: string;
   data: CategoryDetail;
+}
+
+export interface ChildCategory {
+  id: string;
+  name: string;
 }
 
 // ========================

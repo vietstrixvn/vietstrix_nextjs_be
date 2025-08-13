@@ -14,7 +14,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { Icons } from '@/assets/icons/icons';
 import React, { useState } from 'react';
-import { useDeleteBlog, useUpdateBlogStatus } from '@/hooks';
+import { useDeleteBlog, useUpdateBlog } from '@/hooks';
 // import { ConfirmDialog } from '../design/Dialog';
 import type { BlogTableProps } from '@/types/blog/blog.prob';
 import { BlogColumns } from '@/types/blog/blog.colum';
@@ -26,6 +26,7 @@ import { LoadingSpin } from '../loading/loading';
 import { ErrorLoading } from '../loading/error';
 import { NoResultsFound } from '../design/NoResultsFound';
 import { SelectStatus, statusColorMap } from '../design/status.change';
+import { ConfirmDialog } from '../design/Dialog';
 
 export const BlogTable: React.FC<BlogTableProps> = ({
   blogs,
@@ -39,7 +40,7 @@ export const BlogTable: React.FC<BlogTableProps> = ({
   const [selectedService, setSelectedService] = useState<string>();
 
   const { mutate: deleteBlog } = useDeleteBlog();
-  const { mutate: updateStatus } = useUpdateBlogStatus();
+  const { mutate: updateStatus } = useUpdateBlog();
 
   const handleStatusChange = (postId: string, newStatus: string) => {
     if (!postId) {
@@ -47,7 +48,7 @@ export const BlogTable: React.FC<BlogTableProps> = ({
       return;
     }
 
-    updateStatus({ postId, updateStatus: { status: newStatus } });
+    updateStatus({ postId, updateBlog: { status: newStatus } });
   };
 
   const handleDeleteClick = (id: string) => {
@@ -132,7 +133,7 @@ export const BlogTable: React.FC<BlogTableProps> = ({
                         )}
                       </TableCell>
                       <TableCell className="font-medium">
-                        {item.title}
+                        {truncateText(item.title, 40)}
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-2">
@@ -151,7 +152,16 @@ export const BlogTable: React.FC<BlogTableProps> = ({
                         </Button>
                       </TableCell>
 
-                      <TableCell>
+                      <TableCell className="gap-2 space-x-2">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() =>
+                            router.push(`/admin/blog/edit_blog/${item.slug}`)
+                          }
+                        >
+                          <Icons.Pencil className="w-4 h-4" />
+                        </Button>
                         <Button
                           variant="destructive"
                           size="icon"
@@ -222,13 +232,13 @@ export const BlogTable: React.FC<BlogTableProps> = ({
           </Table>
         </div>
       </div>
-      {/* <ConfirmDialog
+      <ConfirmDialog
         open={deleteDialogOpen}
         onOpenChange={setDeleteDialogOpen}
-        question="Bạn có chắc không ?"
-        description="Không thể hoàn tác hành động này. Thao tác này sẽ xóa vĩnh viễn dịch vụ."
+        question="Are you sure?"
+        description="This action cannot be undone. This will permanently delete the service."
         onConfirm={handleDeleteConfirm}
-      /> */}
+      />
     </>
   );
 };

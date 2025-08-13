@@ -2,7 +2,6 @@ import ScrollProgressBar from '@/components/container/scroll-progress-bar';
 import { StatsSection } from '@/components/design/StatsSection';
 import { ContactForm } from '@/components/form/ContactForm';
 import { Hero } from '@/components/layouts/default-layout/hero';
-import PortfolioShowcase from '@/components/layouts/default-layout/home/caseStudies';
 import { BlogSection } from '@/components/layouts/default-layout/home/slide-carousel';
 import TextMarquee from '@/components/layouts/default-layout/home/TitleMarquee';
 import { SuccessStories } from '@/components/pages/public/home/our-project';
@@ -41,7 +40,6 @@ export default function Home() {
         </section>
 
         <Separator className="my-4" />
-        {/* <WhatWeDo /> */}
         {/* Wgy choose Us */}
         <section id="why" className="min-h-screen">
           <WhySection />

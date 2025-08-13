@@ -1,5 +1,6 @@
 import { BaseModel, Pagination } from '../base/base.type';
-import { ChildCategory, UserDataComponents } from '../types';
+import { UserDataComponents } from '../types';
+import { ChildCategory } from '../category/category.type';
 
 /**
  * ==========================
@@ -8,7 +9,6 @@ import { ChildCategory, UserDataComponents } from '../types';
  */
 
 export interface ServiceList extends BaseModel {
-  id: string;
   title: string;
   content: string;
   description: string;
@@ -31,8 +31,7 @@ export interface FetchServiceListResponse {
  * ==========================
  */
 
-export interface ServiceDetail {
-  id: string;
+export interface ServiceDetail extends BaseModel {
   title: string;
   slug: string;
   file: string;
@@ -42,8 +41,6 @@ export interface ServiceDetail {
   description: string;
   views: number;
   category: ChildCategory;
-  createdAt: Date | string;
-  updatedAt: Date | string;
 }
 
 export interface ServiceDetailResponse {
@@ -57,8 +54,7 @@ export interface ServiceDetailResponse {
  * ==========================
  */
 
-export interface ServiceDetailResponse {
-  id: string;
+export interface ServiceDetailResponse extends BaseModel {
   title: string;
   slug: string;
   file: string;
@@ -67,8 +63,6 @@ export interface ServiceDetailResponse {
   category: ChildCategory;
   status: string;
   description: string;
-  createdAt: Date | string;
-  updatedAt: Date | string;
 }
 
 /**
@@ -85,4 +79,14 @@ export interface CreateServiceItem {
   category: string;
   status?: string;
   description: string;
+}
+
+export interface UpdateServiceItem {
+  title?: string;
+  file?: string;
+  content?: string;
+  price?: number;
+  category?: string;
+  status?: string;
+  description?: string;
 }

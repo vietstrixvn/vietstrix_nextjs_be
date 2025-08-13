@@ -27,7 +27,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useCreateBlog } from '@/hooks/blog/useBlog';
-import type { CreateBlogItem } from '@/types/types';
+import type { CreateBlogItem } from '@/types';
 import { CategoryList } from '@/lib/responses/categoriesLib';
 import { useRouter } from 'next/navigation';
 import { Heading } from '@/components/design/Heading';
@@ -75,7 +75,6 @@ export default function NewBlogPost() {
         description: values.description,
         category: values.category,
         file: values.file,
-        link: null,
         status: status,
       };
 
@@ -207,7 +206,7 @@ export default function NewBlogPost() {
                                 key={category.id.toString()}
                                 value={category.id}
                               >
-                                {category.name}
+                                {category.title}
                               </SelectItem>
                             ))
                           ) : (

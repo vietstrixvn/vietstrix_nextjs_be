@@ -15,7 +15,11 @@ export const BlogColumns = [
     label: 'Status',
     className: 'font-medium text-md uppercase w-[150px]',
   },
-  { key: 'title', label: 'Title', className: 'font-medium text-md uppercase' },
+  {
+    key: 'title',
+    label: 'Title',
+    className: 'font-medium text-md uppercase  w-[300px]',
+  },
   {
     key: 'category',
     label: 'Category',

@@ -63,7 +63,7 @@ export const CategoryRecent: React.FC<CategoryCardProps> = ({
       {categories.map((category, index) => (
         <li key={category.id || index} className="mb-4">
           <div
-            onClick={() => handleCategoryClick(category.slug, category.name)}
+            onClick={() => handleCategoryClick(category.slug, category.title)}
             className={`cursor-pointer ${
               selectedCategory === category.id ? 'text-main' : 'text-gray-700'
             }`}
@@ -75,7 +75,7 @@ export const CategoryRecent: React.FC<CategoryCardProps> = ({
                   : 'border-gray-200'
               }`}
             >
-              {category.name}
+              {category.title}
             </p>
           </div>
         </li>

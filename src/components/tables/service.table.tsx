@@ -19,7 +19,7 @@ import { ServiceColumns } from '@/types/service/service.colum';
 import { useRouter } from 'next/navigation';
 import { Icons } from '@/assets/icons/icons';
 import React, { useState } from 'react';
-import { useDeleteService, useUpdateServiceStatus } from '@/hooks';
+import { useDeleteService, useUpdateService } from '@/hooks';
 import { ConfirmDialog } from '../design/Dialog';
 import { toast } from 'sonner';
 import { truncateText, truncateHtmlToText, formatSmartDate } from '@/utils';
@@ -38,7 +38,7 @@ export const ServiceTable: React.FC<ServiceTableProps> = ({
   const [selectedService, setSelectedService] = useState<string>();
 
   const { mutate: deleteService } = useDeleteService();
-  const { mutate: updateStatus } = useUpdateServiceStatus();
+  const { mutate: updateStatus } = useUpdateService();
 
   const handleStatusChange = (postId: string, newStatus: string) => {
     if (!postId) {
@@ -46,7 +46,7 @@ export const ServiceTable: React.FC<ServiceTableProps> = ({
       return;
     }
 
-    updateStatus({ postId, updateStatus: { status: newStatus } });
+    updateStatus({ postId, updateService: { status: newStatus } });
   };
 
   const handleDeleteClick = (id: string) => {
@@ -128,7 +128,10 @@ export const ServiceTable: React.FC<ServiceTableProps> = ({
                         </Badge>
                       )}
                     </TableCell>
-                    <TableCell className="font-medium">{item.title}</TableCell>
+                    <TableCell className="font-medium">
+                      {' '}
+                      {truncateText(item.title, 40)}
+                    </TableCell>
 
                     <TableCell>
                       <div className="flex items-center gap-2">
@@ -149,7 +152,18 @@ export const ServiceTable: React.FC<ServiceTableProps> = ({
                       </Button>
                     </TableCell>
 
-                    <TableCell>
+                    <TableCell className="gap-2 space-x-2">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() =>
+                          router.push(
+                            `/admin/service/edit_service/${item.slug}`
+                          )
+                        }
+                      >
+                        <Icons.Pencil className="w-4 h-4" />
+                      </Button>
                       <Button
                         variant="destructive"
                         size="icon"
@@ -171,7 +185,7 @@ export const ServiceTable: React.FC<ServiceTableProps> = ({
                         <div
                           className="rich-text-content mt-4"
                           dangerouslySetInnerHTML={{
-                            __html: truncateHtmlToText(item.content, 80),
+                            __html: truncateHtmlToText(item.description, 80),
                           }}
                         />
                         <div>
@@ -179,7 +193,7 @@ export const ServiceTable: React.FC<ServiceTableProps> = ({
                             Mô tả chi tiết
                           </div>
                           <div className="line-clamp-3">
-                            {truncateText(item.description, 100)}
+                            {truncateText(item.content, 100)}
                           </div>
                         </div>
                         <div>

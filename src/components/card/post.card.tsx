@@ -24,7 +24,7 @@ export function PostCard({ blog }: { blog: BlogList }) {
   return (
     <Link
       key={blog.id}
-      href={blog.slug}
+      href={`/blogs/${blog.slug}`}
       className="group cursor-pointer overflow-hidden shadow hover:shadow-lg transition-shadow duration-300"
     >
       <div

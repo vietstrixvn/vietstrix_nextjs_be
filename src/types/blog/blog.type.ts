@@ -5,10 +5,10 @@
  */
 
 import type { BaseModel, Pagination } from '../base/base.type';
-import type { ChildCategory, UserDataComponents } from '../types';
+import { ChildCategory } from '../category/category.type';
+import type { UserDataComponents } from '../types';
 
 export interface BlogList extends BaseModel {
-  id: string;
   title: string;
   content: string;
   description: string;
@@ -38,7 +38,6 @@ export interface BlogCard {
  */
 
 export interface BlogDetail extends BaseModel {
-  id: string;
   title: string;
   slug: string;
   content: string;
@@ -49,4 +48,28 @@ export interface BlogDetail extends BaseModel {
   description: string;
   views: number;
   link?: string | null;
+}
+
+/**
+ * ==========================
+ *  @BLOG_CREATED
+ * ==========================
+ */
+
+export interface CreateBlogItem {
+  title: string;
+  content: string;
+  file: string;
+  category: string;
+  description: string;
+  status: string;
+}
+
+export interface UpdateBlogItem {
+  title?: string;
+  content?: string;
+  file?: string;
+  category?: string;
+  description?: string;
+  status?: string;
 }

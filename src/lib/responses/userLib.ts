@@ -1,5 +1,3 @@
-'use client';
-
 import { useUserList, useUserStatistict } from '@/hooks/auth/useManager';
 import type { Filters } from '@/types';
 

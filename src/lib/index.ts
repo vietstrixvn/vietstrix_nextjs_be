@@ -23,6 +23,10 @@ export * from './responses/blogLib';
 // userLib.ts
 export * from './responses/userLib';
 
+export * from './responses/websiteLib';
+
+export * from './responses/seoLib';
+
 /**
  * ==========================
  *  @ROUTES

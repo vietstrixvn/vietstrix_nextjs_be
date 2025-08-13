@@ -2,31 +2,52 @@ import { z } from 'zod';
 import { zodIsNotEmptyString } from './empty.validator';
 
 export const SEOFormSchema = z.object({
-  site_title: zodIsNotEmptyString('Tiêu đề trang không được để trống'),
-  site_description: zodIsNotEmptyString('Mô tả trang không được để trống'),
-  domain: zodIsNotEmptyString('Tên miền không được để trống'),
+  site_title: zodIsNotEmptyString('Site title cannot be empty'),
+  site_description: zodIsNotEmptyString('Site description cannot be empty'),
+  domain: zodIsNotEmptyString('Domain cannot be empty'),
   keywords: z
-    .array(zodIsNotEmptyString('Từ khóa không được để trống'))
-    .min(1, 'Phải có ít nhất 1 từ khóa'),
+    .array(zodIsNotEmptyString('Keyword cannot be empty'))
+    .min(1, 'At least one keyword is required'),
   google_analytics_id: zodIsNotEmptyString(
-    'Google Analytics ID không được để trống'
+    'Google Analytics ID cannot be empty'
   ),
-  gtm_id: zodIsNotEmptyString('GTM ID không được để trống'),
-  facebook_pixel_id: zodIsNotEmptyString(
-    'Facebook Pixel ID không được để trống'
-  ),
+  gtm_id: zodIsNotEmptyString('GTM ID cannot be empty'),
+  facebook_pixel_id: zodIsNotEmptyString('Facebook Pixel ID cannot be empty'),
   search_console_verification: zodIsNotEmptyString(
-    'Mã xác minh Search Console không được để trống'
+    'Search Console verification code cannot be empty'
+  ),
+});
+
+export const WebsiteFormSchema = z.object({
+  phone_number: zodIsNotEmptyString('Site title cannot be empty'),
+  messenger: zodIsNotEmptyString('Site description cannot be empty'),
+  mail: z
+    .array(zodIsNotEmptyString('Email cannot be empty'))
+    .min(1, 'At least one keyword is required'),
+
+  fb: zodIsNotEmptyString('Domain cannot be empty'),
+
+  ig: zodIsNotEmptyString('Google Analytics ID cannot be empty'),
+  github: zodIsNotEmptyString('GTM ID cannot be empty'),
+  linkedin: zodIsNotEmptyString('Facebook Pixel ID cannot be empty'),
+  upwork: zodIsNotEmptyString(
+    'Search Console verification code cannot be empty'
+  ),
+  pinterest: zodIsNotEmptyString(
+    'Search Console verification code cannot be empty'
+  ),
+  dribbble: zodIsNotEmptyString(
+    'Search Console verification code cannot be empty'
   ),
 });
 
 export const loginFormSchema = z.object({
-  username: zodIsNotEmptyString('Tên đăng nhập không được để trống'),
+  username: zodIsNotEmptyString('Username cannot be empty'),
 
-  password: zodIsNotEmptyString('Mật khẩu không được để trống').refine(
+  password: zodIsNotEmptyString('Password cannot be empty').refine(
     (val) => val.length >= 8,
     {
-      message: 'Mật khẩu phải có ít nhất 8 ký tự',
+      message: 'Password must be at least 8 characters long',
     }
   ),
 });
@@ -40,12 +61,12 @@ export const employeeFormSchema = z.object({
 });
 
 export const blogFormSchema = z.object({
-  title: zodIsNotEmptyString('Tiêu đề không được để trống'),
-  content: zodIsNotEmptyString('Nội dung không được để trống'),
-  description: zodIsNotEmptyString('Mô tả ngắn không được để trống'),
-  status: zodIsNotEmptyString('Trạng thái không được để trống'),
-  category: zodIsNotEmptyString('Danh mục không được để trống'),
-  file: zodIsNotEmptyString('Ảnh không được để trống'),
+  title: zodIsNotEmptyString('Title cannot be empty'),
+  content: zodIsNotEmptyString('Content cannot be empty'),
+  description: zodIsNotEmptyString('Short description cannot be empty'),
+  status: zodIsNotEmptyString('Status cannot be empty'),
+  category: zodIsNotEmptyString('Category cannot be empty'),
+  file: zodIsNotEmptyString('Image cannot be empty'),
 });
 
 export const serviceFormSchema = z.object({
@@ -110,8 +131,12 @@ export const verificationSchema = z.object({
 });
 
 export const categoryFormSchema = z.object({
-  name: zodIsNotEmptyString('name is required'),
+  title: zodIsNotEmptyString('name is required'),
   type: zodIsNotEmptyString('type is required'),
+});
+
+export const categoryUpdateFormSchema = z.object({
+  title: zodIsNotEmptyString('name is required'),
 });
 
 export const projectFormSchema = z.object({

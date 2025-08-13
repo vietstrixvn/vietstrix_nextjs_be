@@ -5,9 +5,9 @@ import { handleAPI, endpoints } from '@/api';
 import { toast } from 'sonner';
 import type {
   Filters,
-  UpdateStatus,
   FetchCategoryListResponse,
   CreateCategoryItem,
+  UpdateCaterory,
 } from '@/types';
 import { buildQueryParams } from '@/utils';
 
@@ -68,25 +68,11 @@ const useCategoryList = (
  **/
 
 const CreateCategory = async (newCategory: CreateCategoryItem) => {
-  const formData = new FormData();
-
-  for (const key in newCategory) {
-    if (Object.prototype.hasOwnProperty.call(newCategory, key)) {
-      const value = newCategory[key as keyof CreateCategoryItem];
-
-      if (Array.isArray(value)) {
-        value.forEach((v) => formData.append(key, v));
-      } else if (typeof value === 'string') {
-        formData.append(key, value);
-      }
-    }
-  }
-
   try {
     const response = await handleAPI(
       `${endpoints.categories}`,
       'POST',
-      formData
+      newCategory
     );
     return response.data;
   } catch (error: any) {
@@ -155,31 +141,15 @@ const useDeleteCategory = () => {
   });
 };
 
-const EditStatus = async (updateStatus: UpdateStatus, postId: string) => {
-  const formData = new FormData();
-
-  for (const key in updateStatus) {
-    if (Object.prototype.hasOwnProperty.call(updateStatus, key)) {
-      const value = updateStatus[key as keyof UpdateStatus];
-
-      if (Array.isArray(value)) {
-        // If the value is an array, append each element
-        value.forEach((v) => formData.append(key, v));
-      } else if (typeof value === 'string') {
-        // If the value is a string, append to FormData
-        formData.append(key, value);
-      }
-    }
-  }
-
+const EditStatus = async (updateCategory: UpdateCaterory, cateId: string) => {
   try {
-    if (!endpoints.categoryStatus) {
+    if (!endpoints.categoryEdit) {
       throw null;
     }
 
-    const url = endpoints.categoryStatus.replace(':id', postId);
+    const url = endpoints.categoryEdit.replace(':id', cateId);
 
-    const response = await handleAPI(url, 'PATCH', formData);
+    const response = await handleAPI(url, 'PATCH', updateCategory);
     return response.data;
   } catch (error: any) {
     throw new Error(
@@ -188,21 +158,21 @@ const EditStatus = async (updateStatus: UpdateStatus, postId: string) => {
   }
 };
 
-const useUpdateCategoryStatus = () => {
+const useUpdateCategory = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
-      updateStatus,
-      postId,
+      updateCategory,
+      cateId,
     }: {
-      updateStatus: UpdateStatus;
-      postId: string;
+      updateCategory: UpdateCaterory;
+      cateId: string;
     }) => {
-      return EditStatus(updateStatus, postId);
+      return EditStatus(updateCategory, cateId);
     },
     onSuccess: () => {
-      toast.success('Update status successfully!');
+      toast.success('Update category successfully!');
       queryClient.invalidateQueries({ queryKey: ['categoryList'] });
     },
   });
@@ -212,5 +182,5 @@ export {
   useCategoryList,
   useCreateCategory,
   useDeleteCategory,
-  useUpdateCategoryStatus,
+  useUpdateCategory,
 };

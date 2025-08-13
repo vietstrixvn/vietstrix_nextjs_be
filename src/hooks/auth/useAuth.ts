@@ -3,22 +3,12 @@ import type { ChangePassword, VerifyCode } from '@/types/types';
 import { endpoints, handleAPI } from '@/api';
 
 const ChangePasswordAuth = async (changePassword: ChangePassword) => {
-  const formData = new FormData();
-
-  for (const key in changePassword) {
-    const value = changePassword[key as keyof ChangePassword];
-
-    if (value) {
-      formData.append(key, value as string);
-    }
-  }
-
   try {
     // Gửi FormData tới backend
     const response = await handleAPI(
       `${endpoints.changePassword}`,
       'POST',
-      formData
+      changePassword
     );
     return response.data;
   } catch (error: any) {
@@ -46,20 +36,11 @@ const useChangePassword = () => {
 };
 
 const GetVerifyCode = async (verifyCode: VerifyCode) => {
-  const formData = new FormData();
-
-  for (const key in verifyCode) {
-    const value = verifyCode[key as keyof VerifyCode];
-
-    if (value) {
-      formData.append(key, value as string);
-    }
-  }
   try {
     const response = await handleAPI(
       `${endpoints.verifyCode}`,
       'POST',
-      formData
+      verifyCode
     );
     return response.data;
   } catch (error: any) {

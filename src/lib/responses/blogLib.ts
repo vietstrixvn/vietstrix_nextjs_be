@@ -1,7 +1,4 @@
-'use client';
-
 import type { Filters } from '@/types';
-
 import { useBlogDetail, useBlogList } from '@/hooks/blog/useBlog';
 
 export const BlogList = (

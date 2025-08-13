@@ -4,6 +4,7 @@ import type {
   FetchServiceListResponse,
   CreateServiceItem,
   ServiceDetail,
+  UpdateServiceItem,
 } from '@/types';
 import type { UpdateStatus, Filters } from '@/types';
 import { toast } from 'sonner';
@@ -144,7 +145,10 @@ const useDeleteService = () => {
   });
 };
 
-const EditStatus = async (updateStatus: UpdateStatus, postId: string) => {
+const EditService = async (
+  updateService: UpdateServiceItem,
+  postId: string
+) => {
   try {
     if (!endpoints.service) {
       throw null;
@@ -152,7 +156,7 @@ const EditStatus = async (updateStatus: UpdateStatus, postId: string) => {
 
     const url = endpoints.service.replace(':id', postId);
 
-    const response = await handleAPI(url, 'PATCH', updateStatus);
+    const response = await handleAPI(url, 'PATCH', updateService);
     return response.data;
   } catch (error: any) {
     throw new Error(
@@ -161,18 +165,18 @@ const EditStatus = async (updateStatus: UpdateStatus, postId: string) => {
   }
 };
 
-const useUpdateServiceStatus = () => {
+const useUpdateService = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
-      updateStatus,
+      updateService,
       postId,
     }: {
-      updateStatus: UpdateStatus;
+      updateService: UpdateServiceItem;
       postId: string;
     }) => {
-      return EditStatus(updateStatus, postId);
+      return EditService(updateService, postId);
     },
     onSuccess: () => {
       toast.success('Update status successfully!');
@@ -215,6 +219,6 @@ export {
   useServiceList,
   useServiceDetail,
   useDeleteService,
-  useUpdateServiceStatus,
+  useUpdateService,
   useCreateService,
 };
