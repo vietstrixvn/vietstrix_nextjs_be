@@ -15,7 +15,7 @@ import {
   Menu,
 } from 'lucide-react';
 import SectionHeader from '@/components/design/SectionHeader';
-import AnimatedFeatures from '../layouts/default-layout/home/WhatWeDo';
+import AnimatedFeatures from '../pages/public/home/WhatWeDo';
 import { Container } from '../container/container';
 
 export default function AnimationComponents() {

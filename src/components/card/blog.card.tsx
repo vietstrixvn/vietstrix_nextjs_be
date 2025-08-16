@@ -1,9 +1,13 @@
-import { BlogList } from '@/types';
+import type { BlogList } from '@/types';
 import { CustomImage } from '@/components/design/image.component';
+import Link from 'next/link';
 
 export function BlogCard({ blog }: { blog: BlogList }) {
   return (
-    <div className="group cursor-pointer overflow-hidden g">
+    <Link
+      href={`/blogs/${blog.slug}`}
+      className="group cursor-pointer overflow-hidden g"
+    >
       <div className="relative h-[280px] overflow-hidden">
         <CustomImage
           src={blog.file || '/icons/logo.svg'}
@@ -29,6 +33,6 @@ export function BlogCard({ blog }: { blog: BlogList }) {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }

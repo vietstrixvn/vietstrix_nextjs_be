@@ -10,7 +10,7 @@ import { StatsSection } from '@/components/design/StatsSection';
 import IntroSection from '@/components/pages/public/introSection';
 import { ContactForm } from '@/components/form/ContactForm';
 import AgencyPortfolio from '@/components/pages/public/our-team/AgencyPortfolio';
-import TechnologyExpertise from '@/components/layouts/default-layout/home/TechnologyExpertise';
+import TechnologyExpertise from '@/components/pages/public/home/TechnologyExpertise';
 import FAQSection from '@/components/container/FaQ';
 import EnhancedHeroBanner from '@/components/container/enhanced-hero-banner';
 import { Feedback } from '@/components/pages/public/our-team/feedback';

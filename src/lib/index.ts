@@ -39,3 +39,4 @@ export * from './routes/routes';
 export * from './routes/navigation.route';
 
 export * from './utils';
+export * from './tiptap-utils';

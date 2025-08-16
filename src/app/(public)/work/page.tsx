@@ -1,6 +1,6 @@
 import AnimationComponents from '@/components/animation/Animaton';
 import EnhancedHeroBanner from '@/components/container/enhanced-hero-banner';
-import TechnologyExpertise from '@/components/layouts/default-layout/home/TechnologyExpertise';
+import TechnologyExpertise from '@/components/pages/public/home/TechnologyExpertise';
 import IterativeProcess from '@/components/pages/public/work/iterative-process';
 import { SEO } from '@/components/SEO';
 

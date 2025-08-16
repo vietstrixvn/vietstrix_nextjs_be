@@ -24,15 +24,6 @@ const WhySection = () => {
             animationType="slideUp"
             stagger={0.01}
           />
-          {/* <motion.h1
-            className="text-4xl md:text-5xl font-bold"
-            whileHover={{ scale: 1.02 }}
-            transition={{ type: 'spring', stiffness: 300 }}
-          >
-            YOUR BRAND ≠ A TEMPLATE.
-            <br />
-            LET’S BUILD SOMETHING REAL.
-          </motion.h1> */}
 
           <motion.p
             className="text-gray-400 text-sm max-w-md"

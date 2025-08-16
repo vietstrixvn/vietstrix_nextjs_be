@@ -47,7 +47,6 @@ export const ROUTES: Readonly<RouteMap> = deepFreeze({
   HOME: '/',
   COMPANY: '/our-team',
   CONTACT: '/contact',
-
   WORK: '/work',
   BLOG: {
     ROOT: '/blogs',
@@ -77,3 +76,23 @@ export const ROUTES: Readonly<RouteMap> = deepFreeze({
   ADMIN_CONTACT: '',
   ADMIN_WEBSITE: '/website',
 } as const);
+
+// * an array of roues that are public
+// * These roues do not require authentication
+// @ @type {string[]}
+export const publicRoutes = [
+  '/',
+  '/blogs',
+  '/services',
+  '/work',
+  '/our-team',
+  '/projects',
+  '/sign-in',
+  '/admin/unauthorized',
+];
+
+/**
+ * The default redirect path after logging in
+ * @type {string}
+ */
+export const REDIRECT_WHEN_NOT_AUTHENTICATED_ROUTE = '/sign-in';

@@ -15,6 +15,7 @@ import {
   refreshWithMutex,
   logDebug,
   logWarn,
+  decodeJWT,
 } from '@/utils';
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -64,6 +65,9 @@ export const useAuthStore = create<AuthState>()(
             throw new Error('Login failed');
 
           const token = data.data.token;
+          // const expired = data.data.expired;
+
+          // if (!expired) throw new Error('No expired time from server');
           if (isTokenExpired(token)) throw new Error('Expired token');
 
           TokenManager.set(token);
@@ -72,10 +76,10 @@ export const useAuthStore = create<AuthState>()(
           if (!['admin', 'manager'].includes(userData?.role))
             throw new Error('No access');
 
-          CookieManager.set('isAuthenticated', 'true', {
-            expires: 7,
-            sameSite: 'Lax',
-          });
+          // CookieManager.set('token_expired', expired, {
+          //   expires: new Date(expired),
+          //   sameSite: 'Lax',
+          // });
           CookieManager.set('userRole', userData.role, {
             expires: 7,
             sameSite: 'Lax',
@@ -158,14 +162,12 @@ export const useAuthStore = create<AuthState>()(
       checkAuth: async (shouldRedirect = true, maxRetry = 1) => {
         const clearAuth = () => {
           TokenManager.remove();
-          CookieManager.delete('isAuthenticated');
+          CookieManager.delete('token_expired');
           set({ isAuthenticated: false, userInfo: null, loading: false });
         };
 
-        const hasAuthCookie = CookieManager.exists('isAuthenticated');
         let token = TokenManager.get();
-
-        if (!hasAuthCookie && !token) {
+        if (!token) {
           clearAuth();
           if (shouldRedirect) window.location.href = '/sign-in';
           return;
@@ -174,10 +176,13 @@ export const useAuthStore = create<AuthState>()(
         try {
           set({ loading: true });
 
-          if (token && isTokenExpired(token)) {
+          // Check JWT expired
+          if (isTokenExpired(token)) {
             const ref = await refreshWithMutex();
-            if (ref?.token) token = ref.token;
-            else {
+            if (ref?.token) {
+              token = ref.token;
+              TokenManager.set(token);
+            } else {
               clearAuth();
               if (shouldRedirect) window.location.href = '/sign-in';
               return;
@@ -194,20 +199,28 @@ export const useAuthStore = create<AuthState>()(
               return;
             }
 
-            CookieManager.set('isAuthenticated', 'true', {
-              expires: 7,
-              secure: isProd,
-              sameSite: 'Lax',
-            });
+            // Lưu expired cookie chỉ để UI sử dụng
+            const decoded = decodeJWT(token);
+            if (decoded?.exp) {
+              const expiredDate = new Date(decoded.exp * 1000);
+              CookieManager.set('token_expired', expiredDate.toISOString(), {
+                expires: expiredDate,
+                secure: isProd,
+                sameSite: 'Lax',
+              });
+            }
+
             CookieManager.set('userRole', role, {
               expires: 7,
               secure: isProd,
               sameSite: 'Lax',
             });
+
             set({ isAuthenticated: true, userInfo: data.data, loading: false });
             return;
           }
 
+          // Token hợp lệ nhưng API trả lỗi quyền hạn
           if (
             (response.status === 401 || response.status === 403) &&
             maxRetry > 0
