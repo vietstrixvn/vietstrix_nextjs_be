@@ -55,6 +55,10 @@ export default {
           '5': 'hsl(var(--chart-5))',
         },
       },
+      aspectRatio: {
+        'image-main': '16 / 9',
+        'image-cinema': '21 / 9',
+      },
       fontSize: {
         '10': '10px',
         '12': '12px',

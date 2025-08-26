@@ -1,5 +1,5 @@
-import type { Metadata } from 'next';
 import { siteBaseUrl } from '@/constants/appInfos';
+import type { Metadata } from 'next';
 
 // Schema types for better TypeScript support
 interface BaseSchema {
@@ -43,9 +43,18 @@ export type SEOConfig = {
   articleSection?: string;
   tags?: string[];
   // Schema.org specific
-  schemaType?: 'WebPage' | 'Article' | 'Product' | 'Organization';
+  schemaType?: 'WebPage' | 'Article' | 'Product' | 'Organization' | 'HowTo';
   breadcrumbs?: Array<{ name: string; url: string }>;
   faq?: Array<{ question: string; answer: string }>;
+  howTo?: {
+    '@context': string;
+    '@type': string;
+    name: string;
+    step: {
+      '@type': string;
+      text: string;
+    }[];
+  } | null;
 };
 
 export function createMetadata({
@@ -216,7 +225,7 @@ export function createMetadata({
           '@type': 'Organization',
           name: siteName,
           url: siteBaseUrl,
-          logo: `${siteBaseUrl}/logo.png`,
+          logo: `/favicon.ico`,
           sameAs: [
             'https://facebook.com/yourpage',
             'https://twitter.com/yourhandle',

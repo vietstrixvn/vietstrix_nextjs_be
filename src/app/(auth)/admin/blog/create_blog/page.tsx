@@ -1,14 +1,12 @@
 'use client';
 
-import type React from 'react';
-
-import { useForm } from 'react-hook-form';
-import type { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import type { z } from 'zod';
 
-import { Button } from '@/components/ui/button';
 import {
+  AdminContainer,
   Form,
   FormControl,
   FormDescription,
@@ -16,31 +14,30 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-  CardFooter,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  AdminContainer,
 } from '@/components';
+import { Heading } from '@/components/design/Heading';
+import ImageUploadPreview from '@/components/design/image_upload';
+import { RichTextEditor } from '@/components/tiptap/rich-text-editor';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useCreateBlog } from '@/hooks/blog/useBlog';
-import type { CreateBlogItem } from '@/types';
 import { CategoryList } from '@/lib/responses/categoriesLib';
-import { useRouter } from 'next/navigation';
-import { Heading } from '@/components/design/Heading';
+import type { CreateBlogItem } from '@/types';
 import { blogFormSchema } from '@/utils';
-import { RichTextEditor } from '@/components/tiptap/rich-text-editor';
-import ImageUploadPreview from '@/components/design/image_upload';
+import { useRouter } from 'next/navigation';
 
 export default function NewBlogPost() {
   const router = useRouter();
   const { mutate: createBlog } = useCreateBlog();
   const { categories, isLoading, isError } = CategoryList(
     1,
-    { limit: 20, type: 'blogs' },
+    { page_size: 20, type: 'blogs' },
     0
   );
   const [isSubmitting, setIsSubmitting] = useState(false);

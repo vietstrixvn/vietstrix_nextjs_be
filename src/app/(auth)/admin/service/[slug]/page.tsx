@@ -1,12 +1,10 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { AdminContainer, CustomImage, LoadingSpin } from '@/components';
+import { BackButton } from '@/components/button';
 import { NoResultsFound } from '@/components/design/NoResultsFound';
-import { formatSmartDate } from '@/utils/formatTimeAgo';
-import { BackButton, CustomImage, LoadingSpin } from '@/components';
 import { ServiceDetailData } from '@/lib';
-import { AdminContainer } from '@/components/wrappers/admin.wrapper';
-import { AdminBreadCrumb } from '@/components/layout/AdminLayout/admin.breadcrumb';
+import { useParams } from 'next/navigation';
 
 export default function Page() {
   const routerParams = useParams();
@@ -49,9 +47,6 @@ export default function Page() {
   }
   return (
     <AdminContainer>
-      <div className="mb-8">
-        <AdminBreadCrumb title="Dịch Vụ" />
-      </div>
       <BackButton href="/admin/service" />
 
       <div className="mx-auto">
@@ -65,11 +60,11 @@ export default function Page() {
             <div className="mb-2 sm:mb-0 flex flex-wrap items-center gap-1 text-sm text-gray-600">
               <span>Unien</span>
               <span>-</span>
-              <span>
+              {/* <span>
                 {service?.createdAt
                   ? formatSmartDate(service.createdAt)
                   : 'No date available'}
-              </span>
+              </span> */}
               <span>-</span>
               <span>{service?.category?.name}</span>
             </div>
@@ -90,7 +85,7 @@ export default function Page() {
           <div
             className="rich-text-content mt-4"
             dangerouslySetInnerHTML={{
-              __html: service.content ?? '',
+              __html: service.description ?? '',
             }}
           />
         </div>

@@ -1,32 +1,32 @@
 'use client';
 
+import { Icons } from '@/assets/icons/icons';
 import {
+  Badge,
+  Button,
+  CustomImage,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-  Badge,
-  Button,
-  CustomImage,
 } from '@/components';
-import { useRouter } from 'next/navigation';
-import { Icons } from '@/assets/icons/icons';
-import React, { useState } from 'react';
 import { useDeleteBlog, useUpdateBlog } from '@/hooks';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 // import { ConfirmDialog } from '../design/Dialog';
-import type { BlogTableProps } from '@/types/blog/blog.prob';
-import { BlogColumns } from '@/types/blog/blog.colum';
-import { toast } from 'sonner';
-import type { VisibilityCategoryOption } from '@/types';
-import { truncateText, truncateHtmlToText, formatSmartDate } from '@/utils';
 import { useAuthStore } from '@/store';
-import { LoadingSpin } from '../loading/loading';
-import { ErrorLoading } from '../loading/error';
+import type { VisibilityCategoryOption } from '@/types';
+import { BlogColumns } from '@/types/blog/blog.colum';
+import type { BlogTableProps } from '@/types/blog/blog.prob';
+import { formatSmartDate, truncateHtmlToText, truncateText } from '@/utils';
+import { toast } from 'sonner';
+import { ConfirmDialog } from '../design/Dialog';
 import { NoResultsFound } from '../design/NoResultsFound';
 import { SelectStatus, statusColorMap } from '../design/status.change';
-import { ConfirmDialog } from '../design/Dialog';
+import { ErrorLoading } from '../loading/error';
+import { LoadingSpin } from '../loading/loading';
 
 export const BlogTable: React.FC<BlogTableProps> = ({
   blogs,
@@ -102,9 +102,9 @@ export const BlogTable: React.FC<BlogTableProps> = ({
                     <TableRow key={item.id} className="border-b">
                       <TableCell className="font-medium">{index + 1}</TableCell>
                       <TableCell className="p-0">
-                        <div className="relative w-full h-full min-h-[120px]">
+                        <div className="relative w-full aspect-image-main">
                           <CustomImage
-                            src={item.file}
+                            src={item.file || '/placeholder.svg'}
                             alt="Blog Image"
                             className="object-cover"
                             fill

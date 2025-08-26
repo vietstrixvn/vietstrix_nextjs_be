@@ -1,21 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Input, Button, Label } from '@/components';
-import type { CreateManagerData } from '@/types';
-import { toast } from 'sonner';
-import { useCreateManager } from '@/hooks/auth/useManager';
-import { Heading } from '@/components/design/Heading';
+import { Button, Input, Label } from '@/components';
 import { AdminContainer } from '@/components/container/admin.contaier';
+import { Heading } from '@/components/design/Heading';
+import { useCreateManager } from '@/hooks/auth/useManager';
+import type { CreateManagerData } from '@/types';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { toast } from 'sonner';
 
 const Page = () => {
   const { mutate: createManager } = useCreateManager();
+  const router = useRouter();
   const [managerData, setManagerData] = useState<CreateManagerData>({
     username: '',
     name: '',
     email: '',
     password: '',
-    phoneNumber: '',
+    phone_number: '',
   });
 
   const [errors, setErrors] = useState<
@@ -29,37 +31,37 @@ const Page = () => {
 
     // Validate username
     if (!managerData.username.trim()) {
-      newErrors.username = 'Tên đăng nhậ là bắt buộc';
+      newErrors.username = 'Username is required';
       isValid = false;
     }
 
     // Validate name
     if (!managerData.name.trim()) {
-      newErrors.name = 'Tên là bắt buộc';
+      newErrors.name = 'Name is required';
       isValid = false;
     }
 
     // Validate email
     if (!managerData.email.trim()) {
-      newErrors.email = 'Email là bắt buộc';
+      newErrors.email = 'Email is required';
       isValid = false;
     } else if (!/\S+@\S+\.\S+/.test(managerData.email)) {
-      newErrors.email = 'Email không hợp lệ';
+      newErrors.email = 'Email is invalid';
       isValid = false;
     }
 
     // Validate password
     if (!managerData.password.trim()) {
-      newErrors.password = 'Mật khẩu là bắt buộc';
+      newErrors.password = 'Password is required';
       isValid = false;
     } else if (managerData.password.length < 6) {
-      newErrors.password = 'Mật khẩu phải có ít nhất 6 ký tự';
+      newErrors.password = 'Password must be at least 6 characters';
       isValid = false;
     }
 
     // Validate phone number
-    if (!managerData.phoneNumber.trim()) {
-      newErrors.phoneNumber = 'Số điện thoại là bắt buộc';
+    if (!managerData.phone_number.trim()) {
+      newErrors.phone_number = 'Phone number is required';
       isValid = false;
     }
 
@@ -69,7 +71,7 @@ const Page = () => {
 
   const handleCreateManager = async () => {
     if (!validateForm()) {
-      toast.error('Vui lòng sửa lỗi xác thực');
+      toast.error('Please fix the authentication error');
       return;
     }
 
@@ -83,10 +85,10 @@ const Page = () => {
         name: '',
         email: '',
         password: '',
-        phoneNumber: '',
+        phone_number: '',
       });
       // Optionally navigate to another page
-      // router.push('/managers');
+      router.push('/admin/user');
     } catch (error) {
       console.error(error);
       // Error is already handled by the mutation hook
@@ -115,9 +117,12 @@ const Page = () => {
     <AdminContainer>
       {/* <BackButton href="/admin/user" /> */}
       <div className="flex justify-between items-center">
-        <Heading name="Tạo quản trị viên" desc="Tạo tài khoản quản lý mới" />
+        <Heading
+          name="Create administrator"
+          desc="Create new management account"
+        />
         <Button onClick={handleCreateManager} disabled={loading}>
-          {loading ? 'Creating...' : 'Tạo'}
+          {loading ? 'Creating...' : 'Create'}
         </Button>
       </div>
       <form
@@ -128,11 +133,11 @@ const Page = () => {
         }}
       >
         {[
-          { label: 'Tên đăng nhập', name: 'username' },
-          { label: 'Tên', name: 'name' },
+          { label: 'Username', name: 'username' },
+          { label: 'Full Name', name: 'name' },
           { label: 'Email', name: 'email', type: 'email' },
           { label: 'Password', name: 'password', type: 'password' },
-          { label: 'Số điện thoại', name: 'phoneNumber' },
+          { label: 'Tel', name: 'phone_number' },
         ].map(({ label, name, type = 'text' }) => (
           <div
             key={name}

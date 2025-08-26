@@ -1,9 +1,9 @@
 // components/layouts/default-layout/ScrollSection.tsx
 'use client';
 
-import { ReactNode, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
 import { ScrollSectionProps } from '@/types';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 
 export default function ScrollSection({ children, id }: ScrollSectionProps) {
   const ref = useRef(null);

@@ -1,21 +1,20 @@
 'use client';
 
-import type React from 'react';
 import { useCallback, useState } from 'react';
 
-import { ContactList } from '@/lib';
 import { useDeleteContact } from '@/hooks';
+import { ContactList } from '@/lib';
 
 //Components
 import { AdminContainer } from '@/components';
 
 import { ConfirmDialog } from '@/components/design/Dialog';
 // import SelectStatus from '@/components/pages/admin/contact/selectStatus';
-import { CustomPagination } from '@/components/design/pagination';
-import { Heading } from '@/components/design/Heading';
-import { ContactTable } from '@/components/tables/contact.table';
-import { ContactFilter } from '@/components/fliters/contact.filter';
 import Header from '@/components/design/Header';
+import { Heading } from '@/components/design/Heading';
+import { CustomPagination } from '@/components/design/pagination';
+import { ContactFilter } from '@/components/fliters/contact.filter';
+import { ContactTable } from '@/components/tables/contact.table';
 
 export default function ProductManager() {
   const [selectedStatus, setSelectedStatus] = useState<string>();
@@ -44,7 +43,7 @@ export default function ProductManager() {
 
   const params = {
     ...(selectedStatus !== 'all' && { status: selectedStatus }),
-    limit: pageSize,
+    page_size: pageSize,
     ...(selectedService !== 'all' && { service_id: selectedStatus }),
   };
 

@@ -1,10 +1,9 @@
 'use client';
 
-import { useRef, useState } from 'react';
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
 import { CustomImage } from '@/components/design/image.component';
 import { CaseStudyCardProps } from '@/types';
+import { motion, useInView } from 'framer-motion';
+import { useRef, useState } from 'react';
 
 export function CaseStudyCard({ study, index }: CaseStudyCardProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -38,9 +37,9 @@ export function CaseStudyCard({ study, index }: CaseStudyCardProps) {
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
       >
-        <div className="aspect-[4/3] relative">
+        <div className="aspect-image-main relative">
           <CustomImage
-            src={study.file || '/icons/logo.svg'}
+            src={study.file || '/placeholder.svg'}
             alt="VIETSTRIX Casestudy"
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
@@ -78,7 +77,7 @@ export function CaseStudyCard({ study, index }: CaseStudyCardProps) {
         <div className="mb-4">
           <div className="relative pl-6 italic text-gray-600">
             <span className="absolute left-0 top-0 text-3xl text-gray-300">
-              "
+              &quot;
             </span>
             <p>{study.content}</p>
           </div>

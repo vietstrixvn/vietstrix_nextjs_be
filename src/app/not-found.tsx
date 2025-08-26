@@ -1,8 +1,8 @@
-import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
-import { ROUTES } from '@/lib';
-import DefaultLayout from '@/components/layouts/default-layout/default.layout';
 import { Container } from '@/components';
+import DefaultLayout from '@/components/layouts/default-layout/default.layout';
+import { ROUTES } from '@/lib';
+import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 export default function NotFound() {
   return (
@@ -19,7 +19,7 @@ export default function NotFound() {
             className="text-4xl font-bold animate-fade-in-up"
             style={{ animationDelay: '0.4s', animationDuration: '0.8s' }}
           >
-            Oh no! This page doesn't exist.
+            Oh no! This page doesn&apos;t exist.
           </h2>
           <p
             className="text-muted-foreground animate-fade-in-up"
@@ -28,8 +28,8 @@ export default function NotFound() {
             The link you are visiting may be incorrect or the page may have been
             removed.
             <br />
-            But don't worry, there are still many great things waiting for you
-            to discover!
+            But don&apos;t worry, there are still many great things waiting for
+            you to discover!
           </p>
           <div
             className="flex flex-col items-center justify-center gap-4 sm:flex-row animate-fade-in-up"

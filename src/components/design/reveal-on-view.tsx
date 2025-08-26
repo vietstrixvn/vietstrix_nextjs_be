@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { inView } from 'motion';
 import type { CSSProperties } from 'react';
-import { animate, inView, stagger } from 'motion';
+import { useEffect, useRef } from 'react';
 
 type RevealOnViewProps = {
   as?: keyof React.JSX.IntrinsicElements;

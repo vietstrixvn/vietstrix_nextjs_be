@@ -1,13 +1,14 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type {
-  FetchProjectListResponse,
-  CreateProjectItem,
-  ProjectDetail,
-} from '@/types';
 import { endpoints, handleAPI } from '@/api';
-import { toast } from 'sonner';
-import type { UpdateStatus, Filters } from '@/types';
+import type {
+  CreateProjectItem,
+  FetchProjectListResponse,
+  Filters,
+  ProjectDetail,
+  UpdateProjectItem,
+} from '@/types';
 import { buildQueryParams } from '@/utils';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 /**
  * ==========================
@@ -146,31 +147,15 @@ const useDeleteProject = () => {
   });
 };
 
-const EditStatus = async (updateStatus: UpdateStatus, postId: string) => {
-  const formData = new FormData();
-
-  for (const key in updateStatus) {
-    if (Object.prototype.hasOwnProperty.call(updateStatus, key)) {
-      const value = updateStatus[key as keyof UpdateStatus];
-
-      if (Array.isArray(value)) {
-        // If the value is an array, append each element
-        value.forEach((v) => formData.append(key, v));
-      } else if (typeof value === 'string') {
-        // If the value is a string, append to FormData
-        formData.append(key, value);
-      }
-    }
-  }
-
+const EditStatus = async (updatePost: UpdateProjectItem, postId: string) => {
   try {
-    if (!endpoints.projectStatus) {
+    if (!endpoints.project) {
       throw null;
     }
 
-    const url = endpoints.projectStatus.replace(':id', postId);
+    const url = endpoints.project.replace(':id', postId);
 
-    const response = await handleAPI(url, 'PATCH', formData);
+    const response = await handleAPI(url, 'PATCH', updatePost);
     return response.data;
   } catch (error: any) {
     throw new Error(
@@ -179,21 +164,21 @@ const EditStatus = async (updateStatus: UpdateStatus, postId: string) => {
   }
 };
 
-const useUpdateProjectStatus = () => {
+const useUpdateProject = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async ({
-      updateStatus,
+      updatePost,
       postId,
     }: {
-      updateStatus: UpdateStatus;
+      updatePost: UpdateProjectItem;
       postId: string;
     }) => {
-      return EditStatus(updateStatus, postId);
+      return EditStatus(updatePost, postId);
     },
     onSuccess: () => {
-      toast.success('Update status successfully!');
+      toast.success('Update project successfully!');
       queryClient.invalidateQueries({ queryKey: ['projectList'] });
     },
   });
@@ -230,9 +215,9 @@ const useCreateProject = () => {
 };
 
 export {
-  useProjectList,
-  useProjectDetail,
-  useDeleteProject,
-  useUpdateProjectStatus,
   useCreateProject,
+  useDeleteProject,
+  useProjectDetail,
+  useProjectList,
+  useUpdateProject,
 };

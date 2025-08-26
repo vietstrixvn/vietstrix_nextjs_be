@@ -4,7 +4,6 @@ import {
   Button,
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -16,15 +15,15 @@ import {
   FormMessage,
   Input,
 } from '@/components';
-import { Loader2, Upload, Check } from 'lucide-react';
+import type { UpdateCategoryDialogProps, UpdateCaterory } from '@/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import type { UpdateCategoryDialogProps, UpdateCaterory } from '@/types';
 // import { NewsCategoryError } from '@/constants';
-import { categoryUpdateFormSchema } from '@/utils';
 import { useUpdateCategory } from '@/hooks';
+import { categoryUpdateFormSchema } from '@/utils';
 
 export default function UpdateCategoryDialog({
   category,

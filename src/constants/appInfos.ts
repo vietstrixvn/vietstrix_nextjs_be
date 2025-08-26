@@ -37,16 +37,14 @@ export const appInfo = {
 
 export const siteBaseUrl = 'https://vietstrix.com';
 
-// ✅ Tách viewport ra export riêng
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
-  themeColor: appInfo.themeColor, // themeColor chuyển qua đây
+  themeColor: appInfo.themeColor,
 };
 
-// ✅ Metadata giờ không chứa themeColor & viewport
 export const metadata: Metadata = {
   title: appInfo.title,
   description: appInfo.description,
@@ -54,8 +52,8 @@ export const metadata: Metadata = {
   applicationName: appInfo.title,
   generator: 'Next.js',
   icons: {
-    icon: appInfo.logo,
-    apple: appInfo.logo,
+    icon: '/favicon.ico',
+    apple: '/favicon.ico',
     shortcut: appInfo.logo,
   },
   openGraph: {
@@ -108,7 +106,6 @@ export const metadata: Metadata = {
   publisher: 'Vietstrix',
 };
 
-// Function để tạo metadata cho từng page
 export function PageMetadata(
   pageTitle: string,
   pageDescription?: string

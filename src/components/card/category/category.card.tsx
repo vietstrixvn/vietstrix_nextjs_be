@@ -1,10 +1,10 @@
 'use client';
 
 import { CategoryList } from '@/lib';
-import { NoResultsFound } from '../design/NoResultsFound';
 import { CategoryCardProps } from '@/types';
 import { useCallback } from 'react';
-import { LoadingSpin } from '../loading/loading';
+import { NoResultsFound } from '../../design/NoResultsFound';
+import { LoadingSpin } from '../../loading/loading';
 
 export const CategoryRecent: React.FC<CategoryCardProps> = ({
   onCategorySelect,
@@ -14,7 +14,7 @@ export const CategoryRecent: React.FC<CategoryCardProps> = ({
   // Create params for category fetching
   const params = {
     type: type,
-    limit: 10,
+    page_size: 10,
   };
 
   const { categories, isLoading, isError } = CategoryList(1, params, 0);
@@ -63,7 +63,7 @@ export const CategoryRecent: React.FC<CategoryCardProps> = ({
       {categories.map((category, index) => (
         <li key={category.id || index} className="mb-4">
           <div
-            onClick={() => handleCategoryClick(category.slug, category.title)}
+            onClick={() => handleCategoryClick(category.id)}
             className={`cursor-pointer ${
               selectedCategory === category.id ? 'text-main' : 'text-gray-700'
             }`}

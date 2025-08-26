@@ -1,22 +1,18 @@
 'use client';
 
-import { useParams } from 'next/navigation';
-import { useAuthStore } from '@/store/authStore';
 import { BackButton } from '@/components/button/back.button';
-import { ProjectDetailData } from '@/lib/responses/projectLib';
-import { CardContent } from '@/components/ui/card';
-import { Calendar, Clock, Edit, User } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { CardContent } from '@/components/ui/card';
+import { ProjectDetailData } from '@/lib/responses/projectLib';
 import { Separator } from '@radix-ui/react-separator';
+import { User } from 'lucide-react';
+import { useParams } from 'next/navigation';
 
-import { formatDistanceToNow, format, differenceInHours } from 'date-fns';
 import { CustomImage, LoadingSpin } from '@/components';
 
 export default function Page() {
   const { slug } = useParams();
   const blogSlug = Array.isArray(slug) ? slug[0] : slug || '';
-  const userInfo = useAuthStore((state) => state.userInfo);
 
   const { project, isLoading, isError } = ProjectDetailData(blogSlug, 0);
 
@@ -42,26 +38,10 @@ export default function Page() {
                   {project.status}
                 </Badge>
               </div>
-              {userInfo?.role === 'admin' && (
-                <div className="flex items-center space-x-2">
-                  <Button variant="outline" size="sm">
-                    <Edit className="mr-2 h-4 w-4" />
-                    Edit Project
-                  </Button>
-                  {/* <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={handleDeleteClick}
-                  >
-                    <Trash className="mr-2 h-4 w-4" />
-                    Delete
-                  </Button> */}
-                </div>
-              )}
             </div>
             <CardContent>
               <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4">
-                <div className="flex items-center">
+                {/* <div className="flex items-center">
                   <Calendar className="mr-1 h-4 w-4" />
                   Created:{' '}
                   {(() => {
@@ -100,7 +80,7 @@ export default function Page() {
                       return format(date, 'yyyy/MM/dd');
                     }
                   })()}
-                </div>
+                </div> */}
 
                 <div className="flex items-center">
                   <User className="mr-1 h-4 w-4" />
@@ -130,9 +110,9 @@ export default function Page() {
             <span className="uppercase text-xs font-semibold tracking-wider text-gray-500">
               SERVICE
             </span>
-            <p className="font-bold text-lime-500 text-xl">
+            {/* <p className="font-bold text-lime-500 text-xl">
               {project?.service?.map((cat) => cat.title).join(', ')}
-            </p>
+            </p> */}
           </div>
           <div className="mb-12 bg-gray-200 rounded-md overflow-hidden">
             <div className="aspect-video relative">

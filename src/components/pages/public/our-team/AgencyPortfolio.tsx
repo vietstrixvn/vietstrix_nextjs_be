@@ -1,10 +1,17 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
-import { ArrowUpRight } from 'lucide-react';
+import { Container } from '@/components/container/container';
 import SectionHeader from '@/components/design/SectionHeader';
-import Link from 'next/link';
-import Image from 'next/image';
+import {
+  ArrowUpRight,
+  Code,
+  FileText,
+  Layers,
+  Rocket,
+  Target,
+  Users,
+} from 'lucide-react';
+import { useEffect, useRef } from 'react';
 
 export default function AgencyPortfolio() {
   const missionRef = useRef<HTMLDivElement>(null);
@@ -30,6 +37,45 @@ export default function AgencyPortfolio() {
     return () => observer.disconnect();
   }, []);
 
+  const philosophyItems = [
+    {
+      icon: FileText,
+      title: 'Development Orientation',
+      description:
+        'We build stuff that actually works and lasts — not quick hacks. Every tech choice we make is to push you closer to your growth goals.',
+    },
+    {
+      icon: Target,
+      title: 'Ongoing Discovery',
+      description:
+        'Good delivery comes from good discovery. That’s why we keep learning non-stop — about your users, your market, and what’s changing along the way.',
+    },
+    {
+      icon: Code,
+      title: 'Strong Engineering Culture',
+      description:
+        'We balance speed, stability, and quality. No over-engineering flex, no sloppy shortcuts — just clean code that respects both tech and business.',
+    },
+    {
+      icon: Rocket,
+      title: "It's Null Till You Ship It",
+      description:
+        'Ideas don’t matter until they’re shipped. We plan sprints around outcomes, cut the waste, and move fast to get your product in users’ hands.',
+    },
+    {
+      icon: Layers,
+      title: 'Simplicity Over Complexity',
+      description:
+        'We keep it simple and practical. No need to build a spaceship if all you need is a bike that runs smooth and fast.',
+    },
+    {
+      icon: Users,
+      title: 'Customer Centricity',
+      description:
+        'Your win is our win. We treat clients like partners and take time to really understand your business and your users.',
+    },
+  ];
+
   return (
     <div className="min-h-screen ">
       {/* Hero Section */}
@@ -54,57 +100,46 @@ export default function AgencyPortfolio() {
           </div>
         </div>
       </div>
-
-      {/* Commitment Section */}
-      <div className="bg-gray-50 py-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            ref={commitmentRef}
-            className="lg:grid lg:grid-cols-2 lg:gap-16 items-center transform transition-all duration-1000 opacity-0 translate-y-10"
-          >
-            <div className="mb-12 lg:mb-0">
-              <SectionHeader title="Our Commitment" />
-              <p className="text-lg text-gray-600 leading-relaxed">
-                At VietStrix, we don’t just build projects—we build trust. Our
-                commitment is simple:{' '}
-                <span className="font-semibold">
-                  deliver top-tier tech, stay brutally honest, and never settle
-                  for “good enough.”
-                </span>
-              </p>
-              <p className="mt-6 text-lg text-gray-600 leading-relaxed">
-                We move fast, think smart, and always optimize. Whether
-                it&apos;s scaling a business, refining an app, or tackling
-                complex backend challenges, we’re all in—no shortcuts, no fluff.
-                Your success is our mission, and we’re here to make sure you
-                <span className="font-semibold">
-                  win, not just participate.
-                </span>
-              </p>
-              <div className="mt-8">
-                <Link
-                  href="/contact-us"
-                  className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-300"
-                >
-                  Contact Us
-                  <ArrowUpRight className="ml-2 -mr-1 w-5 h-5" />
-                </Link>
-              </div>
-            </div>
-            <div className="relative group">
-              <div className="relative rounded-lg overflow-hidden transform transition-transform duration-300 group-hover:scale-105">
-                <Image
-                  src="/ava2.png"
-                  alt="Team meeting"
-                  width={500}
-                  height={500}
-                />
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-transparent mix-blend-overlay" />
-              </div>
-            </div>
+      <section className="bg-main min-h-screen text-white py-16 px-6">
+        <h2 className="text-base font-bold text-white uppercase mt-4 mb-4 flex items-center gap-2">
+          <ArrowUpRight size={20} strokeWidth={1.5} /> Our approach
+        </h2>
+        <div className="border-b border-gray-400 mt-17" />
+        <Container className="max-w-6xl mx-auto grid grid-cols-12 gap-8 min-h-screen">
+          {/* Left side - Title */}
+          <div className="col-span-12 lg:col-span-4 p-6 lg:sticky lg:top-24 h-fit">
+            <h2 className="text-4xl font-bold text-white uppercase mt-4 mb-4 flex items-center gap-2">
+              <ArrowUpRight size={40} strokeWidth={1.5} /> Development
+              <br />
+              philosophy
+            </h2>
           </div>
-        </div>
-      </div>
+
+          {/* Right side - Philosophy items */}
+          <div className="space-y-8 col-span-12 lg:col-span-8">
+            {philosophyItems.map((item, index) => (
+              <div key={index}>
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-white rounded-lg flex items-center justify-center">
+                    <item.icon className="w-6 h-6 text-main" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-medium mb-2">{item.title}</h3>
+                    <p className="text-gray-300 leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Separator */}
+                {index < philosophyItems.length - 1 && (
+                  <div className="border-b border-gray-200 mt-6" />
+                )}
+              </div>
+            ))}
+          </div>
+        </Container>
+      </section>
     </div>
   );
 }

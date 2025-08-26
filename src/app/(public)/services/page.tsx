@@ -1,5 +1,5 @@
 // app/blogs/page.tsx
-import { generateServiceHomeSEO } from '@/lib/seo/service.seo';
+import { generateServiceHomeSEO } from '@/lib/seo/service/service.seo';
 import ServiceListPage from './ServiceListPage';
 
 export async function generateMetadata() {

@@ -1,15 +1,15 @@
 'use client';
 
-import { BlogDetailData } from '@/lib';
 import { Container, CustomImage, LoadingSpin } from '@/components';
 import { BackButton } from '@/components/button';
-import { NoResultsFound } from '@/components/design/NoResultsFound';
-import { Heading } from '@/components/design/Heading';
-import { PostRecent } from '@/components/card/post_recent.card';
-import { PostImageRecent } from '@/components/card/postImage.card';
-import { formatSmartDate } from '@/utils';
 import { CopyLinkButton } from '@/components/button/copy.button';
 import { FacebookShareButton } from '@/components/button/share.button';
+import { PostRecent } from '@/components/card/post_recent.card';
+import { PostImageRecent } from '@/components/card/postImage.card';
+import { Heading } from '@/components/design/Heading';
+import { NoResultsFound } from '@/components/design/NoResultsFound';
+import { BlogDetailData } from '@/lib';
+import { formatSmartDate } from '@/utils';
 
 export default function BlogDetailPage({ slug }: { slug: string }) {
   const { data: blog, isLoading, isError } = BlogDetailData(slug, 0);
@@ -58,9 +58,9 @@ export default function BlogDetailPage({ slug }: { slug: string }) {
                   </div>
                 </header>
 
-                <div className="mb-8 relative h-[400px] w-full overflow-hidden">
+                <div className="mb-8 relative  aspect-image-main w-full overflow-hidden">
                   <CustomImage
-                    src={blog?.file || '/Logo.svg'}
+                    src={blog?.file || '/placeholder.svg'}
                     alt={`Featured image for ${blog?.title}`}
                     fill
                     className="object-contain"
@@ -75,7 +75,7 @@ export default function BlogDetailPage({ slug }: { slug: string }) {
                   <div
                     className="rich-text-content mt-4"
                     dangerouslySetInnerHTML={{
-                      __html: blog?.content || '',
+                      __html: blog?.description || '',
                     }}
                   />
                 </div>

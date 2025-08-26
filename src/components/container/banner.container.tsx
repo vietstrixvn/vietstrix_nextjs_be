@@ -1,7 +1,7 @@
 'use client';
 
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 
 const BannerContainer = () => {
   const containerRef = useRef<HTMLDivElement>(null);

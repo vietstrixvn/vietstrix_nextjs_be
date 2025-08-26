@@ -1,11 +1,11 @@
 'use client';
 
-import { BlogDetailData } from '@/lib/responses/blogLib';
-import { useParams } from 'next/navigation';
-import { NoResultsFound } from '@/components/design/NoResultsFound';
 import { AdminContainer, CustomImage, LoadingSpin } from '@/components';
-import { formatSmartDate } from '@/utils';
 import { BackButton } from '@/components/button';
+import { NoResultsFound } from '@/components/design/NoResultsFound';
+import { BlogDetailData } from '@/lib/responses/blogLib';
+import { formatSmartDate } from '@/utils';
+import { useParams } from 'next/navigation';
 
 export default function Page() {
   const routerParams = useParams();
@@ -72,9 +72,9 @@ export default function Page() {
           </div>
         </header>
 
-        <div className="mb-8  relative h-[400px] w-full overflow-hidden">
+        <div className="mb-8  aspect-[16/9]  relative w-full overflow-hidden">
           <CustomImage
-            src={blog?.file || '/Logo.svg'}
+            src={blog?.file || '/placeholder.svg'}
             alt={`Featured image for ${blog?.title}`}
             fill
             className="object-contain"
@@ -83,9 +83,9 @@ export default function Page() {
         <h2 className="text-xl mt-12 mb-6">{blog?.content}</h2>
 
         <div
-          className="rich-text-content mt-4"
+          className="rich-text-content cursor-text mt-4"
           dangerouslySetInnerHTML={{
-            __html: blog?.content ?? '',
+            __html: blog?.description ?? '',
           }}
         />
       </div>

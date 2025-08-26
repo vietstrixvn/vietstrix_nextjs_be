@@ -1,14 +1,14 @@
 'use client';
 
+import { NoResultsFound } from '@/components/design/NoResultsFound';
 import { Badge } from '@/components/ui/badge';
 import { ContactList } from '@/lib/responses/contactLib';
-import { NoResultsFound } from '@/components/design/NoResultsFound';
-import { LoadingSpin } from '../loading/loading';
 import { formatSmartDate } from '@/utils';
+import { LoadingSpin } from '../loading/loading';
 
 export function RecentInvoices() {
   const params = {
-    limit: 5,
+    page_size: 5,
   };
   const { contacts, isLoading, isError } = ContactList(1, params, 0);
   if (isLoading) {

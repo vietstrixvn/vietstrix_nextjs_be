@@ -1,30 +1,30 @@
 'use client';
 
+import { Icons } from '@/assets/icons/icons';
 import {
+  Badge,
+  Button,
+  ErrorLoading,
+  LoadingSpin,
+  NoResultsFound,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-  Badge,
-  Button,
-  NoResultsFound,
-  LoadingSpin,
-  ErrorLoading,
 } from '@/components';
-import { useRouter } from 'next/navigation';
-import { Icons } from '@/assets/icons/icons';
-import React, { useState } from 'react';
-import { useDeleteService, useUpdateProjectStatus } from '@/hooks';
-import { ConfirmDialog } from '../design/Dialog';
+import { useDeleteService, useUpdateProject } from '@/hooks';
+import { useAuthStore } from '@/store';
+import { VisibilityCategoryOption } from '@/types';
 import { ProjectColumns } from '@/types/project/project.colum';
 import type { ProjectTableProps } from '@/types/project/project.prob';
-import { toast } from 'sonner';
 import { formatSmartDate, truncateHtmlToText, truncateText } from '@/utils';
-import { useAuthStore } from '@/store';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { toast } from 'sonner';
+import { ConfirmDialog } from '../design/Dialog';
 import { SelectStatus, statusColorMap } from '../design/status.change';
-import { VisibilityCategoryOption } from '@/types';
 
 export const ProjectTable: React.FC<ProjectTableProps> = ({
   projects,
@@ -38,7 +38,7 @@ export const ProjectTable: React.FC<ProjectTableProps> = ({
   const [selectedService, setSelectedService] = useState<string>();
 
   const { mutate: deleteService } = useDeleteService();
-  const { mutate: updateStatus } = useUpdateProjectStatus();
+  const { mutate: updateStatus } = useUpdateProject();
 
   // Hàm cập nhật trạng thái
   const handleStatusChange = (postId: string, newStatus: string) => {
@@ -47,7 +47,7 @@ export const ProjectTable: React.FC<ProjectTableProps> = ({
       return;
     }
 
-    updateStatus({ postId, updateStatus: { status: newStatus } });
+    updateStatus({ postId, updatePost: { status: newStatus } });
   };
 
   const handleDeleteClick = (id: string) => {
@@ -151,7 +151,18 @@ export const ProjectTable: React.FC<ProjectTableProps> = ({
                         </Button>
                       </TableCell>
 
-                      <TableCell>
+                      <TableCell className="gap-2 space-x-2">
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() =>
+                            router.push(
+                              `/admin/project/edit_project/${item.slug}`
+                            )
+                          }
+                        >
+                          <Icons.Pencil className="w-4 h-4" />
+                        </Button>
                         <Button
                           variant="destructive"
                           size="icon"

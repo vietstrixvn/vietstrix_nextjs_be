@@ -25,12 +25,12 @@ import {
 import ImageUploadPreview from '@/components/design/image_upload';
 import { RichTextEditor } from '@/components/tiptap/rich-text-editor';
 import { useUpdateService } from '@/hooks';
-import { ServiceDetailData, CategoryList } from '@/lib';
+import { CategoryList, ServiceDetailData } from '@/lib';
 import { UpdateServiceItem } from '@/types';
 import { serviceFormSchema } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams, useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 
@@ -57,7 +57,7 @@ const Page = () => {
   const router = useRouter();
   const { categories, isLoading, isError } = CategoryList(
     1,
-    { limit: 20, type: 'services' },
+    { page_size: 20, type: 'services' },
     0
   );
   const {
@@ -108,7 +108,6 @@ const Page = () => {
     handleSubmit,
     formState: { errors },
   } = form;
-  const watchedValues = watch();
 
   const onSubmit = (values: z.infer<typeof serviceFormSchema>) => {
     setIsSubmitting(true);

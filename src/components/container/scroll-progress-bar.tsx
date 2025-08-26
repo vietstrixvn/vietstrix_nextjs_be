@@ -1,15 +1,14 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
 import { ScrollProgressBarProps } from '@/types';
+import { useEffect, useRef, useState } from 'react';
 
 export default function ScrollProgressBar({
   sections,
   className,
 }: ScrollProgressBarProps) {
   const [visible, setVisible] = useState(false);
-  const [activeSection, setActiveSection] = useState<string | null>(null);
   const [scrollProgress, setScrollProgress] = useState<Record<string, number>>(
     {}
   );
@@ -65,10 +64,8 @@ export default function ScrollProgressBar({
 
       // Calculate progress for each section
       const viewportHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
       const scrollPosition = window.scrollY;
       const newProgress: Record<string, number> = {};
-      let currentActiveSection = null;
       let highestVisibility = 0;
 
       sectionElements.forEach(({ id, element }) => {
@@ -106,12 +103,10 @@ export default function ScrollProgressBar({
         // Determine which section is most visible
         if (visiblePercent > highestVisibility) {
           highestVisibility = visiblePercent;
-          currentActiveSection = id;
         }
       });
 
       setScrollProgress(newProgress);
-      setActiveSection(currentActiveSection);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -131,9 +126,8 @@ export default function ScrollProgressBar({
       )}
     >
       <div className="flex w-full h-12 md:h-14">
-        {sections.map((section, index) => {
+        {sections.map((section) => {
           const progress = scrollProgress[section.id] || 0;
-          const isActive = activeSection === section.id;
 
           return (
             <div

@@ -30,7 +30,7 @@ import { UpdateBlogItem } from '@/types';
 import { blogFormSchema } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams, useRouter } from 'next/navigation';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 
@@ -56,7 +56,7 @@ const Page = () => {
   const router = useRouter();
   const { categories, isLoading, isError } = CategoryList(
     1,
-    { limit: 20, type: 'blogs' },
+    { page_size: 20, type: 'blogs' },
     0
   );
   const {

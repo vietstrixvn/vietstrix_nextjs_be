@@ -1,7 +1,7 @@
 // lib/seo/blog-service-seo.ts
+import { logError } from '@/utils';
 import type { Metadata } from 'next';
 import { createMetadata, SEOConfig } from '../createMetadata';
-import { logError } from '@/utils';
 
 // Types for Blog Service
 export interface BlogPost {
@@ -44,10 +44,12 @@ export async function generateBlogPostSEO(slug: string): Promise<Metadata> {
     const json = await res.json();
     const post: BlogPost = json.data; // <- chú ý đây, dữ liệu nằm trong data
 
+    const howToSchema = extractHowToFromContent(post.content);
+
     const config: SEOConfig = {
       title: `${post.title} | VietStrix Blog`,
       description: post.excerpt || generateExcerptFromContent(post.content),
-      image: post.file,
+      image: post.file || generateAutoBlogImage(post),
       url: `/blogs/${post.slug}`,
       author: post.user.username,
       publishedTime: post.created_at,
@@ -62,13 +64,14 @@ export async function generateBlogPostSEO(slug: string): Promise<Metadata> {
         'kinh nghiệm',
       ],
       tags: post.tags?.map((t) => t.name) || [],
-      schemaType: 'Article',
+      schemaType: howToSchema ? 'HowTo' : 'Article',
       breadcrumbs: [
         { name: 'Home', url: '/' },
         { name: 'Blog', url: '/blogs' },
         { name: post.title, url: `/blogs/${post.slug}` },
       ],
-      faq: [], // bạn có thể extract từ content nếu cần
+      faq: [],
+      howTo: howToSchema,
     };
 
     const metadata = createMetadata(config);
@@ -87,11 +90,11 @@ export async function generateBlogPostSEO(slug: string): Promise<Metadata> {
 // 5. Blog Homepage SEO
 export async function generateBlogHomeSEO(): Promise<Metadata> {
   const config: SEOConfig = {
-    title:
-      'VietStrix Blog | Sharing Knowledge, Experience & Tech Trends | Công nghệ & Lập trình',
+    title: 'VietStrix Blog | Sharing Knowledge, Experience & Tech Trends ',
     description:
-      'VietStrix Blog - A place to share high-quality articles on technology, programming, design, business, and life. Cập nhật kiến thức mới nhất về công nghệ & lập trình từ các chuyên gia hàng đầu.',
+      'VietStrix Blog - A place to share high-quality articles on technology, programming, design, business, and life.',
     url: '/blogs',
+    image: '/imgs/webBlog.jpg',
     keywords: [
       'VietStrix',
       'blog',
@@ -108,7 +111,7 @@ export async function generateBlogHomeSEO(): Promise<Metadata> {
     ],
     breadcrumbs: [
       { name: 'Home', url: '/' },
-      { name: 'Blog', url: '/blog' },
+      { name: 'Blog', url: '/blogs' },
     ],
   };
 
@@ -127,7 +130,6 @@ function generateAutoBlogImage(post: BlogPost): string {
 }
 
 function extractHowToFromContent(content: string) {
-  // Extract step-by-step instructions for HowTo schema
   const stepRegex = /(?:^|\n)(?:\d+\.|\*|-)\s*(.+?)(?=\n(?:\d+\.|\*|-)|$)/gm;
   const steps = [];
   let match;

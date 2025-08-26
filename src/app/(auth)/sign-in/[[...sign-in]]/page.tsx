@@ -4,15 +4,15 @@
 
 'use client';
 
-import { Input, CustomImage } from '@/components';
+import { CustomImage, Input } from '@/components';
+import ShuffleLoader from '@/components/loading/shuffle-loader';
+import { useAuthStore } from '@/store';
+import { loginFormSchema } from '@/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Head from 'next/head';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { loginFormSchema } from '@/utils';
-import { useAuthStore } from '@/store';
-import ShuffleLoader from '@/components/loading/shuffle-loader';
-import { useEffect } from 'react';
-import Head from 'next/head';
 
 export default function LoginPage() {
   const { login, isAuthenticated, userInfo } = useAuthStore();
@@ -59,7 +59,7 @@ export default function LoginPage() {
           message: 'Invalid username or password',
         });
       }
-    } catch (err) {
+    } catch {
       setError('root', {
         type: 'manual',
         message: 'Login failed. Please try again.',

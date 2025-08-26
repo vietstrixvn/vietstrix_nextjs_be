@@ -6,6 +6,11 @@ export interface CategoryCardProps {
   selectedCategory?: string | null;
 }
 
+export interface CategoryFilterCardProps {
+  onCategorySelect?: (categoryId: string | null, categoryName?: string) => void;
+  selectedCategory?: string | null;
+}
+
 /**
  * ==========================
  * 📌 @props CategoryTableProps

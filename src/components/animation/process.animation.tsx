@@ -52,7 +52,7 @@ export default function WebDevelopmentProcess() {
           </div>
           <div className="flex items-center">
             <p className="text-gray-700 text-lg leading-relaxed">
-              We've delivered over 2500 projects — we know what it takes to
+              We&quot;ve delivered over 2500 projects — we know what it takes to
               execute a seamless and optimized web-based software development
               process.
             </p>
