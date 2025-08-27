@@ -72,7 +72,7 @@ export default function Page() {
           </div>
         </header>
 
-        <div className="mb-8  aspect-[16/9]  relative w-full overflow-hidden">
+        <div className="mb-8  aspect-[16/9] relative w-full overflow-hidden">
           <CustomImage
             src={blog?.file || '/placeholder.svg'}
             alt={`Featured image for ${blog?.title}`}

@@ -1,11 +1,11 @@
 import type { Metadata, Viewport } from 'next';
 
 export const appInfo = {
-  logo: '/icons/og_logo.svg',
+  logo: '/icons/Og_Logo.svg',
   title: 'Vietstrix',
   description: 'app description',
   domain: 'https://vietstrix.com',
-  ogImage: '/icons/og_logo.svg',
+  ogImage: '/icons/Og_Logo.svg',
   themeColor: '#ffffff',
   keywords: [
     'web development',

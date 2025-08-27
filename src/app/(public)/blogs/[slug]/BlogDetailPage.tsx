@@ -10,11 +10,45 @@ import { Heading } from '@/components/design/Heading';
 import { NoResultsFound } from '@/components/design/NoResultsFound';
 import { BlogDetailData } from '@/lib';
 import { formatSmartDate } from '@/utils';
+import { useEffect } from 'react';
 
 export default function BlogDetailPage({ slug }: { slug: string }) {
   const { data: blog, isLoading, isError } = BlogDetailData(slug, 0);
 
   const showContentError = isError;
+
+  useEffect(() => {
+    const codeBlocks = document.querySelectorAll('.rich-text-content pre');
+
+    codeBlocks.forEach((block) => {
+      const pre = block as HTMLElement;
+
+      // tránh thêm 2 lần
+      if (pre.parentElement?.classList.contains('code-block')) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'code-block relative';
+
+      const copyBtn = document.createElement('button');
+      copyBtn.innerText = 'Copy';
+      copyBtn.className = 'copy-btn';
+
+      copyBtn.addEventListener('click', async () => {
+        const code = pre.innerText || '';
+        try {
+          await navigator.clipboard.writeText(code);
+          copyBtn.innerText = 'Copied!';
+          setTimeout(() => (copyBtn.innerText = 'Copy'), 2000);
+        } catch {
+          copyBtn.innerText = 'Error';
+        }
+      });
+
+      pre.replaceWith(wrapper);
+      wrapper.appendChild(copyBtn);
+      wrapper.appendChild(pre);
+    });
+  }, [blog?.description]);
 
   return (
     <Container>
