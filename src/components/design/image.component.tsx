@@ -31,7 +31,7 @@ export function CustomImage({
       loading={priority ? undefined : (loading ?? 'lazy')}
       className={className}
       placeholder="blur"
-      blurDataURL="/placeholder.png"
+      blurDataURL="/imgs/bgHome.jpg"
       {...rest}
     />
   );

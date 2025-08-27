@@ -18,14 +18,16 @@ export const CustomPagination = ({
   if (totalPage <= 1) return null;
 
   return (
-    <div className="flex justify-center items-center scroll mt-4">
+    <div className="flex justify-center items-center mt-4">
       <Pagination>
         <PaginationContent>
+          {/* Previous (luôn có chỗ, chỉ ẩn khi page=1) */}
           <PaginationItem>
-            <PaginationPrevious
-              onClick={() => onPageChange(Math.max(currentPage - 1, 1))}
-              aria-disabled={currentPage === 1}
-            />
+            <div className={currentPage === 1 ? 'invisible' : ''}>
+              <PaginationPrevious
+                onClick={() => onPageChange(currentPage - 1)}
+              />
+            </div>
           </PaginationItem>
 
           {Array.from({ length: totalPage }, (_, i) => i + 1).map((page) => (
@@ -38,11 +40,12 @@ export const CustomPagination = ({
               </PaginationLink>
             </PaginationItem>
           ))}
+
+          {/* Next (luôn có chỗ, chỉ ẩn khi page=last) */}
           <PaginationItem>
-            <PaginationNext
-              onClick={() => onPageChange(Math.min(currentPage + 1, totalPage))}
-              aria-disabled={currentPage === totalPage}
-            />
+            <div className={currentPage === totalPage ? 'invisible' : ''}>
+              <PaginationNext onClick={() => onPageChange(currentPage + 1)} />
+            </div>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

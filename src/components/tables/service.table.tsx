@@ -1,30 +1,30 @@
 'use client';
 
+import { Icons } from '@/assets/icons/icons';
 import {
+  Badge,
+  Button,
+  CustomImage,
+  ErrorLoading,
+  LoadingSpin,
+  NoResultsFound,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-  Badge,
-  Button,
-  NoResultsFound,
-  LoadingSpin,
-  ErrorLoading,
-  CustomImage,
 } from '@/components';
+import { useDeleteService, useUpdateService } from '@/hooks';
+import { useAuthStore } from '@/store';
 import type { ServiceTableProps, VisibilityCategoryOption } from '@/types';
 import { ServiceColumns } from '@/types/service/service.colum';
+import { formatSmartDate, truncateHtmlToText, truncateText } from '@/utils';
 import { useRouter } from 'next/navigation';
-import { Icons } from '@/assets/icons/icons';
 import React, { useState } from 'react';
-import { useDeleteService, useUpdateService } from '@/hooks';
-import { ConfirmDialog } from '../design/Dialog';
 import { toast } from 'sonner';
-import { truncateText, truncateHtmlToText, formatSmartDate } from '@/utils';
+import { ConfirmDialog } from '../design/Dialog';
 import { SelectStatus, statusColorMap } from '../design/status.change';
-import { useAuthStore } from '@/store';
 
 export const ServiceTable: React.FC<ServiceTableProps> = ({
   services,
@@ -99,11 +99,11 @@ export const ServiceTable: React.FC<ServiceTableProps> = ({
                   <TableRow key={item.id} className="border-b">
                     <TableCell className="font-medium">{index + 1}</TableCell>
                     <TableCell className="p-0">
-                      <div className="relative w-full h-full min-h-[120px]">
+                      <div className="relative w-full aspect-[16/9]  min-h-[120px]">
                         <CustomImage
                           src={item.file}
                           alt="Blog Image"
-                          className="object-cover"
+                          className="object-contain"
                           fill
                         />
                       </div>
@@ -129,7 +129,6 @@ export const ServiceTable: React.FC<ServiceTableProps> = ({
                       )}
                     </TableCell>
                     <TableCell className="font-medium">
-                      {' '}
                       {truncateText(item.title, 40)}
                     </TableCell>
 

@@ -1,5 +1,5 @@
-import type { BlogList } from '@/types';
 import { CustomImage } from '@/components/design/image.component';
+import type { BlogList } from '@/types';
 import Link from 'next/link';
 
 export function BlogCard({ blog }: { blog: BlogList }) {
@@ -8,9 +8,9 @@ export function BlogCard({ blog }: { blog: BlogList }) {
       href={`/blogs/${blog.slug}`}
       className="group cursor-pointer overflow-hidden g"
     >
-      <div className="relative h-[280px] overflow-hidden">
+      <div className="relative aspect-image-main overflow-hidden">
         <CustomImage
-          src={blog.file || '/icons/logo.svg'}
+          src={blog.file || '/placeholder.svg'}
           alt={blog.title}
           fill
           className="object-contain transition-transform duration-700 group-hover:scale-110"

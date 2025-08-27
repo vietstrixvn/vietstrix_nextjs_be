@@ -35,8 +35,10 @@ export * from './responses/seoLib';
  */
 
 // routes.ts
-export * from './routes/routes';
 export * from './routes/navigation.route';
+export * from './routes/routes';
 
-export * from './utils';
 export * from './tiptap-utils';
+export * from './utils';
+
+export * from './data/data.data';

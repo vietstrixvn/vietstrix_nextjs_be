@@ -1,20 +1,20 @@
 'use client';
 
+import { Icons } from '@/assets/icons/icons';
 import {
+  Input,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Input,
 } from '@/components';
 import { CategoryList } from '@/lib';
-import { useState, useMemo, useCallback, useRef } from 'react';
 import type { AdminFilterProps } from '@/types';
-import { Icons } from '@/assets/icons/icons';
+import { useCallback, useMemo, useRef, useState } from 'react';
+import { PushButton } from '../button/push.button';
 import { RefreshButton } from '../button/refresh.button';
 import { LoadingSpin } from '../loading/loading';
-import { PushButton } from '../button/push.button';
 
 export function AdminFilter({
   filter,
@@ -32,7 +32,7 @@ export function AdminFilter({
 
   const params = useMemo(
     () => ({
-      limit: 10,
+      page_size: 10,
       type: filter.type,
     }),
     [filter.type]

@@ -1,18 +1,18 @@
 'use client';
 
-import { Search } from 'lucide-react';
 import {
+  Input,
+  LoadingSpin,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Input,
-  LoadingSpin,
 } from '@/components';
 import { ServiceList } from '@/lib';
-import { useState, useCallback, useRef } from 'react';
 import { AdminFilterProps } from '@/types';
+import { Search } from 'lucide-react';
+import { useCallback, useRef, useState } from 'react';
 import { PushButton, RefreshButton } from '../button';
 
 export function ProjectFilter({
@@ -31,7 +31,7 @@ export function ProjectFilter({
 
   // Memoize params để tránh re-render không cần thiết
   const params = {
-    limit: 10,
+    page_size: 10,
   };
 
   const { services, isLoading, isError } = ServiceList(1, params, 0);

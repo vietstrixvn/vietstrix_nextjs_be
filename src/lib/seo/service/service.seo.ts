@@ -1,7 +1,7 @@
 // lib/seo/blog-service-seo.ts
-import type { Metadata } from 'next';
-import { createMetadata, SEOConfig } from '../createMetadata';
 import { logError } from '@/utils';
+import type { Metadata } from 'next';
+import { createMetadata, SEOConfig } from '../../createMetadata';
 
 // Types for Blog Service
 export interface ServicePost {
@@ -112,40 +112,4 @@ export async function generateServiceHomeSEO(): Promise<Metadata> {
   };
 
   return createMetadata(config);
-}
-
-function generateAutoBlogImage(post: ServicePost): string {
-  // Generate dynamic OG image URL based on post data
-  const params = new URLSearchParams({
-    title: post.title.substring(0, 60),
-    category: post.category.name,
-    author: post.user.username,
-  });
-
-  return `/api/og-image?${params.toString()}`;
-}
-
-function extractHowToFromContent(content: string) {
-  // Extract step-by-step instructions for HowTo schema
-  const stepRegex = /(?:^|\n)(?:\d+\.|\*|-)\s*(.+?)(?=\n(?:\d+\.|\*|-)|$)/gm;
-  const steps = [];
-  let match;
-
-  while ((match = stepRegex.exec(content)) !== null && steps.length < 10) {
-    steps.push({
-      '@type': 'HowToStep',
-      text: match[1].trim(),
-    });
-  }
-
-  if (steps.length >= 3) {
-    return {
-      '@context': 'https://schema.org',
-      '@type': 'HowTo',
-      name: 'Hướng dẫn thực hiện',
-      step: steps,
-    };
-  }
-
-  return null;
 }

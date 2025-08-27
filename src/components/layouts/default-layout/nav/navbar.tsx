@@ -1,15 +1,14 @@
 'use client';
 
+import { CustomImage } from '@/components';
+import { ContactButton } from '@/components/button';
+import { cn, navItems } from '@/lib';
+import { X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { cn } from '@/lib';
-import GetStartedButton from '@/components/animata/container/AnimatedTrailProps';
-import NavService, { ServiceDropdownContent } from './service.nav';
 import { NavBlog } from './blog.nav';
-import { CustomImage } from '@/components/design/image.component';
-import { navItems } from '@/lib';
+import NavService, { ServiceDropdownContent } from './service.nav';
 
 const NavBar = () => {
   const pathname = usePathname();
@@ -133,7 +132,7 @@ const NavBar = () => {
 
               {/* Right section - Contact Button */}
               <div className="hidden rounded-sm md:flex justify-center items-center gap-2">
-                <GetStartedButton text="Get in Touch" url="/contact-us" />
+                <ContactButton text="Get in Touch" url="/contact-us" />
               </div>
             </div>
 

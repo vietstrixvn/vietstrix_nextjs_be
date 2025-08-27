@@ -1,9 +1,8 @@
 'use client';
 
+import { Check, ChevronDown, X } from 'lucide-react';
 import * as React from 'react';
-import { X, Check, ChevronDown } from 'lucide-react';
 
-import { Badge } from '@/components/ui/badge';
 import {
   Command,
   CommandEmpty,
@@ -15,6 +14,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components';
+import { Badge } from '@/components/ui/badge';
 import { cn } from '@/utils';
 
 type Option = {
@@ -44,19 +44,11 @@ export function MultiSelect({
   };
 
   const handleSelect = (value: string) => {
-    console.log('🟢 handleSelect called with:', value);
-    console.log('🟢 Current selected:', selected);
-    console.log('🟢 Value type:', typeof value);
-    console.log('🟢 Is value truthy?', !!value);
-    console.log('🟢 Is value in selected?', selected.includes(value));
-
     if (selected.includes(value)) {
       const newSelected = selected.filter((item) => item !== value);
-      console.log('🟢 Removing - new array:', newSelected);
       onChange(newSelected);
     } else {
       const newSelected = [...selected, value];
-      console.log('🟢 Adding - new array:', newSelected);
       onChange(newSelected);
     }
   };
@@ -68,7 +60,7 @@ export function MultiSelect({
           role="combobox"
           aria-expanded={open}
           className={cn(
-            'flex min-h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 cursor-pointer',
+            'flex min-h-10 w-full items-center justify-between border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 cursor-pointer',
             className
           )}
           onClick={() => setOpen(!open)}

@@ -9,7 +9,7 @@ export const PostRecent = ({ category_id }: { category_id?: string }) => {
   // Tạo params nếu có category
   const params = {
     category_id: category_id,
-    limit: 5,
+    page_size: 5,
   };
 
   const { blogs, isLoading, isError } = BlogList(1, params, 0);

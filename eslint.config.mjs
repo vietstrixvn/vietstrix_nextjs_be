@@ -1,7 +1,7 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
 import prettier from 'eslint-plugin-prettier';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -14,6 +14,10 @@ const compat = new FlatCompat({
 const env = process.env.NODE_ENV || 'development';
 
 const config = [
+  // ✅ Bỏ qua thư mục không cần lint
+  {
+    ignores: ['**/node_modules/**', '**/.next/**', '**/dist/**'],
+  },
   // Cấu hình từ Next.js core-web-vitals và typescript
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
   // Cấu hình Prettier

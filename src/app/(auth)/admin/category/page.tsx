@@ -1,19 +1,18 @@
 'use client';
 
-import type React from 'react';
 import { useState } from 'react';
 
 // Components
-import { CustomPagination } from '@/components/design/pagination';
 import { AdminContainer } from '@/components';
-import { CategoryList } from '@/lib';
-import { useDeleteCategory } from '@/hooks';
 import { ConfirmDialog } from '@/components/design/Dialog';
-import { CategoryTable } from '@/components/tables/category.table';
-import { Heading } from '@/components/design/Heading';
-import { AdminCategoryFilter } from '@/components/fliters/category.filter';
 import Header from '@/components/design/Header';
+import { Heading } from '@/components/design/Heading';
+import { CustomPagination } from '@/components/design/pagination';
+import { AdminCategoryFilter } from '@/components/fliters/category.filter';
 import { CreateCategoryDialog } from '@/components/form/createCate.from';
+import { CategoryTable } from '@/components/tables/category.table';
+import { useDeleteCategory } from '@/hooks';
+import { CategoryList } from '@/lib';
 
 export default function CategoryManager() {
   const [refreshKey, setRefreshKey] = useState(0);
@@ -21,13 +20,11 @@ export default function CategoryManager() {
   const [pageSize, setPageSize] = useState(10);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>();
-  const [selectedStatus, setSelectedStatus] = useState<string>();
   const [selectedType, setSelectedType] = useState<string>();
 
   const params = {
-    ...(selectedStatus !== 'all' && { status: selectedStatus }),
     ...(selectedType !== 'all' && { type: selectedType }),
-    limit: pageSize,
+    page_size: pageSize,
   };
 
   const { categories, isLoading, isError, pagination } = CategoryList(

@@ -1,11 +1,11 @@
 'use client';
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { Github, Linkedin, Mail } from 'lucide-react';
-import SectionHeader from '@/components/design/SectionHeader';
 import { Container } from '@/components';
 import { AdvancedSplitText } from '@/components/animation/advance.text.animation';
 import { CustomImage } from '@/components/design/image.component';
+import SectionHeader from '@/components/design/SectionHeader';
+import { motion, useInView } from 'framer-motion';
+import { Github, Linkedin, Mail } from 'lucide-react';
+import { useRef } from 'react';
 
 const IntroSection = () => {
   const ref = useRef(null);
@@ -54,10 +54,10 @@ const IntroSection = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
-            className="relative overflow-hidden h-[600px]"
+            className="relative aspect-image-cinema overflow-hidden "
           >
             <CustomImage
-              src="/imgs/banner.png"
+              src="/imgs/bgHome.jpg"
               alt="Close up eye through technology"
               fill
               priority={isInView} // Load image early if it's in view

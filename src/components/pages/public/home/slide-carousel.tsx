@@ -1,20 +1,20 @@
 'use client';
 
-import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
 import { Container } from '@/components';
-import SectionHeader from '@/components/design/SectionHeader';
 import { BlogCard } from '@/components/card/blog.card';
-import { BlogList } from '@/lib/responses/blogLib';
-import { ErrorLoading } from '@/components/loading/error';
 import { NoResultsFound } from '@/components/design/NoResultsFound';
+import SectionHeader from '@/components/design/SectionHeader';
+import { ErrorLoading } from '@/components/loading/error';
 import { LoadingSpin } from '@/components/loading/loading';
+import { BlogList } from '@/lib/responses/blogLib';
+import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 export function BlogSection() {
   const { blogs, isLoading, isError } = BlogList(
     1,
     {
-      limit: 3,
+      page_size: 3,
     },
     0
   );

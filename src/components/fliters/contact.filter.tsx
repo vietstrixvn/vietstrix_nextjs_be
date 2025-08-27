@@ -1,19 +1,19 @@
 'use client';
 
-import { Search } from 'lucide-react';
 import {
+  Input,
+  LoadingSpin,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-  Input,
-  LoadingSpin,
 } from '@/components';
+import { Search } from 'lucide-react';
 
 import { ServiceList } from '@/lib';
-import { useState, useCallback, useRef } from 'react';
 import { AdminContactFilterProps } from '@/types';
+import { useCallback, useRef, useState } from 'react';
 import { RefreshButton } from '../button';
 
 export function ContactFilter({
@@ -31,7 +31,7 @@ export function ContactFilter({
 
   // Memoize params để tránh re-render không cần thiết
   const params = {
-    limit: 10,
+    page_size: 10,
   };
 
   const { services, isLoading, isError } = ServiceList(1, params, 0);

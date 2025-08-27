@@ -1,4 +1,5 @@
-import { generateServicePostSEO } from '@/lib/seo/service.seo';
+import { generateServicePostSEO } from '@/lib/seo/service/service.seo';
+import ServiceDetailPage from './ServiceDetailPage';
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
@@ -11,5 +12,5 @@ export default async function Page(props: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await props.params;
-  return <BlogDetailPage slug={slug} />;
+  return <ServiceDetailPage slug={slug} />;
 }

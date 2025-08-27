@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import { useState } from 'react';
 
 const initialPosts = [
   {
@@ -39,10 +39,7 @@ export default function RelatedPosts() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [hoveredPostId, setHoveredPostId] = useState<string | null>(null);
 
-  const handleMouseMove = (
-    e: React.MouseEvent<HTMLDivElement>,
-    postId: string
-  ) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     setMousePosition({
       x: e.clientX - rect.left,
@@ -86,7 +83,7 @@ export default function RelatedPosts() {
             <div
               key={post.id}
               className="rounded-xl overflow-hidden bg-white shadow-sm hover:shadow-md transition-shadow relative"
-              onMouseMove={(e) => handleMouseMove(e, post.id.toString())}
+              onMouseMove={(e) => handleMouseMove(e)}
               onMouseEnter={() => handleMouseEnter(post.id.toString())}
               onMouseLeave={handleMouseLeave}
             >
