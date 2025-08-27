@@ -185,9 +185,6 @@
   line-height: 1.6;
   color: #374151;
 
-  /* Spacing cho các phần tử */
-  padding: 1.5rem;
-
   /* Headings */
   h1,
   h2,
@@ -308,6 +305,15 @@
 
   .code-block {
     position: relative;
+  }
+
+  .code-block pre::-webkit-scrollbar {
+    display: none; /* Ẩn scrollbar trên Chrome, Safari */
+  }
+
+  .code-block pre {
+    -ms-overflow-style: none; /* Ẩn trên IE, Edge */
+    scrollbar-width: none; /* Ẩn trên Firefox */
   }
 
   .copy-btn {
