@@ -44,7 +44,7 @@ export interface ProjectDetail extends BaseModel {
   file: string;
   content: string;
   description: string;
-  service: ProjectService[];
+  services: ProjectService[];
   testimonial: string;
   brand_name: string;
   client: string;
@@ -74,5 +74,18 @@ export interface CreateProjectItem {
   status: string;
   testimonial: string;
   client: string;
+  link?: string | null;
+}
+
+export interface UpdateProjectItem {
+  title?: string;
+  content?: string;
+  file?: string;
+  services?: string[];
+  description?: string;
+  brand_name?: string;
+  status?: string;
+  testimonial?: string;
+  client?: string;
   link?: string | null;
 }

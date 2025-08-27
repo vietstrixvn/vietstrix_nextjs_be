@@ -3,9 +3,7 @@
 import ShuffleLoader from '@/components/loading/shuffle-loader';
 import { useAuthStore } from '@/store';
 import { logError } from '@/utils';
-import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import { toast } from 'sonner';
 
 export default function AuthProtectedLayout({
   children,

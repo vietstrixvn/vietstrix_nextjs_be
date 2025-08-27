@@ -1,4 +1,4 @@
-import type { ProjectListData } from '../types';
+import { ProjectListData } from './project.type';
 
 export interface ProjectTableProps {
   projects: ProjectListData[];

@@ -3,7 +3,6 @@
 import LoadingBanner from '@/components/animation/loading-banner';
 import ScrollToTopButton from '@/components/button/scroll.button';
 import DefaultLayout from '@/components/layouts/default-layout/default.layout';
-import ShuffleLoader from '@/components/loading/shuffle-loader';
 import React, { useState } from 'react';
 
 export default function CustomerLayoutDefault({

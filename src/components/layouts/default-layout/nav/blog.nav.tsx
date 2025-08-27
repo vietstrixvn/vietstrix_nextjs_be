@@ -1,93 +1,56 @@
 'use client';
 
 import { IntroduceCard } from '@/components/card/introduce.card';
-import { NoResultsFound } from '@/components/design/NoResultsFound';
 import { ErrorLoading } from '@/components/loading/error';
 import { LoadingSpin } from '@/components/loading/loading';
-import { ROUTES } from '@/lib';
-import { BlogList } from '@/lib/responses/blogLib';
+import { CategoryList } from '@/lib';
 import { NavBlogProps } from '@/types';
-import { cn } from '@/utils';
 import Link from 'next/link';
-import React from 'react';
+import React, { useMemo } from 'react';
+import { BlogListNav } from './blogList.nav';
 
-export const NavBlog: React.FC<NavBlogProps> = ({ setIsOpen }) => {
-  const { blogs, isLoading, isError } = BlogList(
-    1,
-    {
-      limit: 8,
-    },
-    0
+export const NavBlog: React.FC<NavBlogProps> = () => {
+  const params = useMemo(
+    () => ({
+      page_size: 4,
+      type: 'blogs',
+    }),
+    []
   );
-  const servicesItems = [
-    { name: 'Service 1', path: '/services/1' },
-    { name: 'Service 2', path: '/services/2' },
-  ];
+
+  const { categories, isLoading, isError } = CategoryList(1, params, 0);
 
   return (
     <div className="flex h-full w-full">
       {/* Left Section - Navigation Links (Services and Blogs) */}
-      <div className="w-1/3 flex flex-col justify-start px-10 py-16">
+      <div className="w-2/3 flex flex-col justify-start px-10 py-16">
         <Link
-          href={ROUTES.BLOG.ROOT}
-          className="text-gray-400 text-sm font-medium mb-6 uppercase tracking-wider hover:font-bold hover:text-black"
+          href="/blogs"
+          className="flex items-center text-lg mb-6 uppercase tracking-wider group"
         >
-          Blogs
+          <div className="w-3 h-8 bg-red-300 transform origin-bottom-left"></div>
+          <p className="ml-2 text-gray-400 hover:text-main hover:underline font-bold">
+            ALL BLOGS
+            <span className="absolute bottom-0 left-0 w-full h-0.5 bg-main transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 ease-out"></span>
+          </p>
         </Link>
         {isLoading && <LoadingSpin />}
         {isError && <ErrorLoading />}
 
-        {!isLoading && !isError && blogs?.length > 0 && (
-          <nav className="space-y-2">
-            {blogs.map(({ title, slug, id }, index) => (
-              <div key={id} className="space-y-2">
-                <div className="flex items-center gap-8">
-                  <span className="text-gray-400 text-lg font-light w-8">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <Link
-                    href={`/blogs/${slug}`}
-                    className={cn(
-                      'text-xl font-light text-gray-700 transition-all duration-300 hover:text-black hover:font-medium'
-                    )}
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {title}
-                  </Link>
+        {!isLoading && !isError && categories?.length > 0 && (
+          <nav className="grid grid-cols-2 gap-x-8 gap-y-4 text-sm">
+            {categories.map(({ title, id }) => (
+              <div key={id}>
+                <div className="text-gray-400 text-sm font-medium mb-6 uppercase tracking-wider hover:font-bold hover:text-black">
+                  {title}
+                </div>
+                <div className="space-y-2">
+                  <BlogListNav category={id} />
                 </div>
               </div>
             ))}
           </nav>
         )}
-
-        {!isLoading && !isError && blogs?.length === 0 && <NoResultsFound />}
-      </div>
-
-      {/* Services Column */}
-      <div className="w-1/3 flex flex-col justify-start px-10 py-16">
-        <div className="text-gray-400 text-sm font-medium mb-6 uppercase tracking-wider">
-          Services
-        </div>
-        <nav className="space-y-2">
-          {servicesItems.map(({ name, path }, index) => (
-            <div key={name} className="space-y-2">
-              <div className="flex items-center gap-8">
-                <span className="text-gray-400 text-lg font-light w-8">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <Link
-                  href={path}
-                  className={cn(
-                    'text-xl font-light text-gray-700 transition-all duration-300 hover:text-black hover:font-medium'
-                  )}
-                  onClick={() => setIsOpen(false)}
-                >
-                  {name}
-                </Link>
-              </div>
-            </div>
-          ))}
-        </nav>
       </div>
 
       {/* Blogs Column */}

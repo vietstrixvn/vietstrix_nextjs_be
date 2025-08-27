@@ -1,20 +1,38 @@
 'use client';
 
-import { BlogDetailData } from '@/lib';
 import { Container, CustomImage, LoadingSpin } from '@/components';
 import { BackButton } from '@/components/button';
-import { NoResultsFound } from '@/components/design/NoResultsFound';
-import { Heading } from '@/components/design/Heading';
-import { PostRecent } from '@/components/card/post_recent.card';
-import { PostImageRecent } from '@/components/card/postImage.card';
-import { formatSmartDate } from '@/utils';
+import { CodeBlock } from '@/components/button/code.button';
 import { CopyLinkButton } from '@/components/button/copy.button';
 import { FacebookShareButton } from '@/components/button/share.button';
+import { PostRecent } from '@/components/card/post_recent.card';
+import { PostImageRecent } from '@/components/card/postImage.card';
+import { Heading } from '@/components/design/Heading';
+import { NoResultsFound } from '@/components/design/NoResultsFound';
+import { BlogDetailData } from '@/lib';
+import { formatSmartDate } from '@/utils';
+import parse from 'html-react-parser';
 
 export default function BlogDetailPage({ slug }: { slug: string }) {
   const { data: blog, isLoading, isError } = BlogDetailData(slug, 0);
 
   const showContentError = isError;
+
+  const parsedContent = blog?.description
+    ? parse(blog.description, {
+        replace: (domNode: any) => {
+          if (domNode.name === 'pre' && domNode.children?.length) {
+            const codeNode = domNode.children[0];
+            if (codeNode.name === 'code') {
+              const codeText = codeNode.children
+                ?.map((c: any) => c.data || '')
+                .join('');
+              return <CodeBlock>{codeText}</CodeBlock>;
+            }
+          }
+        },
+      })
+    : null;
 
   return (
     <Container>
@@ -58,9 +76,9 @@ export default function BlogDetailPage({ slug }: { slug: string }) {
                   </div>
                 </header>
 
-                <div className="mb-8 relative h-[400px] w-full overflow-hidden">
+                <div className="mb-8 relative  aspect-image-main w-full overflow-hidden">
                   <CustomImage
-                    src={blog?.file || '/Logo.svg'}
+                    src={blog?.file || '/placeholder.svg'}
                     alt={`Featured image for ${blog?.title}`}
                     fill
                     className="object-contain"
@@ -69,15 +87,10 @@ export default function BlogDetailPage({ slug }: { slug: string }) {
                 </div>
 
                 <div>
-                  <h2 className="text-3xl font-bold mt-12 mb-6">
-                    {blog?.title}
+                  <h2 className="text-base font-bold mt-12 mb-6">
+                    {blog?.content}
                   </h2>
-                  <div
-                    className="rich-text-content mt-4"
-                    dangerouslySetInnerHTML={{
-                      __html: blog?.content || '',
-                    }}
-                  />
+                  <div className="rich-text-content mt-4">{parsedContent}</div>
                 </div>
               </>
             )}

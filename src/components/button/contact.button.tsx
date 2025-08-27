@@ -1,14 +1,13 @@
 import { ArrowRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import Link from 'next/link';
 import { IGetStartedButtonProps } from '@/types';
+import Link from 'next/link';
 
-export default function GetStartedButton({
+export function ContactButton({
   text = 'Get started',
   className,
   url,
-  isScrolling,
 }: IGetStartedButtonProps) {
   return (
     <Link href={url} className="min-h-12  w-48">

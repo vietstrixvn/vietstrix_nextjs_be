@@ -23,6 +23,6 @@ export interface CreateManagerData {
   username: string;
   name: string;
   email: string;
-  phoneNumber: string;
+  phone_number: string;
   password: string;
 }

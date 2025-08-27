@@ -2,15 +2,9 @@
 
 import React from 'react';
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import type * as z from 'zod';
 import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
+  AdminContainer,
+  Button,
   Form,
   FormControl,
   FormDescription,
@@ -19,23 +13,25 @@ import {
   FormLabel,
   FormMessage,
   Input,
-  Button,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
   Textarea,
-  AdminContainer,
 } from '@/components';
-import { useCreateService } from '@/hooks/service/useService';
-import type { CreateServiceItem } from '@/types';
-import { useRouter } from 'next/navigation';
 import { Heading } from '@/components/design/Heading';
-import { CategoryList } from '@/lib';
-import { serviceFormSchema } from '@/utils';
-import { RichTextEditor } from '@/components/tiptap/rich-text-editor';
 import ImageUploadPreview from '@/components/design/image_upload';
+import { RichTextEditor } from '@/components/tiptap/rich-text-editor';
+import { useCreateService } from '@/hooks/service/useService';
+import { CategoryList } from '@/lib';
+import type { CreateServiceItem } from '@/types';
+import { serviceFormSchema } from '@/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import type * as z from 'zod';
 
 export default function NewServiceForm() {
   const router = useRouter();
@@ -46,7 +42,7 @@ export default function NewServiceForm() {
 
   const { categories, isLoading, isError } = CategoryList(
     1,
-    { limit: 20, type: 'services' },
+    { page_size: 20, type: 'services' },
     0
   );
   const form = useForm<z.infer<typeof serviceFormSchema>>({
@@ -236,7 +232,7 @@ export default function NewServiceForm() {
                           ) : categories && categories.length > 0 ? (
                             categories.map((category) => (
                               <SelectItem key={category.id} value={category.id}>
-                                {category.name}
+                                {category.title}
                               </SelectItem>
                             ))
                           ) : (

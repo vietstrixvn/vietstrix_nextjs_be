@@ -2,8 +2,9 @@
 
 import React, { useEffect, useState, useRef } from 'react';
 import { cn } from '@/lib/utils';
-import SectionHeader from '@/components/design/SectionHeader';
 import { ProcessStepProps } from '@/types';
+import { Container } from './container';
+import { ArrowUpRight } from 'lucide-react';
 
 const ProcessStep: React.FC<ProcessStepProps> = ({
   title,
@@ -36,7 +37,7 @@ const ProcessStep: React.FC<ProcessStepProps> = ({
         top: row === 'top' ? '0' : '80px', // Position based on row
       }}
     >
-      <div className="text-lg font-medium mb-2">{title}</div>
+      <div className="text-lg text-white font-medium mb-2">{title}</div>
       <div
         className={cn(
           'h-3 rounded-full transition-all duration-1000 ease-out',
@@ -86,19 +87,21 @@ const ProcessTimeline: React.FC = () => {
   }, []);
 
   return (
-    <section ref={sectionRef} className="py-16 px-4 max-w-7xl mx-auto">
-      <div
+    <section ref={sectionRef} className="py-16 bg-main px-4 mx-auto">
+      <Container
         className={cn(
           'opacity-0 transform translate-x-10 transition-all duration-1000 ease-out',
           isVisible && 'opacity-100 translate-x-0'
         )}
       >
         <div className="flex flex-col">
-          <SectionHeader title="HOW WE WORK?" />
-          <h2 className="text-2xl md:text-3xl font-bold mt-2 mb-4">
+          <h2 className="text-4xl font-bold text-white uppercase mt-4 mb-4 flex items-center gap-2">
+            <ArrowUpRight size={40} strokeWidth={1.5} /> HOW WE WORK?
+          </h2>
+          <h2 className="text-2xl md:text-3xl font-bold mt-2 mb-4 text-gray-200">
             Crafting Success, Step by Step
           </h2>
-          <p className="text-gray-600 max-w-3xl mb-16">
+          <p className="text-gray-400 max-w-3xl mb-16">
             At VietStrix, we don&apos;t just build websites—we engineer{' '}
             <span className="font-semibold">digital ecosystems</span> that
             scale. Our process is{' '}
@@ -139,7 +142,7 @@ const ProcessTimeline: React.FC = () => {
             <ProcessStep
               title="Execution"
               startPosition="40%"
-              color="bg-gray-700"
+              color="bg-gray-600"
               width="35%"
               delay={600}
               row="top"
@@ -149,7 +152,7 @@ const ProcessTimeline: React.FC = () => {
             <ProcessStep
               title="Reporting"
               startPosition="90%"
-              color="bg-black"
+              color="bg-gray-800"
               width="10%"
               delay={1200}
               row="top"
@@ -170,7 +173,7 @@ const ProcessTimeline: React.FC = () => {
             <ProcessStep
               title="Optimization"
               startPosition="75%"
-              color="bg-gray-800"
+              color="bg-gray-700"
               width="15%"
               delay={900}
               row="bottom"
@@ -180,8 +183,8 @@ const ProcessTimeline: React.FC = () => {
 
           {/* Timeline indicators */}
           <div className="absolute bottom-0 w-full">
-            <div className="absolute w-full h-px bg-gray-800"></div>
-            <div className="flex justify-between w-full text-gray-500">
+            <div className="absolute w-full h-px bg-gray-200"></div>
+            <div className="flex justify-between w-full text-gray-200">
               <div className="relative -translate-x-1/2">
                 <span>0%</span>
               </div>
@@ -200,7 +203,7 @@ const ProcessTimeline: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };

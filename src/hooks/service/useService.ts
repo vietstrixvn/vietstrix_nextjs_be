@@ -1,14 +1,15 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { endpoints, handleAPI } from '@/api';
 import type {
-  FetchServiceListResponse,
   CreateServiceItem,
+  FetchServiceListResponse,
+  Filters,
   ServiceDetail,
   UpdateServiceItem,
 } from '@/types';
-import type { UpdateStatus, Filters } from '@/types';
-import { toast } from 'sonner';
 import { buildQueryParams } from '@/utils';
+import { makeServiceListKey } from '@/utils/helpers/service.helper';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 /**
  * ==========================
@@ -50,7 +51,7 @@ const useServiceList = (
   refreshKey: number
 ) => {
   return useQuery<FetchServiceListResponse, Error>({
-    queryKey: ['serviceList', page, filters, refreshKey],
+    queryKey: makeServiceListKey(page, filters, refreshKey),
     queryFn: () => fetchServiceList(page, filters),
     enabled: page > 0,
     staleTime: process.env.NODE_ENV === 'development' ? 1000 : 300000,
@@ -179,7 +180,7 @@ const useUpdateService = () => {
       return EditService(updateService, postId);
     },
     onSuccess: () => {
-      toast.success('Update status successfully!');
+      toast.success('Update service successfully!');
       queryClient.invalidateQueries({ queryKey: ['serviceList'] });
     },
   });
@@ -216,9 +217,9 @@ const useCreateService = () => {
 };
 
 export {
-  useServiceList,
-  useServiceDetail,
-  useDeleteService,
-  useUpdateService,
   useCreateService,
+  useDeleteService,
+  useServiceDetail,
+  useServiceList,
+  useUpdateService,
 };

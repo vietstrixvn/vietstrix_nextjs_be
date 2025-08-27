@@ -1,14 +1,20 @@
 'use client';
 
-import type React from 'react';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { z } from 'zod';
-import { Loader2 } from 'lucide-react';
 
 import {
+  AdminContainer,
+  Button,
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
   Form,
   FormControl,
   FormDescription,
@@ -17,22 +23,15 @@ import {
   FormLabel,
   FormMessage,
   Heading,
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Button,
 } from '@/components';
+import ImageUploadPreview from '@/components/design/image_upload';
+import { MultiSelect } from '@/components/pages/admin/project/multi-select';
+import { RichTextEditor } from '@/components/tiptap/rich-text-editor';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { MultiSelect } from '@/components/pages/admin/project/multi-select';
-import { ServiceList } from '@/lib/responses/serviceLib';
 import { useCreateProject } from '@/hooks/project/useProject';
-import type { CreateProjectItem } from '@/types/types';
-import { RichTextEditor } from '@/components/tiptap/rich-text-editor';
-import ImageUploadPreview from '@/components/design/image_upload';
+import { ServiceList } from '@/lib/responses/serviceLib';
+import type { CreateProjectItem } from '@/types';
 import { projectFormSchema } from '@/utils';
 
 export default function CreateProjectPage() {
@@ -41,7 +40,7 @@ export default function CreateProjectPage() {
   const { mutate: createProject } = useCreateProject();
   const [uploaFileKey, setUploadFileKey] = useState(0);
 
-  const { services, isLoading, isError } = ServiceList(1, { limit: 10 }, 0);
+  const { services, isLoading, isError } = ServiceList(1, { page_size: 10 }, 0);
 
   const serviceOptions =
     services?.map((service: any) => ({
@@ -156,47 +155,101 @@ export default function CreateProjectPage() {
   }
 
   return (
-    <div>
-      <Card>
-        <CardHeader>
-          <Heading
-            name="Tạo dự án"
-            desc="Thêm một dự án mới vào danh mục của bạn để tăng uy tín. Điền vào tất cả các trường bắt buộc."
-          />
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form
-              onSubmit={(e) => {
-                return handleSubmit(onSubmit)(e);
-              }}
-              className="space-y-8"
-            >
-              {' '}
-              {form.formState.errors.root && (
-                <div className="text-red-500 text-sm">
-                  {form.formState.errors.root.message}
-                </div>
-              )}
-              <FormField
-                control={form.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Tên dự án</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Enter project title" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+    <AdminContainer>
+      <div className="flex justify-between">
+        <Heading
+          name="Create project"
+          desc="Add a new project to your portfolio to increase your reputation. Fill in all required fields."
+        />
+
+        <div className="flex gap-2 mt-6 mb-6">
+          <Button
+            type="button"
+            variant="outline"
+            className="border-gray-300 text-gray-600 hover:bg-gray-100"
+            onClick={() => router.back()}
+          >
+            Cancel
+          </Button>
+
+          <Button
+            type="button"
+            className="bg-main text-white hover:bg-main-700"
+            onClick={() => {
+              const values = form.getValues();
+              onSubmit(values);
+            }}
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Creating...' : 'Create Project'}
+          </Button>
+        </div>
+      </div>
+
+      <Form {...form}>
+        <form
+          onSubmit={(e) => {
+            return handleSubmit(onSubmit)(e);
+          }}
+          className="space-y-8"
+        >
+          {form.formState.errors.root && (
+            <div className="text-red-500 text-sm">
+              {form.formState.errors.root.message}
+            </div>
+          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-6">
+              <div className="flex gap-2">
+                <FormField
+                  control={form.control}
+                  name="title"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Project Name</FormLabel>
+                      <FormDescription>
+                        Enter a clear and unique name to identify your project.
+                      </FormDescription>
+
+                      <FormControl>
+                        <Input placeholder="Enter project title" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="services"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Services</FormLabel>
+                      <FormDescription>
+                        Select all services that were involved in this project.
+                      </FormDescription>
+                      <FormControl>
+                        <MultiSelect
+                          options={serviceOptions}
+                          selected={field.value}
+                          onChange={field.onChange}
+                          placeholder="Select services"
+                        />
+                      </FormControl>
+
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
                 control={form.control}
                 name="content"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Mô tả ngắn</FormLabel>
+                    <FormLabel>Short content</FormLabel>
+                    <FormDescription>
+                      This will appear as a preview of your service
+                    </FormDescription>
                     <FormControl>
                       <Textarea
                         placeholder="Enter a short content or summary"
@@ -204,82 +257,24 @@ export default function CreateProjectPage() {
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>
-                      This will appear as a preview of your blog post
-                    </FormDescription>
+
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="thumbnail"
-                render={({ field: { ...fieldProps } }) => (
-                  <FormItem>
-                    <FormLabel>Thumbnail Image</FormLabel>
-                    <FormControl>
-                      <div>
-                        <ImageUploadPreview
-                          key={uploaFileKey}
-                          type="thumbnail"
-                          onImageUploaded={handleImageUploaded}
-                        />
-                        {errors.thumbnail && (
-                          <p className="text-red-500 text-sm">
-                            {errors.thumbnail.message}
-                          </p>
-                        )}
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="services"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Dịch vụ</FormLabel>
-                    <FormControl>
-                      <MultiSelect
-                        options={serviceOptions}
-                        selected={field.value}
-                        onChange={field.onChange}
-                        placeholder="Select services"
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      Select all services that were involved in this project.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Mô tả chi tiết dự án</FormLabel>
-                    <FormControl>
-                      <RichTextEditor
-                        initialContent={field.value}
-                        onChange={(val) => field.onChange(val.html)}
-                        className="w-full rounded-none cursor-text"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            </div>
+            <div className="space-y-6">
+              <div className="flex gap-2">
                 <FormField
                   control={form.control}
                   name="brandName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Tên công ty</FormLabel>
+                      <FormLabel>Company Name</FormLabel>
+                      <FormDescription>
+                        Enter the name of the company associated with this
+                        project.
+                      </FormDescription>
                       <FormControl>
                         <Input placeholder="Enter brand name" {...field} />
                       </FormControl>
@@ -292,7 +287,11 @@ export default function CreateProjectPage() {
                   name="client"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Khách hàng</FormLabel>
+                      <FormLabel>Client</FormLabel>
+                      <FormDescription>
+                        Enter the name of the client for whom this project was
+                        done.
+                      </FormDescription>
                       <FormControl>
                         <Input placeholder="Enter client name" {...field} />
                       </FormControl>
@@ -306,7 +305,10 @@ export default function CreateProjectPage() {
                 name="testimonial"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Dánh giá</FormLabel>
+                    <FormLabel>Review</FormLabel>
+                    <FormDescription>
+                      Share feedback or comments about this project.
+                    </FormDescription>{' '}
                     <FormControl>
                       <Textarea
                         placeholder="Enter client feedback or testimonial"
@@ -323,7 +325,12 @@ export default function CreateProjectPage() {
                 name="link"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Link (Nếu có)</FormLabel>
+                    <FormLabel>Project Link (Optional)</FormLabel>
+                    <FormDescription>
+                      Add a link related to this project, such as a website or
+                      repository.
+                    </FormDescription>
+
                     <FormControl>
                       <Input placeholder="https://example.com" {...field} />
                     </FormControl>
@@ -331,32 +338,57 @@ export default function CreateProjectPage() {
                   </FormItem>
                 )}
               />
-              <CardFooter className="flex justify-between gap-4 px-0">
-                <Button
-                  variant="outline"
-                  type="button"
-                  onClick={() => router.back()}
-                >
-                  Cancel
-                </Button>
-                <div className="flex gap-4">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => {
-                      const values = form.getValues();
-                      onSubmit(values);
-                    }}
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? 'Saving...' : 'Lưu nháp'}
-                  </Button>
-                </div>
-              </CardFooter>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
-    </div>
+            </div>
+          </div>
+
+          <FormField
+            control={form.control}
+            name="thumbnail"
+            render={() => (
+              <FormItem>
+                <FormLabel>Thumbnail Image</FormLabel>
+                <FormControl>
+                  <div>
+                    <ImageUploadPreview
+                      key={uploaFileKey}
+                      type="thumbnail"
+                      onImageUploaded={handleImageUploaded}
+                    />
+                    {errors.thumbnail && (
+                      <p className="text-red-500 text-sm">
+                        {errors.thumbnail.message}
+                      </p>
+                    )}
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Project Description</FormLabel>
+                <FormDescription>
+                  Provide a detailed description of the project, including its
+                  goals and key features.
+                </FormDescription>
+                <FormControl>
+                  <RichTextEditor
+                    initialContent={field.value}
+                    onChange={(val) => field.onChange(val.html)}
+                    className="w-full rounded-none cursor-text"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </form>
+      </Form>
+    </AdminContainer>
   );
 }

@@ -32,7 +32,7 @@ const endpoints = {
   categories: process.env.NEXT_PUBLIC_CATEGORIES,
   category: process.env.NEXT_PUBLIC_CATEGORY_DETAIL,
   categoryEdit: process.env.NEXT_PUBLIC_CATEGORY,
-  categoryStatus: process.env.NEXT_PUBLIC_CATEGORY_STATUS,
+  // categoryStatus: process.env.NEXT_PUBLIC_CATEGORY_STATUS,
 
   // contact
   contacts: process.env.NEXT_PUBLIC_CONTACTS,
@@ -50,19 +50,19 @@ const endpoints = {
   //   faq
   faqs: process.env.NEXT_PUBLIC_FAQS,
   faq: process.env.NEXT_PUBLIC_FAQ,
-  faqStatus: process.env.NEXT_PUBLIC_FAQ_STATUS,
+  // faqStatus: process.env.NEXT_PUBLIC_FAQ_STATUS,
 
   //   Service
   services: process.env.NEXT_PUBLIC_SERVICES,
   serviceDetail: process.env.NEXT_PUBLIC_SERVICE_DETAIL,
   service: process.env.NEXT_PUBLIC_SERVICE,
-  serviceStatus: process.env.NEXT_PUBLIC_SERVICE_STATUS,
+  // serviceStatus: process.env.NEXT_PUBLIC_SERVICE_STATUS,
 
   // Project
   projects: process.env.NEXT_PUBLIC_PROJECTS,
   projectDetail: process.env.NEXT_PUBLIC_PROJECT_DETAIL,
   project: process.env.NEXT_PUBLIC_PROJECT,
-  projectStatus: process.env.NEXT_PUBLIC_PROJECT_STATUS,
+  // projectStatus: process.env.NEXT_PUBLIC_PROJECT_STATUS,
 
   // Logsd
   logs: process.env.NEXT_PUBLIC_LOGS,

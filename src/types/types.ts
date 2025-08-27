@@ -1,5 +1,3 @@
-import type { BaseModel, Pagination } from './base/base.type';
-
 /**
  * ==========================
  *  @UPLOAD_MEDIA

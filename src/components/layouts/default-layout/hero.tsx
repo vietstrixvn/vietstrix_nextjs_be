@@ -1,11 +1,12 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import TypingText from '@/components/animata/text/typing-text';
+import GridDistortion from '@/components/animation/bg.animation';
+import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { ArrowDown, Phone } from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
-import GridDistortion from '@/components/animation/bg.animation';
+import { useEffect, useRef, useState } from 'react';
 
 export function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -94,11 +95,16 @@ export function Hero() {
                 <h1 className="text-6xl md:text-8xl lg:text-9xl font-bold tracking-tighter leading-none">
                   TEAM
                 </h1>
-                <p className="text-gray-300 uppercase leading-tight">
-                  Vietstrix® is a Gen Z-led web design studio creating sleek,
+                <TypingText
+                  text="  Vietstrix® is a Gen Z-led web design studio creating sleek,
                   scalable websites tailored to your brand—where creativity
-                  meets performance.
-                </p>
+                  meets performance."
+                  waitTime={3000}
+                  alwaysVisibleCount={0}
+                />
+                {/* <p className="text-gray-300 uppercase leading-tight">
+
+                </p> */}
               </motion.div>
             </div>
 
