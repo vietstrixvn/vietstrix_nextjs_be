@@ -30,21 +30,21 @@ export function ServiceListData() {
       title: 'Web Development',
       content: 'European Design Awards',
       href: 'web-development',
-      image: '/img/hero1.png',
+      image: '/imgs/introduce.jpg',
     },
     {
       id: '2',
       title: 'SUSTAINABLE ARCHITECTURE PRIZE',
       content: 'Green Building Council Awards',
       href: '2024',
-      image: '/img/hero2.png',
+      image: '/imgs/desd.png',
     },
     {
       id: '3',
       title: 'EXCELLENCE IN TIMBER CONSTRUCTION',
       content: 'International Woodworks Conference',
       href: '2023',
-      image: '/img/banner3.jpg',
+      image: '/placeholder.svg',
     },
   ];
 
@@ -53,6 +53,7 @@ export function ServiceListData() {
   const Servicesparams = useMemo(
     () => ({
       page_size: 10,
+      status: 'show',
     }),
     []
   );

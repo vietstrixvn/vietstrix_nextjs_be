@@ -1,11 +1,11 @@
 import { BlogList } from '@/lib';
 import Link from 'next/link';
-import DateComponent from '../design/DateComponent';
-import { CustomImage } from '../design/image.component';
-import { Avatar } from '../ui/avatar';
+import DateComponent from '../../design/DateComponent';
+import { CustomImage } from '../../design/image.component';
+import { Avatar } from '../../ui/avatar';
 
 export function HeroPost() {
-  const params = { page_size: 1 };
+  const params = { page_size: 1, status: 'show' };
   const { blogs, isLoading, isError } = BlogList(1, params, 0);
 
   if (isLoading) return <p>Loading...</p>;
@@ -23,7 +23,7 @@ export function HeroPost() {
           src={file || '/placeholder.svg'}
           width={1500}
           height={1000}
-          className="max-h-[50vh] min-h-[300px]"
+          className="object-contain "
           priority
         />
       </div>

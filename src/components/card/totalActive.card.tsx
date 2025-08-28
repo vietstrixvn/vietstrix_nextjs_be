@@ -1,8 +1,6 @@
-import React from 'react';
-
 import { Card, CardContent, CardHeader, CardTitle } from '@/components';
 
-const TotalActiveUsers = () => {
+export const TotalActiveUsers = () => {
   return (
     <div>
       <Card>
@@ -21,5 +19,3 @@ const TotalActiveUsers = () => {
     </div>
   );
 };
-
-export default TotalActiveUsers;

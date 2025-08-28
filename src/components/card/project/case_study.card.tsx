@@ -3,13 +3,14 @@
 import { CustomImage } from '@/components/design/image.component';
 import { CaseStudyCardProps } from '@/types';
 import { motion, useInView } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
 export function CaseStudyCard({ study, index }: CaseStudyCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
-
+  const router = useRouter();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
 
@@ -19,6 +20,9 @@ export function CaseStudyCard({ study, index }: CaseStudyCardProps) {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     setMousePosition({ x, y });
+  };
+  const handleMouseClick = () => {
+    router.push(`/projects/${study.slug}`);
   };
 
   return (
@@ -36,6 +40,7 @@ export function CaseStudyCard({ study, index }: CaseStudyCardProps) {
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
+        onClick={handleMouseClick}
       >
         <div className="aspect-image-main relative">
           <CustomImage

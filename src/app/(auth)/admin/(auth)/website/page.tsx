@@ -1,14 +1,16 @@
 import { AdminContainer } from '@/components';
 import { Heading } from '@/components/design/Heading';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Download } from 'lucide-react';
-import { SeoCard } from '@/components/card/seo.card';
-import WebsiteCard from '@/components/card/website.card';
+import {
+  SeoCard,
+  TotalActiveUsers,
+  VisitedCard,
+  WebsiteCard,
+} from '@/components/card';
 import Header from '@/components/design/Header';
-import VisitedCard from '@/components/card/topVisite.card';
-import TotalActiveUsers from '@/components/card/totalActive.card';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Download } from 'lucide-react';
 
 const Page = () => {
   return (

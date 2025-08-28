@@ -1,115 +1,121 @@
 'use client';
 
-import { Container, CustomImage, LoadingSpin } from '@/components';
-import { BackButton } from '@/components/button';
-import { CodeBlock } from '@/components/button/code.button';
-import { CopyLinkButton } from '@/components/button/copy.button';
-import { FacebookShareButton } from '@/components/button/share.button';
-import { PostRecent } from '@/components/card/post_recent.card';
-import { PostImageRecent } from '@/components/card/postImage.card';
+import { Container, CustomImage, LoadingSpin, Separator } from '@/components';
+import { BackButton, ShareButtons } from '@/components/button';
+import { PostImageRecent, PostRecent } from '@/components/card';
 import { Heading } from '@/components/design/Heading';
 import { NoResultsFound } from '@/components/design/NoResultsFound';
+import { RichTextParser } from '@/components/design/RichTextParser';
+import { TableOfContents } from '@/components/design/TableOfContents';
 import { BlogDetailData } from '@/lib';
-import { formatSmartDate } from '@/utils';
-import parse from 'html-react-parser';
+import { extractHeadings, formatSmartDate } from '@/utils';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function BlogDetailPage({ slug }: { slug: string }) {
   const { data: blog, isLoading, isError } = BlogDetailData(slug, 0);
+  const pathname = usePathname();
+  const [url, setUrl] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setUrl(window.location.origin + pathname);
+    }
+  }, [pathname]);
 
   const showContentError = isError;
-
-  const parsedContent = blog?.description
-    ? parse(blog.description, {
-        replace: (domNode: any) => {
-          if (domNode.name === 'pre' && domNode.children?.length) {
-            const codeNode = domNode.children[0];
-            if (codeNode.name === 'code') {
-              const codeText = codeNode.children
-                ?.map((c: any) => c.data || '')
-                .join('');
-              return <CodeBlock>{codeText}</CodeBlock>;
-            }
-          }
-        },
-      })
-    : null;
+  const headings = blog?.description ? extractHeadings(blog.description) : [];
 
   return (
     <Container>
       <div className="mt-24">
         <BackButton href="/blogs" />
-
-        <div className="grid grid-cols-12 gap-8">
-          <div className="col-span-12 lg:col-span-8">
-            {isLoading ? (
-              <LoadingSpin />
-            ) : showContentError ? (
-              <NoResultsFound message="Không thể hiển thị nội dung dịch vụ." />
-            ) : (
-              <>
-                <header className="mb-8">
-                  <div className="mb-6">
-                    <h1 className="text-4xl sm:text-5xl font-bold mb-8">
-                      {blog?.title}
-                    </h1>
+        {isLoading ? (
+          <LoadingSpin />
+        ) : showContentError ? (
+          <NoResultsFound message="Không thể hiển thị nội dung dịch vụ." />
+        ) : (
+          <>
+            <header className="mb-4">
+              <div>
+                <h1 className="text-4xl sm:text-5xl font-bold mb-4 text-gray-900 dark:text-gray-100">
+                  {blog?.title}
+                </h1>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
+                <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1 text-sm text-gray-600 dark:text-gray-400">
+                  <div className="flex items-center gap-2">
+                    <div className="relative h-6 w-6 overflow-hidden">
+                      <CustomImage
+                        src="/icons/logo.svg"
+                        alt="Profile Image"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                    <span className="text-sm">VietStrix</span>
                   </div>
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-0">
-                    <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1 text-sm text-gray-600">
-                      <span>Unien</span>
+                  <span>-</span>
+                  <span>
+                    {blog?.created_at
+                      ? formatSmartDate(blog.created_at)
+                      : 'No date available'}
+                  </span>
+                  {blog?.category?.name && (
+                    <>
                       <span>-</span>
-                      <span>
-                        {blog?.created_at
-                          ? formatSmartDate(blog.created_at)
-                          : 'No date available'}
+                      <span className="px-2 py-1 text-gray-700 text-base">
+                        {blog?.category.name}
                       </span>
-                      {blog?.category?.name && (
-                        <>
-                          <span>-</span>
-                          <span>{blog?.category.name}</span>
-                        </>
+                    </>
+                  )}
+                </div>
+              </div>
+            </header>
+
+            <div className="relative aspect-image-main w-full mb-8">
+              <CustomImage
+                src={blog?.file || '/placeholder.svg'}
+                alt={`Featured image for ${blog?.title}`}
+                fill
+                className="object-contain rounded-lg"
+                priority
+              />
+            </div>
+
+            <div className="grid grid-cols-12 gap-8">
+              <div className="col-span-12 lg:col-span-8">
+                <div>
+                  <div className="prose prose-lg max-w-none dark:prose-invert">
+                    <p className="text-lg text-gray-600 dark:text-gray-300 font-medium mb-8 leading-relaxed">
+                      {blog?.content}
+                    </p>
+                    <div className="rich-text-content">
+                      {blog?.description && (
+                        <RichTextParser html={blog.description} />
                       )}
                     </div>
-                    <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-2">
-                      <CopyLinkButton />
-                      <FacebookShareButton />
-                    </div>
                   </div>
-                </header>
-
-                <div className="mb-8 relative  aspect-image-main w-full overflow-hidden">
-                  <CustomImage
-                    src={blog?.file || '/placeholder.svg'}
-                    alt={`Featured image for ${blog?.title}`}
-                    fill
-                    className="object-contain"
-                    priority
-                  />
                 </div>
-
-                <div>
-                  <h2 className="text-base font-bold mt-12 mb-6">
-                    {blog?.content}
-                  </h2>
-                  <div className="rich-text-content mt-4">{parsedContent}</div>
-                </div>
-              </>
-            )}
-          </div>
-
-          <div className="col-span-12 lg:col-span-4 p-6 lg:sticky lg:top-24 h-fit">
-            <div className="mb-4">
-              <Heading name="Related Posts" />
-            </div>
-            <PostRecent category_id={blog?.category?.id} />
-
-            <div className="pt-10">
-              <div className="mb-4">
-                <Heading name="Latest Posts" />
               </div>
-              <PostImageRecent />
+
+              <div className="col-span-12 lg:col-span-4">
+                <div className="lg:sticky lg:top-24 space-y-4">
+                  <ShareButtons title={blog?.title} url={url} />
+
+                  <TableOfContents headings={headings} />
+
+                  <div>
+                    <Heading name="Related Posts" />
+                    <PostRecent category_id={blog?.category?.id} />
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
+          </>
+        )}
+        <Separator className="mt-4" />
+        <PostImageRecent />
       </div>
     </Container>
   );

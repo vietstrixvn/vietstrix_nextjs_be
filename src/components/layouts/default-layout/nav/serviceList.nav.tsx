@@ -9,6 +9,7 @@ export const ServiceListNav = ({ category }: { category: string }) => {
     () => ({
       category_id: category,
       page_size: 4,
+      status: 'show',
     }),
     [category]
   );

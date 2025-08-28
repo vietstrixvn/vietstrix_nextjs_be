@@ -1,18 +1,19 @@
 'use client';
 
+import { MoreButton } from '@/components/button';
+import { CaseStudyCard } from '@/components/card/project/case_study.card';
+import { Container } from '@/components/container/container';
+import { NoResultsFound } from '@/components/design/NoResultsFound';
 import SectionHeader from '@/components/design/SectionHeader';
+import { ErrorLoading } from '@/components/loading/error';
 import { ProjectList } from '@/lib/responses/projectLib';
 import { Loader2 } from 'lucide-react';
-import { MoreButton } from '@/components/button';
-import { NoResultsFound } from '@/components/design/NoResultsFound';
-import { ErrorLoading } from '@/components/loading/error';
-import { CaseStudyCard } from '@/components/card/case_study.card';
-import { Container } from '@/components/container/container';
 // import ContactCTA from './ContactCta';
 
 export function SuccessStories() {
   const params = {
     page_size: 10,
+    status: 'show',
   };
 
   const { projects, isLoading, isError } = ProjectList(1, params, 0);
@@ -72,8 +73,17 @@ export function SuccessStories() {
                     ))}
                 </div>
 
-                {/* Spacer div */}
-                <div className="md:h-[1650px]"></div>
+                {projects.length > 0 && (
+                  <div
+                    className={
+                      projects.length <= 2
+                        ? 'md:h-[800px]'
+                        : projects.length <= 4
+                          ? 'md:h-[1200px]'
+                          : 'md:h-[1650px]'
+                    }
+                  />
+                )}
               </>
             )}
           </>

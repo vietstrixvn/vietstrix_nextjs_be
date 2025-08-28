@@ -1,15 +1,12 @@
 'use client';
 
 import { Container, Heading } from '@/components';
-import { CategoryRecent } from '@/components/card/category/category.card';
-import { HeroPost } from '@/components/card/HeroPost.card';
-import { PostRecent } from '@/components/card/post_recent.card';
+import { CategoryRecent, HeroPost, PostRecent } from '@/components/card';
 import BlogGrid from '@/components/pages/public/blog/blogList';
 import { useCallback, useState } from 'react';
 
 const BlogListPageClient = () => {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  // Add these missing state variables that are referenced in handleCategorySelect
   const [currentPage, setCurrentPage] = useState(1);
   const [refreshKey, setRefreshKey] = useState(0);
 

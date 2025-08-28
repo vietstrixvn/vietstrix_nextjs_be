@@ -9,6 +9,7 @@ export const BlogListNav = ({ category }: { category: string }) => {
     () => ({
       category_id: category,
       page_size: 4,
+      status: 'show',
     }),
     [category]
   );
@@ -43,7 +44,7 @@ export const BlogListNav = ({ category }: { category: string }) => {
 
   // Render services
   return (
-    <div className="flex items-center gap-8">
+    <div className="flex flex-col gap-3">
       {blogs.map(({ title, slug, id }, index) => (
         <div key={id} className="flex items-center gap-2">
           <span className="text-gray-400 text-lg font-light w-8">

@@ -1,7 +1,7 @@
 'use client';
 
 import { ErrorLoading, LoadingSpin, NoResultsFound } from '@/components';
-import { ServiceCard } from '@/components/card/service.card';
+import { ServiceCard } from '@/components/card';
 import { CustomPagination } from '@/components/design/pagination';
 import { ServiceList } from '@/lib/responses/serviceLib';
 import { useCallback, useState } from 'react';

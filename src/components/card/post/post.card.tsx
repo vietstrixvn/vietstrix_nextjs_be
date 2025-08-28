@@ -1,3 +1,5 @@
+'use client';
+
 import { CustomImage } from '@/components/design/image.component';
 import { BlogList } from '@/types';
 import { formatSmartDate } from '@/utils';
@@ -18,6 +20,7 @@ export function PostCard({ blog }: { blog: BlogList }) {
       y: e.clientY - rect.top,
     });
   };
+
   return (
     <Link
       key={blog.id}
@@ -48,14 +51,10 @@ export function PostCard({ blog }: { blog: BlogList }) {
           } transition-opacity duration-300`}
         />
 
-        {/* Mouse following "Read" button - only visible when hovering this specific post */}
         {hoveredPost === blog.id && (
           <motion.div
             className="absolute flex items-center gap-2 text-white font-medium bg-main px-3 py-1.5 rounded-sm pointer-events-none"
-            animate={{
-              opacity: 1,
-              scale: 1,
-            }}
+            animate={{ opacity: 1, scale: 1 }}
             initial={{ opacity: 0, scale: 0.8 }}
             transition={{ duration: 0.1 }}
             style={{
@@ -75,7 +74,6 @@ export function PostCard({ blog }: { blog: BlogList }) {
             {formatSmartDate(blog.created_at)}
           </span>
           <h3 className="text-xl font-bold mt-2 mb-3">{blog.title}</h3>
-          {/* <p className="text-gray-600 text-sm">{blog.content}</p> */}
         </div>
         <div className="flex justify-end items-center gap-2 px-5 pb-5">
           <span className="text-sm text-gray-600">by</span>

@@ -69,6 +69,7 @@
     "next": "15.3.2",
     "prettier": "^3.5.3",
     "prismjs": "^1.30.0",
+    "radix-ui": "^1.4.3",
     "react": "19.1.1",
     "react-day-picker": "8.10.1",
     "react-dom": "19.1.1",

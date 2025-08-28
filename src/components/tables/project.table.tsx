@@ -64,7 +64,7 @@ export const ProjectTable: React.FC<ProjectTableProps> = ({
   };
 
   const handleViewDetail = (slug: string) => {
-    router.push(`/admin/service/${slug}`);
+    router.push(`/admin/project/${slug}`);
   };
 
   return (

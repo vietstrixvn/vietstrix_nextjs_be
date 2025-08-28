@@ -7,6 +7,7 @@ import { X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { PromotionalBanner } from '../ads';
 import { NavBlog } from './blog.nav';
 import NavService, { ServiceDropdownContent } from './service.nav';
 
@@ -33,6 +34,7 @@ const NavBar = () => {
   return (
     <>
       {/* Desktop Navigation */}
+      <PromotionalBanner />
       <div
         data-navbar
         className={`fixed z-50 w-full flex justify-center items-center min-h-[80px] ${

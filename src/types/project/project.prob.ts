@@ -6,17 +6,7 @@ export interface ProjectTableProps {
   isError: boolean;
 }
 
-export type CaseStudy = {
-  file?: string;
-  title: string;
-  client: string;
-  link?: string;
-  content: string;
-  brand_name: string;
-  testimonial: string;
-};
-
 export type CaseStudyCardProps = {
-  study: CaseStudy;
+  study: ProjectListData;
   index: number;
 };

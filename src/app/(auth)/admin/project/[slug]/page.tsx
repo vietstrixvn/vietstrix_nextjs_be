@@ -1,14 +1,14 @@
 'use client';
 
-import { BackButton } from '@/components/button/back.button';
-import { Badge } from '@/components/ui/badge';
-import { CardContent } from '@/components/ui/card';
 import { ProjectDetailData } from '@/lib/responses/projectLib';
-import { Separator } from '@radix-ui/react-separator';
-import { User } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { useParams } from 'next/navigation';
 
-import { CustomImage, LoadingSpin } from '@/components';
+import { AdminContainer, LoadingSpin } from '@/components';
+import { BackButton } from '@/components/button';
+import { CustomerSections } from '@/components/card';
+import { ProjectSection } from '@/components/wrappers/project.warpper';
+import { formatSmartDate } from '@/utils';
 
 export default function Page() {
   const { slug } = useParams();
@@ -22,128 +22,78 @@ export default function Page() {
     return <p className="text-red-500">Blog not found.</p>;
 
   return (
-    <>
-      <div>
-        <div className="max-w-4xl mx-auto px-4 py-8">
-          <div className="text-center mb-8">
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center space-x-2">
-                <BackButton href="/admin/project" />
-                <h1 className="text-2xl font-bold tracking-tight">
-                  Project Details
-                </h1>
-                <Badge
-                  variant={project.status === 'show' ? 'default' : 'secondary'}
-                >
-                  {project.status}
-                </Badge>
+    <AdminContainer>
+      <BackButton href="/admin/project" />
+
+      <ProjectSection
+        title={project?.title}
+        content={project?.content}
+        file={project?.file}
+        brand={project?.brand_name}
+      />
+      <div className="grid grid-cols-12 gap-8">
+        <div className="col-span-12 lg:col-span-8">
+          <CustomerSections
+            client={project?.client}
+            brand={project?.brand_name}
+          />
+          <div className="mb-4">
+            <div className="relative pl-6 italic text-gray-600">
+              <span className="absolute left-0 top-0 text-3xl text-gray-300">
+                &quot;
+              </span>
+              <p>{project?.testimonial}</p>
+            </div>
+            <div className="mt-4 text-sm">
+              <p className="font-semibold">— {project?.brand_name}</p>
+            </div>
+          </div>
+          <div
+            className="rich-text-content mt-4"
+            dangerouslySetInnerHTML={{
+              __html: project?.description || '',
+            }}
+          />
+        </div>
+        <div className="col-span-12 lg:col-span-4 p-6 lg:sticky lg:top-24 h-fit">
+          <div className="mb-4">
+            <div className="flex w-full relative  mb-6 flex-col">
+              {/* Dòng tên + icon */}
+              <div className="flex items-center gap-2">
+                <ArrowUpRight size={40} strokeWidth={1.5} />
+                <h2 className="text-4xl font-bold text-main uppercase mt-4 mb-1">
+                  Quick Info
+                </h2>
               </div>
             </div>
-            <CardContent>
-              <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mb-4">
-                {/* <div className="flex items-center">
-                  <Calendar className="mr-1 h-4 w-4" />
-                  Created:{' '}
-                  {(() => {
-                    if (!project?.createdAt) return '-';
-
-                    const date = new Date(project.createdAt);
-                    if (isNaN(date.getTime())) return '-';
-
-                    const hoursAgo = differenceInHours(new Date(), date);
-
-                    if (hoursAgo < 1) {
-                      return formatDistanceToNow(date, { addSuffix: true });
-                    } else if (hoursAgo < 24) {
-                      return `${hoursAgo}h ago`;
-                    } else {
-                      return format(date, 'yyyy/MM/dd');
-                    }
-                  })()}
-                </div>
-                <div className="flex items-center">
-                  <Clock className="mr-1 h-4 w-4" />
-                  Updated:{' '}
-                  {(() => {
-                    if (!project?.updatedAt) return '-';
-
-                    const date = new Date(project.updatedAt);
-                    if (isNaN(date.getTime())) return '-';
-
-                    const hoursAgo = differenceInHours(new Date(), date);
-
-                    if (hoursAgo < 1) {
-                      return formatDistanceToNow(date, { addSuffix: true });
-                    } else if (hoursAgo < 24) {
-                      return `${hoursAgo}h ago`;
-                    } else {
-                      return format(date, 'yyyy/MM/dd');
-                    }
-                  })()}
-                </div> */}
-
-                <div className="flex items-center">
-                  <User className="mr-1 h-4 w-4" />
-                  Posted by: {project.user?.username}
-                </div>
-              </div>
-            </CardContent>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          <div className="flex flex-col space-y-6">
+            {/* Country */}
             <div>
-              <h3 className="text-sm font-medium">Title</h3>
-              <p className="text-sm mt-1">{project.title}</p>
+              <p className="text-xl font-bold tracking-widest text-main">
+                CATEGORY
+              </p>
+              <p className="text-base text-black">
+                {project?.services?.map((s) => s.name).join(', ')}
+              </p>
             </div>
-            <div>
-              <h3 className="text-sm font-medium">Slug</h3>
-              <p className="text-sm mt-1">{project.slug}</p>
-            </div>
-          </div>
-          <Separator />
-          <div>
-            <h3 className="text-sm font-medium">Content</h3>
-            <p className="text-sm mt-1">{project.content}</p>
-          </div>
-          <Separator />
 
-          <div className="mb-2 sm:mb-0">
-            <span className="uppercase text-xs font-semibold tracking-wider text-gray-500">
-              SERVICE
-            </span>
-            {/* <p className="font-bold text-lime-500 text-xl">
-              {project?.service?.map((cat) => cat.title).join(', ')}
-            </p> */}
-          </div>
-          <div className="mb-12 bg-gray-200 rounded-md overflow-hidden">
-            <div className="aspect-video relative">
-              <CustomImage
-                src={project?.file || '/Logo.svg?height=400&width=800'}
-                alt="Project feature image"
-                fill
-                className="object-cover"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Timeline */}
             <div>
-              <h3 className="text-sm font-medium">Client</h3>
-              <p className="text-sm mt-1">{project.client}</p>
+              <p className="text-xl font-bold tracking-widest text-main">
+                CREATE AT
+              </p>
+              <p className="text-base text-black">
+                {' '}
+                {project?.created_at
+                  ? formatSmartDate(project.created_at)
+                  : 'No date available'}
+              </p>
             </div>
-            <div>
-              <h3 className="text-sm font-medium">Brand Name</h3>
-              <p className="text-sm mt-1">{project.brand_name}</p>
-            </div>
-          </div>
-          <Separator />
-          <div>
-            <h3 className="text-sm font-medium">Testimonial</h3>
-            <p className="text-sm mt-1 italic">{project.testimonial}</p>
           </div>
         </div>
-
-        <h3 className="text-sm font-medium">Description</h3>
       </div>
-    </>
+    </AdminContainer>
   );
 }

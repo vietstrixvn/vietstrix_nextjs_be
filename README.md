@@ -6,13 +6,13 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 ### 🏞️ Banner
 
-![Banner](/public/imgs/bgHome.jpg)
+![Banner](/public/wall/1.png)
 
 ### ✨ UI Screenshots
 
-| Instagram Post #2       | Instagram Post #4       |
-| ----------------------- | ----------------------- |
-| ![Instagram post - 2]() | ![Instagram post - 4]() |
+| Instagram Post #2                         | Instagram Post #4                         |
+| ----------------------------------------- | ----------------------------------------- |
+| ![Instagram post - 2](/public/wall/2.png) | ![Instagram post - 4](/public/wall/3.png) |
 
 ---
 

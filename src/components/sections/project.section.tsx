@@ -7,9 +7,11 @@ import { ProjectList } from '@/lib';
 import { ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useRef, useState } from 'react';
-import { ProjectMobileCard } from '../card/project/projectMobile.card';
-import { ProjectPagination } from '../card/project/projectPagination.card';
-import { ProjectRecentCard } from '../card/project/projectShowcase.card';
+import {
+  ProjectMobileCard,
+  ProjectPagination,
+  ProjectRecentCard,
+} from '../card';
 import { Container } from '../container/container';
 import { Heading } from '../design/Heading';
 import { NoResultsFound } from '../design/NoResultsFound';
@@ -27,6 +29,7 @@ export function CaseStudiesCarousel() {
 
   const params = {
     page_size: 3,
+    status: 'show',
   };
 
   const { projects, isLoading, isError, pagination } = ProjectList(

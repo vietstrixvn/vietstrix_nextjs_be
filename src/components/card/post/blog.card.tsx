@@ -6,7 +6,7 @@ export function BlogCard({ blog }: { blog: BlogList }) {
   return (
     <Link
       href={`/blogs/${blog.slug}`}
-      className="group cursor-pointer overflow-hidden g"
+      className="group cursor-pointer overflow-hidden hover:text-main-700"
     >
       <div className="relative aspect-image-main overflow-hidden">
         <CustomImage
@@ -17,7 +17,7 @@ export function BlogCard({ blog }: { blog: BlogList }) {
         />
       </div>
       <div className="mt-4 flex items-center justify-between">
-        <div className="font-medium">{blog.title}</div>
+        <div className="font-medium ">{blog.title}</div>
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-600">by</span>
           <div className="flex items-center gap-2">
@@ -29,7 +29,7 @@ export function BlogCard({ blog }: { blog: BlogList }) {
                 className="object-contain"
               />
             </div>
-            <span className="text-sm">VietStrix</span>
+            <span className="text-sm text-gray-700">VietStrix</span>
           </div>
         </div>
       </div>

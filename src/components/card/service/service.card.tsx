@@ -1,3 +1,5 @@
+'use client';
+
 import { CustomImage } from '@/components/design/image.component';
 import { ServiceList } from '@/types';
 import { formatSmartDate } from '@/utils';

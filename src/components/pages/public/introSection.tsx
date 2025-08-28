@@ -5,6 +5,7 @@ import { CustomImage } from '@/components/design/image.component';
 import SectionHeader from '@/components/design/SectionHeader';
 import { motion, useInView } from 'framer-motion';
 import { Github, Linkedin, Mail } from 'lucide-react';
+import { AspectRatio } from 'radix-ui';
 import { useRef } from 'react';
 
 const IntroSection = () => {
@@ -56,14 +57,16 @@ const IntroSection = () => {
             transition={{ duration: 0.8 }}
             className="relative aspect-image-cinema overflow-hidden "
           >
-            <CustomImage
-              src="/imgs/bgHome.jpg"
-              alt="Close up eye through technology"
-              fill
-              priority={isInView} // Load image early if it's in view
-              loading={isInView ? undefined : 'lazy'}
-              className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-            />
+            <AspectRatio.Root ratio={16 / 9}>
+              <CustomImage
+                src="/imgs/bgHome.jpg"
+                alt="Close up eye through technology"
+                fill
+                priority={isInView} // Load image early if it's in view
+                loading={isInView ? undefined : 'lazy'}
+                className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+              />
+            </AspectRatio.Root>
             <motion.div
               className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-center p-6"
               whileHover={{ opacity: 0.8 }}

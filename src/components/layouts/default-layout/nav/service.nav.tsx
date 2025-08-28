@@ -23,6 +23,7 @@ export const ServiceDropdownContent = ({ setIsOpen }: NavBlogProps) => {
     () => ({
       page_size: 4,
       type: 'services',
+      status: 'show',
     }),
     []
   );

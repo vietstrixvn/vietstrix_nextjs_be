@@ -44,7 +44,7 @@ export const NavBlog: React.FC<NavBlogProps> = () => {
                 <div className="text-gray-400 text-sm font-medium mb-6 uppercase tracking-wider hover:font-bold hover:text-black">
                   {title}
                 </div>
-                <div className="space-y-2">
+                <div className="space-x-2">
                   <BlogListNav category={id} />
                 </div>
               </div>
@@ -53,18 +53,16 @@ export const NavBlog: React.FC<NavBlogProps> = () => {
         )}
       </div>
 
-      {/* Blogs Column */}
-
       {/* Right Section - Featured Project */}
       <div className="w-1/3 flex items-start bg-cover bg-center overflow-hidden">
-        <div className="w-full h-96 relative">
+        <Link href="/our-team" className="w-full h-96 relative">
           <IntroduceCard
             title="About Us"
             description="A serene architectural masterpiece blending natural elements with modern design principles."
             imageSrc="/imgs/introduce.jpg"
             delay={0}
           />
-        </div>
+        </Link>
       </div>
     </div>
   );
