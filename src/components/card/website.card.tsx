@@ -1,32 +1,34 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '../ui/button';
-import { Check, Pencil, X } from 'lucide-react';
-import { RefreshButton } from '../button/refresh.button';
-import { WebsiteList } from '@/lib';
-import { Skeleton } from '../ui/skeleton';
-import { Heading } from '../design/Heading';
-import {
-  Facebook,
-  Instagram,
-  Github,
-  Linkedin,
-  Globe,
-  Dribbble,
-} from 'lucide-react';
-import { FaPinterest } from 'react-icons/fa';
-import { WebsiteFormSchema } from '@/utils';
-import { useForm } from 'react-hook-form';
-import z from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useUpdateWebsiteData } from '@/hooks';
+import { WebsiteList } from '@/lib';
 import { UpdateWebsite } from '@/types';
-import { Input } from '../ui/input';
+import { WebsiteFormSchema } from '@/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Check,
+  Dribbble,
+  Facebook,
+  Github,
+  Globe,
+  Instagram,
+  Linkedin,
+  Pencil,
+  X,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { FaPinterest } from 'react-icons/fa';
+import z from 'zod';
+import { RefreshButton } from '../button/refresh.button';
+import { Heading } from '../design/Heading';
 import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Skeleton } from '../ui/skeleton';
 
-const WebsiteCard = () => {
+export const WebsiteCard = () => {
   const [refreshKey, setRefreshKey] = useState(0);
   const { website, isLoading, isError } = WebsiteList(refreshKey);
   const [newEmail, setNewEmail] = useState('');
@@ -314,5 +316,3 @@ const WebsiteCard = () => {
     </Card>
   );
 };
-
-export default WebsiteCard;

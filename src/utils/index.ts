@@ -6,11 +6,13 @@
  * ==========================
  */
 
-export * from './helpers/utils';
-export * from './helpers/query.helper';
-export * from './helpers/truncate_text.helper';
 export * from './helpers/auth.helper';
+export * from './helpers/heading.helper';
 export * from './helpers/jwt.helper';
+export * from './helpers/query.helper';
+export * from './helpers/share.helper';
+export * from './helpers/truncate_text.helper';
+export * from './helpers/utils';
 
 /**
  * ==========================
@@ -20,7 +22,6 @@ export * from './helpers/jwt.helper';
  * ==========================
  */
 
-export * from './formatters/format_time.utils';
 export * from './formatters/format_time.utils';
 
 /**
@@ -33,8 +34,8 @@ export * from './formatters/format_time.utils';
 export * from './validators/client.validator';
 export * from './validators/email.validator';
 export * from './validators/empty.validator';
-export * from './validators/passsword.validator';
 export * from './validators/form.validator';
+export * from './validators/passsword.validator';
 
 /**
  * ==========================

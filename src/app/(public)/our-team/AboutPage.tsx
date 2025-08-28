@@ -10,7 +10,6 @@ import AgencyPortfolio from '@/components/pages/public/our-team/AgencyPortfolio'
 import { Feedback } from '@/components/pages/public/our-team/feedback';
 import OurStorySection from '@/components/sections/outStory.section';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 
 export default function AboutPage() {
   return (
@@ -47,19 +46,19 @@ export default function AboutPage() {
             {
               name: 'Hoang Pham Minh',
               role: 'Project Manager',
-              image: '/bg/av3.jpg',
+              image: '/imgs/ava.jpg',
               href: '/our-team/HoangPham',
             },
             {
               name: 'Tran Thanh Hoang',
               role: 'Back-end Developer',
-              image: '/bg/av2.jpg',
+              image: '/imgs/ava.jpg',
               href: '/our-team/HoangPham',
             },
             {
               name: 'Nguyen Hong Phuc',
               role: 'Front-end Developer',
-              image: '/bg/av1.jpg',
+              image: '/imgs/ava.jpg',
               href: '/our-team/HoangPham',
             },
           ].map((member, index) => (
@@ -71,10 +70,12 @@ export default function AboutPage() {
               viewport={{ once: true }}
               className="bg-white overflow-hidden shadow-md"
             >
-              <Link href={member.href}>
+              <div
+              //  href={member.href}
+              >
                 <div className="relative">
                   <CustomImage
-                    src={member.image || '/icons/logo.svg'}
+                    src={member.image || '/imgs/ava.jpg'}
                     alt={member.name}
                     width={300}
                     height={300}
@@ -85,7 +86,7 @@ export default function AboutPage() {
                   <h3 className="font-bold text-lg">{member.name}</h3>
                   <p className="text-gray-600 text-sm">{member.role}</p>
                 </div>
-              </Link>
+              </div>
             </motion.div>
           ))}
         </div>

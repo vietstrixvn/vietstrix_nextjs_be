@@ -1,16 +1,17 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { WebsiteList } from '@/lib';
+import { cn } from '@/lib/utils';
+import { Hero } from '@/types';
 import {
   ArrowRight,
   ArrowUpRight,
   Facebook,
   Github,
   Linkedin,
-  Twitter,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Hero } from '@/types';
+import { useEffect, useRef, useState } from 'react';
+import { FaTiktok } from 'react-icons/fa';
 
 export default function EnhancedHeroBanner({
   title,
@@ -22,6 +23,8 @@ export default function EnhancedHeroBanner({
   const [dotPosition, setDotPosition] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | undefined>(undefined);
+  const { website, isLoading, isError } = WebsiteList(0);
+
   useEffect(() => {
     // Fade-in animation on page load
     const timer = setTimeout(() => {
@@ -148,41 +151,53 @@ export default function EnhancedHeroBanner({
 
         <div className="flex justify-between items-end">
           {/* Social icons */}
+          {/* Social icons */}
           <div
             className={cn(
               'flex space-x-4 transform transition-all duration-1000 ease-out delay-300',
               isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
             )}
           >
-            <a
-              href="https://www.facebook.com/vietstrix"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-10 h-10 rounded-full text-white border border-gray-300 flex items-center justify-center hover:bg-gray-100 hover:text-black transition-colors"
-            >
-              <Facebook size={18} />
-            </a>
-            <a
-              href="https://x.com/Vietstrix"
-              target="_blank"
-              className="w-10 h-10 rounded-full text-white border border-gray-300 flex items-center justify-center hover:bg-gray-100 hover:text-black transition-colors"
-            >
-              <Twitter size={18} />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/hoangpham-strix/"
-              target="_blank"
-              className="w-10 h-10 rounded-full text-white border border-gray-300 flex items-center justify-center hover:bg-gray-100 hover:text-black transition-colors"
-            >
-              <Linkedin size={18} />
-            </a>
-            <a
-              href="https://github.com/protam113"
-              target="_blank"
-              className="w-10 h-10 rounded-full text-white border border-gray-300 flex items-center justify-center hover:bg-gray-100 hover:text-black transition-colors"
-            >
-              <Github size={18} />
-            </a>
+            {isLoading ? (
+              <>
+                <div className="w-10 h-10 rounded-full bg-gray-700 animate-pulse" />
+                <div className="w-10 h-10 rounded-full bg-gray-700 animate-pulse" />
+                <div className="w-10 h-10 rounded-full bg-gray-700 animate-pulse" />
+                <div className="w-10 h-10 rounded-full bg-gray-700 animate-pulse" />
+              </>
+            ) : isError ? null : (
+              <>
+                <a
+                  href={website.fb}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full text-white border border-gray-300 flex items-center justify-center hover:bg-gray-100 hover:text-black transition-colors"
+                >
+                  <Facebook size={18} />
+                </a>
+                <a
+                  href={website.tiktok}
+                  target="_blank"
+                  className="w-10 h-10 rounded-full text-white border border-gray-300 flex items-center justify-center hover:bg-gray-100 hover:text-black transition-colors"
+                >
+                  <FaTiktok size={18} />
+                </a>
+                <a
+                  href={website.linkedin}
+                  target="_blank"
+                  className="w-10 h-10 rounded-full text-white border border-gray-300 flex items-center justify-center hover:bg-gray-100 hover:text-black transition-colors"
+                >
+                  <Linkedin size={18} />
+                </a>
+                <a
+                  href={website.github}
+                  target="_blank"
+                  className="w-10 h-10 rounded-full text-white border border-gray-300 flex items-center justify-center hover:bg-gray-100 hover:text-black transition-colors"
+                >
+                  <Github size={18} />
+                </a>
+              </>
+            )}
           </div>
 
           {/* Scroll to explore */}

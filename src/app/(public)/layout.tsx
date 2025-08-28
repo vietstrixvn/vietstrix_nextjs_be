@@ -1,8 +1,10 @@
 'use client';
 
-import LoadingBanner from '@/components/animation/loading-banner';
+// import LoadingBanner from '@/components/animation/loading-banner';
 import ScrollToTopButton from '@/components/button/scroll.button';
 import DefaultLayout from '@/components/layouts/default-layout/default.layout';
+import ShuffleLoader from '@/components/loading/shuffle-loader';
+import CookieBanner from '@/components/sections/CookieBanner.section';
 import React, { useState } from 'react';
 
 export default function CustomerLayoutDefault({
@@ -14,10 +16,11 @@ export default function CustomerLayoutDefault({
 
   return (
     <>
-      {loading && <LoadingBanner onLoadingComplete={() => setLoading(false)} />}
+      {loading && <ShuffleLoader onLoadingComplete={() => setLoading(false)} />}
       {!loading && (
         <DefaultLayout>
           <div>{children}</div>
+          <CookieBanner />
           <ScrollToTopButton />
         </DefaultLayout>
       )}

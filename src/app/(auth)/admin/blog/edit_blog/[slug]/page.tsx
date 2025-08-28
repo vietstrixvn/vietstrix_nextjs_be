@@ -40,13 +40,6 @@ const Page = () => {
     ? routerParams.slug[0]
     : routerParams?.slug;
 
-  if (!slug) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <LoadingSpin />
-      </div>
-    );
-  }
   const [isImageEditMode, setIsImageEditMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const errorRef = useRef<HTMLDivElement>(null);
@@ -63,7 +56,7 @@ const Page = () => {
     data: blog,
     isLoading: blogLoading,
     isError: blogError,
-  } = BlogDetailData(slug, 0);
+  } = BlogDetailData(slug || '', 0);
   const { mutate: updateBlog } = useUpdateBlog();
 
   const form = useForm<z.infer<typeof blogFormSchema>>({
@@ -99,12 +92,10 @@ const Page = () => {
   }, [blog, categories, form]);
 
   const {
-    watch,
     setValue,
     handleSubmit,
     formState: { errors },
   } = form;
-  const watchedValues = watch();
 
   const onSubmit = (values: z.infer<typeof blogFormSchema>) => {
     setIsSubmitting(true);

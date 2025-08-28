@@ -40,20 +40,12 @@ const Page = () => {
     ? routerParams.slug[0]
     : routerParams?.slug;
 
-  if (!slug) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <LoadingSpin />
-      </div>
-    );
-  }
-
+  // Move all hooks to the top - before any conditional logic
   const [isImageEditMode, setIsImageEditMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const errorRef = useRef<HTMLDivElement>(null);
   const [uploaFileKey, setUploaFileKey] = useState(0);
   const [richTextKey, setRichTextKey] = useState(0);
-
   const router = useRouter();
   const { categories, isLoading, isError } = CategoryList(
     1,
@@ -64,7 +56,7 @@ const Page = () => {
     data: service,
     isLoading: serviceLoading,
     isError: serviceError,
-  } = ServiceDetailData(slug, 0);
+  } = ServiceDetailData(slug || '', 0);
   const { mutate: updateService } = useUpdateService();
 
   const form = useForm<z.infer<typeof serviceFormSchema>>({
@@ -103,7 +95,6 @@ const Page = () => {
   }, [service, categories, form]);
 
   const {
-    watch,
     setValue,
     handleSubmit,
     formState: { errors },

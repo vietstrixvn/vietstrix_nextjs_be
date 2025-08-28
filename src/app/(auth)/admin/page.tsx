@@ -1,13 +1,11 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import Header from '@/components/design/Header';
+import { Heading } from '@/components';
+import { AnalyticsComponent, VisitedCard } from '@/components/card';
 import { AdminContainer } from '@/components/container/admin.contaier';
+import Header from '@/components/design/Header';
 import SectionHeader from '@/components/design/SectionHeader';
-import { AnalyticsComponent } from '@/components/card/analytics.card';
 import AdminHero from '@/components/layouts/admin-layout/admin.hero';
 import { RecentInvoices } from '@/components/tables/recent-invoices.table';
-import { Heading } from '@/components';
-import VisitedCard from '@/components/card/topVisite.card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Page = () => {
   return (

@@ -1,8 +1,8 @@
-import Image from 'next/image';
-import { Star } from 'lucide-react';
-import { motion } from 'framer-motion';
-import SectionHeader from '@/components/design/SectionHeader';
 import { Container } from '@/components';
+import SectionHeader from '@/components/design/SectionHeader';
+import { motion } from 'framer-motion';
+import { Star } from 'lucide-react';
+import Image from 'next/image';
 
 export const Feedback = () => {
   return (
@@ -26,17 +26,17 @@ export const Feedback = () => {
         {[
           {
             name: 'Danh Thuong L.',
-            image: '/image/web.png',
+            image: '/imgs/ava.jpg',
             text: 'Working for my new home is absolutely amazing with Renovex. They have done great job with my home renovation. They have great communication skills.',
           },
           {
             name: 'Soranik',
-            image: '/image/web.png',
+            image: '/imgs/ava.jpg',
             text: 'Our office renovation exceeded all expectations! The Renovex team transformed our outdated workspace into a modern, innovative space. They handled every challenge professionally and delivered on time.',
           },
           {
             name: 'Thomas G.',
-            image: '/image/web.png',
+            image: '/imgs/ava.jpg',
             text: 'We hired them for our outdoor landscaping and pool construction project. Their attention to detail and commitment to quality was impressive. The end result exceeded our expectations and transformed our backyard.',
           },
         ].map((testimonial, index) => (

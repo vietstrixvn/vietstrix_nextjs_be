@@ -3,8 +3,10 @@
 import { AdminContainer, CustomImage, LoadingSpin } from '@/components';
 import { BackButton } from '@/components/button';
 import { NoResultsFound } from '@/components/design/NoResultsFound';
+import { RichTextParser } from '@/components/design/RichTextParser';
+import { TableOfContents } from '@/components/design/TableOfContents';
 import { BlogDetailData } from '@/lib/responses/blogLib';
-import { formatSmartDate } from '@/utils';
+import { extractHeadings, formatSmartDate } from '@/utils';
 import { useParams } from 'next/navigation';
 
 export default function Page() {
@@ -22,6 +24,7 @@ export default function Page() {
   }
 
   const { data: blog, isLoading, isError } = BlogDetailData(slug, 0);
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -38,13 +41,7 @@ export default function Page() {
     );
   }
 
-  // if (!blog?.title || !blog?.content) {
-  //   return (
-  //     <div className="flex justify-center items-center min-h-screen">
-  //       <LoadingSpin />
-  //     </div>
-  //   );
-  // }
+  const headings = blog?.description ? extractHeadings(blog.description) : [];
 
   return (
     <AdminContainer>
@@ -72,22 +69,36 @@ export default function Page() {
           </div>
         </header>
 
-        <div className="mb-8  aspect-[16/9] relative w-full overflow-hidden">
+        <div className="relative aspect-image-main w-full mb-8">
           <CustomImage
             src={blog?.file || '/placeholder.svg'}
             alt={`Featured image for ${blog?.title}`}
             fill
-            className="object-contain"
+            className="object-contain rounded-lg"
+            priority
           />
         </div>
-        <h2 className="text-xl mt-12 mb-6">{blog?.content}</h2>
 
-        <div
-          className="rich-text-content cursor-text mt-4"
-          dangerouslySetInnerHTML={{
-            __html: blog?.description ?? '',
-          }}
-        />
+        <div className="grid grid-cols-12 gap-8">
+          <div className="col-span-12 lg:col-span-8">
+            <div className="prose prose-lg max-w-none dark:prose-invert">
+              <p className="text-lg text-gray-600 dark:text-gray-300 font-medium mb-8 leading-relaxed">
+                {blog?.content}
+              </p>
+              <div className="rich-text-content">
+                {blog?.description && (
+                  <RichTextParser html={blog.description} />
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="col-span-12 lg:col-span-4">
+            <div className="lg:sticky lg:top-24 space-y-4">
+              {headings.length > 0 && <TableOfContents headings={headings} />}
+            </div>
+          </div>
+        </div>
       </div>
     </AdminContainer>
   );

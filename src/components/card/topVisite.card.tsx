@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Download } from 'lucide-react';
 import { Button } from '../ui/button';
 
-const VisitedCard = () => {
+export const VisitedCard = () => {
   return (
     <Card className="w-full max-w-2xl">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -34,5 +34,3 @@ const VisitedCard = () => {
     </Card>
   );
 };
-
-export default VisitedCard;

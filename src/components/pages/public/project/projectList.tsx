@@ -1,6 +1,6 @@
 'use client';
 
-import ProjectCard from '@/components/card/project/project.card';
+import { ProjectCard } from '@/components/card';
 import { NoResultsFound } from '@/components/design/NoResultsFound';
 import { ErrorLoading } from '@/components/loading/error';
 import { LoadingSpin } from '@/components/loading/loading';
@@ -47,6 +47,7 @@ function StyleSheet() {
 export const ProjectListData = () => {
   const params = {
     page_size: 10,
+    status: 'show',
   };
 
   const { projects, isLoading, isError } = ProjectList(1, params, 0);

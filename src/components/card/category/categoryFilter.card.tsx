@@ -12,6 +12,7 @@ export const CategoryFilterCard: React.FC<CategoryFilterCardProps> = ({
     () => ({
       page_size: 10,
       type: 'services',
+      status: 'show',
     }),
     []
   );

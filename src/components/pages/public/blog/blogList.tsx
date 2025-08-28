@@ -1,6 +1,6 @@
 'use client';
 
-import { PostCard } from '@/components/card/post.card';
+import { PostCard } from '@/components/card/post/post.card';
 import { CustomPagination } from '@/components/design/pagination';
 import { BlogList } from '@/lib';
 import { Loader2 } from 'lucide-react';
@@ -26,6 +26,7 @@ export default function BlogGrid({
     () => ({
       category_id: selectedCategory ?? undefined,
       page_size: 10,
+      status: 'show',
     }),
     [selectedCategory]
   );

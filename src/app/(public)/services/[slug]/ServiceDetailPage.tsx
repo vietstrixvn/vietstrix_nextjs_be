@@ -1,21 +1,31 @@
 'use client';
 
 import { Container, LoadingSpin, Separator } from '@/components';
-import { CopyLinkButton } from '@/components/button/copy.button';
-import { FacebookShareButton } from '@/components/button/share.button';
-import { ServiceRecent } from '@/components/card/service_recent.card';
+import { ShareButtons } from '@/components/button';
+import { ServiceRecent } from '@/components/card/service/service_recent.card';
 import { NoResultsFound } from '@/components/design/NoResultsFound';
+import { RichTextParser } from '@/components/design/RichTextParser';
 import { ContactForm } from '@/components/form/ContactForm';
 import { CaseStudiesCarousel } from '@/components/sections/project.section';
 import { ServiceWrapper } from '@/components/wrappers/service.warpper';
 import { ServiceDetailData } from '@/lib';
 import { formatSmartDate } from '@/utils';
 import { ArrowUpRight } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function ServiceDetailPage({ slug }: { slug: string }) {
   const { data: blog, isLoading, isError } = ServiceDetailData(slug, 0);
-
   const showContentError = isError;
+  const pathname = usePathname();
+
+  const [url, setUrl] = useState('');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setUrl(window.location.origin + pathname);
+    }
+  }, [pathname]);
 
   return (
     <main>
@@ -33,12 +43,9 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
           <Container>
             <div className="grid grid-cols-12 gap-8">
               <div className="col-span-12 lg:col-span-8">
-                <div
-                  className="rich-text-content mt-4"
-                  dangerouslySetInnerHTML={{
-                    __html: blog?.description || '',
-                  }}
-                />
+                {blog?.description && (
+                  <RichTextParser html={blog.description} />
+                )}
               </div>
               <div className="col-span-12 lg:col-span-4 p-6 lg:sticky lg:top-24 h-fit">
                 <div className="mb-4">
@@ -50,10 +57,6 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                         Quick Info
                       </h2>
                     </div>
-                  </div>
-                  <div className="flex flex-col sm:flex-row items-center sm:items-start gap-3 sm:gap-2">
-                    <CopyLinkButton />
-                    <FacebookShareButton />
                   </div>
                 </div>
 
@@ -89,6 +92,7 @@ export default function ServiceDetailPage({ slug }: { slug: string }) {
                         : 'No date available'}
                     </p>
                   </div>
+                  <ShareButtons title={blog?.title} url={url} />
                   <div className="mb-4">
                     <div className="flex items-center gap-2">
                       <ArrowUpRight size={30} strokeWidth={1.5} />

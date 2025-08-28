@@ -1,7 +1,7 @@
 'use client';
 
 import { Container } from '@/components';
-import { BlogCard } from '@/components/card/blog.card';
+import { BlogCard } from '@/components/card/post/blog.card';
 import { NoResultsFound } from '@/components/design/NoResultsFound';
 import SectionHeader from '@/components/design/SectionHeader';
 import { ErrorLoading } from '@/components/loading/error';
@@ -15,6 +15,7 @@ export function BlogSection() {
     1,
     {
       page_size: 3,
+      status: 'show',
     },
     0
   );

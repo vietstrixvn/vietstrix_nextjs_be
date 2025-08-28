@@ -1,3 +1,5 @@
+'use client';
+
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { ProjectService } from '@/types';
@@ -23,7 +25,7 @@ type Props = {
 };
 
 // Server Component (no client hooks)
-export default function ProjectCard({
+export function ProjectCard({
   title = 'Project title',
   content = 'Project subtitle',
   imageSrc = '/placeholder.svg?height=720&width=1280',

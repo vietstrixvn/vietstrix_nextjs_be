@@ -5,7 +5,6 @@ import {
   AdminContainer,
   Button,
   CustomImage,
-  ErrorLoading,
   Form,
   FormControl,
   FormDescription,
@@ -27,7 +26,7 @@ import { UpdateProjectItem } from '@/types';
 import { projectFormSchema } from '@/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useParams, useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 
@@ -37,17 +36,8 @@ const Page = () => {
     ? routerParams.slug[0]
     : routerParams?.slug;
 
-  if (!slug) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <LoadingSpin />
-      </div>
-    );
-  }
-
   const [isImageEditMode, setIsImageEditMode] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const errorRef = useRef<HTMLDivElement>(null);
   const [uploaFileKey, setUploaFileKey] = useState(0);
   const [richTextKey, setRichTextKey] = useState(0);
 
@@ -57,7 +47,7 @@ const Page = () => {
     project,
     isLoading: serviceLoading,
     isError: serviceError,
-  } = ProjectDetailData(slug, 0);
+  } = ProjectDetailData(slug || '', 0);
   const { mutate: updateProject } = useUpdateProject();
   const { services, isLoading, isError } = ServiceList(1, { page_size: 20 }, 0);
 
@@ -113,12 +103,10 @@ const Page = () => {
   }, [project, services, form]);
 
   const {
-    watch,
     setValue,
     handleSubmit,
     formState: { errors },
   } = form;
-  const watchedValues = watch();
 
   const onSubmit = (values: z.infer<typeof projectFormSchema>) => {
     setIsSubmitting(true);
@@ -217,16 +205,6 @@ const Page = () => {
         </div>
       </div>
     );
-  }
-
-  if (isLoading) {
-    return;
-    <LoadingSpin />;
-  }
-
-  if (isError) {
-    return;
-    <ErrorLoading />;
   }
 
   return (

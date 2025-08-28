@@ -2,14 +2,15 @@
 
 import { BlogList } from '@/lib';
 import Link from 'next/link';
-import { NoResultsFound } from '../design/NoResultsFound';
-import { LoadingSpin } from '../loading/loading';
+import { NoResultsFound } from '../../design/NoResultsFound';
+import { LoadingSpin } from '../../loading/loading';
 
 export const PostRecent = ({ category_id }: { category_id?: string }) => {
   // Tạo params nếu có category
   const params = {
     category_id: category_id,
     page_size: 5,
+    status: 'show',
   };
 
   const { blogs, isLoading, isError } = BlogList(1, params, 0);

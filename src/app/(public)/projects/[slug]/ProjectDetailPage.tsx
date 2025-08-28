@@ -1,12 +1,13 @@
 'use client';
 
 import { Container, LoadingSpin } from '@/components';
-import CustomerSections from '@/components/card/customer.card';
+import { CustomerSections } from '@/components/card';
 import { NoResultsFound } from '@/components/design/NoResultsFound';
+import { RichTextParser } from '@/components/design/RichTextParser';
 import { ContactForm } from '@/components/form/ContactForm';
 import TextMarquee from '@/components/pages/public/home/TitleMarquee';
 import { CaseStudiesCarousel } from '@/components/sections/project.section';
-import ProjectSection from '@/components/wrappers/project.warpper';
+import { ProjectSection } from '@/components/wrappers/project.warpper';
 import { ProjectDetailData } from '@/lib';
 import { formatSmartDate } from '@/utils';
 import { ArrowUpRight } from 'lucide-react';
@@ -29,6 +30,7 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
             content={project?.content}
             file={project?.file}
             brand={project?.brand_name}
+            loading={isLoading}
           />
           <Container>
             <div className="grid grid-cols-12 gap-8">
@@ -48,12 +50,9 @@ export default function ProjectDetailPage({ slug }: { slug: string }) {
                     <p className="font-semibold">— {project?.brand_name}</p>
                   </div>
                 </div>
-                <div
-                  className="rich-text-content mt-4"
-                  dangerouslySetInnerHTML={{
-                    __html: project?.description || '',
-                  }}
-                />
+                {project?.description && (
+                  <RichTextParser html={project.description} />
+                )}
               </div>
               <div className="col-span-12 lg:col-span-4 p-6 lg:sticky lg:top-24 h-fit">
                 <div className="mb-4">
